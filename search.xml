@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Hexo使用自定义的CSS和JS</title>
+    <url>/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/</url>
+    <content><![CDATA[<h2 id="Hexo的执行逻辑"><a href="#Hexo的执行逻辑" class="headerlink" title="Hexo的执行逻辑"></a>Hexo的执行逻辑</h2><p>Hexo是根据用户写的md文件进行渲染，得到对应的html文件在网站上显示。但有的时候会需要自定义页面，当然Hexo也给我们预留了解决方案。</p>
+<p>这里我要实现的效果就是新建一个游戏标签页，效果如下。</p>
+<p><img src="/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/example1.png" alt="game"></p>
+<p><br></p>
+<h2 id="创建标签"><a href="#创建标签" class="headerlink" title="创建标签"></a>创建标签</h2><p>首先，要新建一个标签页面就需要在NexT的配置文件中添加标签以及对应路由。</p>
+<p>其中<code>fa fa-gamepad</code>是<a href="http://www.fontawesome.com.cn">Font Awesome</a>提供的矢量图标。</p>
+<figure class="highlight markdown"><table><tbody><tr><td class="code"><pre><span class="line">menu:</span><br><span class="line">  home: / || fa fa-home</span><br><span class="line">  #about: /about/ || fa fa-user</span><br><span class="line">  tags: /tags/ || fa fa-tags</span><br><span class="line">  categories: /categories/ || fa fa-th</span><br><span class="line">  archives: /archives/ || fa fa-archive</span><br><span class="line">  #schedule: /schedule/ || fa fa-calendar</span><br><span class="line">  #sitemap: /sitemap.xml || fa fa-sitemap</span><br><span class="line">  #commonweal: /404/ || fa fa-heartbeat</span><br><span class="line">  game: /game/ || fa fa-gamepad</span><br></pre></td></tr></tbody></table></figure>
+<p>如果不想要英文的标签的话，以中文举例，可以到<code>themes/next/languages/zh-CN.yml</code>下添加game对应的中文。</p>
+<figure class="highlight markdown"><table><tbody><tr><td class="code"><pre><span class="line">menu:</span><br><span class="line">  home: 首页</span><br><span class="line">  archives: 归档</span><br><span class="line">  categories: 分类</span><br><span class="line">  tags: 标签</span><br><span class="line">  about: 关于</span><br><span class="line">  search: 搜索</span><br><span class="line">  schedule: 日程表</span><br><span class="line">  sitemap: 站点地图</span><br><span class="line">  commonweal: 公益 404</span><br><span class="line">  game: 游戏</span><br></pre></td></tr></tbody></table></figure>
+<p>然后使用git命令<code>hexo new page game</code>，创建/game对应md文件。</p>
+<p>注：如需更改一些全局样式，可到<code>source/_data/styles.styl</code>中修改</p>
+<span id="more"></span>
+<p><br></p>
+<h2 id="自定义渲染"><a href="#自定义渲染" class="headerlink" title="自定义渲染"></a>自定义渲染</h2><p>自定义渲染分为两种，一种是主题内渲染，一种是完全页面渲染。</p>
+<h4 id="1-主题内渲染"><a href="#1-主题内渲染" class="headerlink" title="1.主题内渲染"></a>1.主题内渲染</h4><p><code>layout: false</code>表示该md不会经过layout的渲染。</p>
+<p>同时可以保存添加的模块，主题的头部信息，仅对主体部分进行自定义。</p>
+<figure class="highlight markdown"><table><tbody><tr><td class="code"><pre><span class="line">title: game</span><br><span class="line">date: 2021-08-26 15:45:42</span><br><span class="line">layout: false</span><br></pre></td></tr></tbody></table></figure>
+<p>这里头部的导航栏以及侧边的统计栏都是保存的。</p>
+<p><img src="/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/example1.png" alt="game"></p>
+<h4 id="2-完全页面渲染"><a href="#2-完全页面渲染" class="headerlink" title="2.完全页面渲染"></a>2.完全页面渲染</h4><p>在Hexo的配置文件中，<code>skip_render</code>用来配置跳过渲染的文件。</p>
+<p>例：<code>skip_render: game/*</code>，指game/下的文件不会被渲染。</p>
+<p>若是<code>game/**</code>则代表目录递归，包含子目录中的文件。</p>
+<p>或是指定某个文件：<code>game/index.md</code></p>
+<figure class="highlight markdown"><table><tbody><tr><td class="code"><pre><span class="line"><span class="section"># Directory</span></span><br><span class="line">source<span class="emphasis">_dir: source</span></span><br><span class="line"><span class="emphasis">public_</span>dir: public</span><br><span class="line">tag<span class="emphasis">_dir: tags</span></span><br><span class="line"><span class="emphasis">archive_</span>dir: archives</span><br><span class="line">category<span class="emphasis">_dir: categories</span></span><br><span class="line"><span class="emphasis">code_</span>dir: downloads/code</span><br><span class="line">i18n<span class="emphasis">_dir: :lang</span></span><br><span class="line"><span class="emphasis">skip_</span>render: game/<span class="emphasis">*</span></span><br></pre></td></tr></tbody></table></figure>
+<p>完全页面渲染正如其名，不会包含主题模块等信息，全权由自己来设计。</p>
+<p>这里我还没有添加CSS和JS。</p>
+<p><img src="/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/example2.png" alt="example2"></p>
+<p><br></p>
+<h2 id="自定义CSS"><a href="#自定义CSS" class="headerlink" title="自定义CSS"></a>自定义CSS</h2><p>主题内渲染由于头部信息是主题给定的，因此CSS不能直接使用html的<code>&lt;style&gt;</code>导入CSS，JS同理。</p>
+<p>所以需要直接给NexT添加我们需要的CSS文件。</p>
+<p>在<code>themes/next/source/css</code>中，首先创建CSS文件的目录，为了与主题自带的CSS区分开，我们新建一个文件夹<code>_mycss</code>，然后创建<code>game.styl</code>，代码如下。</p>
+<figure class="highlight html"><table><tbody><tr><td class="code"><pre><span class="line">.game_img *,.game_img *:after,.game_img *:before { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }</span><br><span class="line">body .game_img, html .game_img { font-size: 100%; padding: 0; margin: 0;}</span><br><span class="line">body .game_img{</span><br><span class="line">	font-family: 'Lato', Calibri, Arial, sans-serif;</span><br><span class="line">	color: #b3b9bf;</span><br><span class="line">	background: #f9f9f9;</span><br><span class="line">}</span><br><span class="line">.game_img a {</span><br><span class="line">	color: #888;</span><br><span class="line">	text-decoration: none;</span><br><span class="line">}</span><br><span class="line">.game_img a:hover,.game_img a:active {</span><br><span class="line">	color: #333;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">.grid {</span><br><span class="line">	padding: 20px 20px 100px 20px;</span><br><span class="line">	max-width: 1300px;</span><br><span class="line">	margin: 0 auto;</span><br><span class="line">	list-style: none;</span><br><span class="line">	text-align: center;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">.grid li {</span><br><span class="line">	display: inline-block;</span><br><span class="line">	width: 350px;</span><br><span class="line">	margin: 0;</span><br><span class="line">	padding: 20px;</span><br><span class="line">	text-align: left;</span><br><span class="line">	position: relative;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">.grid figure {</span><br><span class="line">	margin: 0;</span><br><span class="line">	position: relative;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">.grid figure img {</span><br><span class="line">	max-width: 100%;</span><br><span class="line">	display: block;</span><br><span class="line">	position: relative;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">.grid figcaption {</span><br><span class="line">	position: absolute;</span><br><span class="line">	top: 0;</span><br><span class="line">	left: 0;</span><br><span class="line">	padding: 20px;</span><br><span class="line">	background: #2c3f52;</span><br><span class="line">	color: #ed4e6e;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">.grid figcaption h3 {</span><br><span class="line">	margin: 0;</span><br><span class="line">	padding: 0;</span><br><span class="line">	color: #fff;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">.grid figcaption span:before {</span><br><span class="line">	content: 'by ';</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">.grid figcaption a {</span><br><span class="line">	text-align: center;</span><br><span class="line">	padding: 5px 10px;</span><br><span class="line">	border-radius: 2px;</span><br><span class="line">	display: inline-block;</span><br><span class="line">	background: #ed4e6e;</span><br><span class="line">	color: #fff;</span><br><span class="line">}</span><br><span class="line">   </span><br><span class="line">/* 说明文字样式 1 */</span><br><span class="line"></span><br><span class="line">.cs-style-1 figcaption {</span><br><span class="line">	height: 100%;</span><br><span class="line">	width: 100%;</span><br><span class="line">	opacity: 0;</span><br><span class="line">	text-align: center;</span><br><span class="line">	-webkit-backface-visibility: hidden;</span><br><span class="line">	-moz-backface-visibility: hidden;</span><br><span class="line">	backface-visibility: hidden;</span><br><span class="line">	-webkit-transition: -webkit-transform 0.3s, opacity 0.3s;</span><br><span class="line">	-moz-transition: -moz-transform 0.3s, opacity 0.3s;</span><br><span class="line">	transition: transform 0.3s, opacity 0.3s;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">.no-touch .cs-style-1 figure:hover figcaption,</span><br><span class="line">.cs-style-1 figure.cs-hover figcaption {</span><br><span class="line">	opacity: 1;</span><br><span class="line">	-webkit-transform: translate(15px, 15px);</span><br><span class="line">	-moz-transform: translate(15px, 15px);</span><br><span class="line">	-ms-transform: translate(15px, 15px);</span><br><span class="line">	transform: translate(15px, 15px);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">.cs-style-1 figcaption h3 {</span><br><span class="line">	margin-top: 35px;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">.cs-style-1 figcaption span {</span><br><span class="line">	display: block;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">.cs-style-1 figcaption a {</span><br><span class="line">	margin-top: 20px;</span><br><span class="line">} </span><br></pre></td></tr></tbody></table></figure>
+<p>然后返回上一级目录，现在在<code>themes/next/source/css</code>中，打开<code>main.styl</code>在尾部添加如下代码，将我们的CSS导入进来就好了！</p>
+<p>一定要加注释！不然过几天都不知道这一段CSS是干什么用的。</p>
+<figure class="highlight markdown"><table><tbody><tr><td class="code"><pre><span class="line">//Games</span><br><span class="line">@import "<span class="emphasis">_mycss/game";</span></span><br></pre></td></tr></tbody></table></figure>
+<p><br></p>
+<h2 id="自定义JS"><a href="#自定义JS" class="headerlink" title="自定义JS"></a>自定义JS</h2><p>同CSS一样，来到<code>themes/next/source/js</code>下，先创建一个我们自己的JS文件夹<code>game</code>，然后将我们预先下载好的<code>modernizr.custom.js</code>放在该目录下，准备工作就完毕了。</p>
+<p>然后就需要导入JS文件，我们打开<code>themes/next/layout/_layout.swig</code>，在<code>&lt;head&gt;</code>标签下，添加JS路径，就大功告成了！</p>
+<figure class="highlight html"><table><tbody><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"/js/game/modernizr.custom.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+<p><br></p>
+<h2 id="HTML代码"><a href="#HTML代码" class="headerlink" title="HTML代码"></a>HTML代码</h2><p>最后附上我的HTML代码，目前只有一个框架，游戏还没有写<span class="github-emoji" style="display:inline;vertical-align:middle"><span>🌝</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f31d.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span></p>
+<figure class="highlight html"><table><tbody><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"game_img"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">"grid cs-style-1"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">li</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">figure</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"/uploads/images/tetris.jpg"</span> <span class="attr">alt</span>=<span class="string">"img04"</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">figcaption</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">h3</span>&gt;</span>俄罗斯方块<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">span</span>&gt;</span>DeFlory<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span>Take a look<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">figcaption</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">figure</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">li</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">figure</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"/uploads/images/tetris.jpg"</span> <span class="attr">alt</span>=<span class="string">"img04"</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">figcaption</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">h3</span>&gt;</span>俄罗斯方块<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">span</span>&gt;</span>DeFlory<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span>Take a look<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">figcaption</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">figure</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">li</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">figure</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"/uploads/images/tetris.jpg"</span> <span class="attr">alt</span>=<span class="string">"img04"</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">figcaption</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">h3</span>&gt;</span>俄罗斯方块<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">span</span>&gt;</span>DeFlory<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span>Take a look<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">figcaption</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">figure</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+]]></content>
+      <categories>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>Customize</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Markdown入门</title>
+    <url>/2021/08/20/MarkDown%E5%85%A5%E9%97%A8/</url>
+    <content><![CDATA[<h1 id="MarkDown入门"><a href="#MarkDown入门" class="headerlink" title="MarkDown入门"></a>MarkDown入门</h1><h2 id="1-代码块"><a href="#1-代码块" class="headerlink" title="1. 代码块"></a>1. 代码块</h2><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">```python</span><br><span class="line">    </span><br><span class="line">`行内代码块`</span><br></pre></td></tr></tbody></table></figure>
+<p><strong>python代码</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="built_in">sum</span> = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100</span>):</span><br><span class="line">    <span class="built_in">sum</span> += i</span><br><span class="line">    </span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">sum</span>)</span><br></pre></td></tr></tbody></table></figure>
+<p><code>行内代码块</code></p>
+<h2 id="2-标题"><a href="#2-标题" class="headerlink" title="2. 标题"></a>2. 标题</h2><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 一级标题</span></span><br><span class="line"><span class="comment">## 二级标题</span></span><br><span class="line"><span class="comment">### 三级标题</span></span><br><span class="line"><span class="comment">#### 四级标题</span></span><br><span class="line"><span class="comment">##### 五级标题</span></span><br><span class="line"><span class="comment">###### 六级标题</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 最多支持六级标题</span></span><br></pre></td></tr></tbody></table></figure>
+<h1 id="一级标题"><a href="#一级标题" class="headerlink" title="一级标题"></a>一级标题</h1><h2 id="二级标题"><a href="#二级标题" class="headerlink" title="二级标题"></a>二级标题</h2><h3 id="三级标题"><a href="#三级标题" class="headerlink" title="三级标题"></a>三级标题</h3><h4 id="四级标题"><a href="#四级标题" class="headerlink" title="四级标题"></a>四级标题</h4><h5 id="五级标题"><a href="#五级标题" class="headerlink" title="五级标题"></a>五级标题</h5><h6 id="六级标题"><a href="#六级标题" class="headerlink" title="六级标题"></a>六级标题</h6><span id="more"></span>
+<h2 id="3-字体"><a href="#3-字体" class="headerlink" title="3. 字体"></a>3. 字体</h2><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">~~删除~~					<span class="comment"># 删除线</span></span><br><span class="line">**加粗**					<span class="comment"># 加粗</span></span><br><span class="line">*斜体*					<span class="comment"># 斜体</span></span><br><span class="line">***加粗+斜体***					<span class="comment"># 粗斜体</span></span><br><span class="line">&lt;code&gt;高亮&lt;/code&gt;					<span class="comment"># 高亮</span></span><br><span class="line">`$H_2O_2$`					<span class="comment"># 下标</span></span><br><span class="line">`$X^{a^<span class="number">2</span>}$`					<span class="comment"># 平方</span></span><br><span class="line">&lt;u&gt;下划线&lt;/u&gt;					<span class="comment"># 下划线</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 斜体、加粗中*和_效果相同</span></span><br><span class="line"><span class="comment"># HTML语法可以在Markdown中使用</span></span><br></pre></td></tr></tbody></table></figure>
+<p><del>删除</del>            </p>
+<p><strong>加粗</strong>            </p>
+<p><em>斜体</em>            </p>
+<p><strong><em>加粗+斜体</em></strong>  </p>
+<p><code>高亮</code></p>
+<script type="math/tex; mode=display">H_2O_2</script><script type="math/tex; mode=display">X^{a^2}</script><p><u>下划线</u>        </p>
+<h2 id="4-表情符号"><a href="#4-表情符号" class="headerlink" title="4.表情符号"></a>4.表情符号</h2><figure class="highlight py"><table><tbody><tr><td class="code"><pre><span class="line">:smile_cat: :smile: :laughing: :dizzy_face: :sob: :weary:</span><br></pre></td></tr></tbody></table></figure>
+<p><span class="github-emoji" style="display:inline;vertical-align:middle"><span>😸</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f638.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span><span class="github-emoji" style="display:inline;vertical-align:middle"><span>😄</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f604.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span> <span class="github-emoji" style="display:inline;vertical-align:middle"><span>😆</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f606.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span> <span class="github-emoji" style="display:inline;vertical-align:middle"><span>😵</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f635.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span> <span class="github-emoji" style="display:inline;vertical-align:middle"><span>😭</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f62d.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span> <span class="github-emoji" style="display:inline;vertical-align:middle"><span>😩</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f629.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span></p>
+<h2 id="5-表格"><a href="#5-表格" class="headerlink" title="5.表格"></a>5.表格</h2><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">name | price</span><br><span class="line">:---  | ---:			<span class="comment"># :在左边表示该列左对齐；在右边表示右对齐；左右都有居中对齐</span></span><br><span class="line">fried chicken | <span class="number">19</span></span><br><span class="line">cola | <span class="number">5</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 表格语法较为繁琐，建议右键插入表格</span></span><br></pre></td></tr></tbody></table></figure>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">name</th>
+<th style="text-align:right">price</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">fried chicken</td>
+<td style="text-align:right">19</td>
+</tr>
+<tr>
+<td style="text-align:left">cola</td>
+<td style="text-align:right">5</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="6-引用"><a href="#6-引用" class="headerlink" title="6.引用"></a>6.引用</h2><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">&gt; 一级引用</span><br><span class="line">&gt;&gt; 二级引用</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>三级引用</span><br><span class="line"></span><br><span class="line"><span class="comment"># 以此类推</span></span><br></pre></td></tr></tbody></table></figure>
+<blockquote>
+<p>一级引用</p>
+<blockquote>
+<p>二级引用</p>
+<blockquote>
+<p>三级引用</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<h2 id="7-列表"><a href="#7-列表" class="headerlink" title="7.列表"></a>7.列表</h2><h4 id="7-1无序列表"><a href="#7-1无序列表" class="headerlink" title="7.1无序列表"></a>7.1无序列表</h4><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">* 无序列表<span class="number">1</span></span><br><span class="line">+ 无序列表<span class="number">2</span></span><br><span class="line">- 无序列表<span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 以上三种方式均可</span></span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>无序列表1</li>
+</ul>
+<ul>
+<li>无序列表2</li>
+</ul>
+<ul>
+<li>无序列表3</li>
+</ul>
+<h4 id="7-2有序列表"><a href="#7-2有序列表" class="headerlink" title="7.2有序列表"></a>7.2有序列表</h4><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="number">1.</span> 有序列表<span class="number">1</span></span><br><span class="line"><span class="number">2.</span> 有序列表<span class="number">2</span></span><br><span class="line"><span class="number">3.</span> 有序列表<span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以使用 数字\.来取消显示列表（用反斜杠进行转义）</span></span><br></pre></td></tr></tbody></table></figure>
+<ol>
+<li>有序列表1</li>
+<li>有序列表2</li>
+<li>有序列表3</li>
+</ol>
+<h2 id="8-分割线"><a href="#8-分割线" class="headerlink" title="8.分割线"></a>8.分割线</h2><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">***</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在一行中使用三个及以上的*即可</span></span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<h2 id="9-跳转"><a href="#9-跳转" class="headerlink" title="9.跳转"></a>9.跳转</h2><h4 id="9-1外部跳转"><a href="#9-1外部跳转" class="headerlink" title="9.1外部跳转"></a>9.1外部跳转</h4><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">[紫梦沁香的博客](https://紫梦沁香.com)</span><br></pre></td></tr></tbody></table></figure>
+<p><a href="https://紫梦沁香.com">紫梦沁香的博客</a></p>
+<h4 id="9-2内部跳转"><a href="#9-2内部跳转" class="headerlink" title="9.2内部跳转"></a>9.2内部跳转</h4><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">[跳转至<span class="number">1.</span>代码块](<span class="comment">#1-代码块)</span></span><br><span class="line">    </span><br><span class="line">[跳转至Connor](<span class="comment">#Connor)</span></span><br><span class="line">    </span><br><span class="line"><span class="comment"># 空格用-代替，特殊字符直接删掉</span></span><br><span class="line"><span class="comment"># 也可以使用HTML标签中的id来进行跳转</span></span><br></pre></td></tr></tbody></table></figure>
+<p><a href="#1-代码块">跳转至1.代码块</a></p>
+<p><a href="#Connor">跳转至康娜酱</a></p>
+<h4 id="9-3自动链接"><a href="#9-3自动链接" class="headerlink" title="9.3自动链接"></a>9.3自动链接</h4><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">&lt;https://紫梦沁香.com&gt;</span><br><span class="line">&lt;https://www.baidu.com&gt;</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 协议也写全，不然会有bug</span></span><br></pre></td></tr></tbody></table></figure>
+<p><a href="https://紫梦沁香.com">https://紫梦沁香.com</a><br><a href="https://www.baidu.com">https://www.baidu.com</a></p>
+<h2 id="10-图片"><a href="#10-图片" class="headerlink" title="10.图片"></a>10.图片</h2><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">![康娜酱](Connor.jpg)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 相对路径在source/_posts/同名文件夹</span></span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2021/08/20/MarkDown%E5%85%A5%E9%97%A8/Connor.jpg" alt="康娜酱"></p>
+<h2 id="11-内置标签"><a href="#11-内置标签" class="headerlink" title="11.内置标签"></a>11.内置标签</h2><h4 id="11-1文本居中"><a href="#11-1文本居中" class="headerlink" title="11.1文本居中"></a>11.1文本居中</h4><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># HTML，其中class="blockquote-center"是必要的</span></span><br><span class="line">&lt;blockquote <span class="class"><span class="keyword">class</span>="<span class="title">blockquote</span>-<span class="title">center</span>"&gt;<span class="title">HTML</span>居中&lt;/<span class="title">blockquote</span>&gt;</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"># 标签</span></span><br><span class="line"><span class="class">{% <span class="title">centerquote</span> %}标签居中{% <span class="title">endcenterquote</span> %}</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"># 标签别名</span></span><br><span class="line"><span class="class">{% <span class="title">cq</span> %}标签别名居中{% <span class="title">endcq</span> %}</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"># 此标签将生成一个带上下分割线的引用，同时引用内文本将自动居中</span></span><br><span class="line"><span class="class"># 文本居中时，多行文本若长度不等，视觉上会显得不对称，因此建议在引用单行文本的场景下使用</span></span><br></pre></td></tr></tbody></table></figure>
+<blockquote class="blockquote-center">HTML居中</blockquote>
+
+<blockquote class="blockquote-center">
+            <i class="fa fa-quote-left"></i>
+            <p>标签居中</p>
+
+            <i class="fa fa-quote-right"></i>
+          </blockquote>
+<blockquote class="blockquote-center">
+            <i class="fa fa-quote-left"></i>
+            <p>标签别名居中</p>
+
+            <i class="fa fa-quote-right"></i>
+          </blockquote>
+<h4 id="11-2图片越界"><a href="#11-2图片越界" class="headerlink" title="11.2图片越界"></a>11.2图片越界</h4><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># HTML，其中class="full-image"是必要的</span></span><br><span class="line">&lt;img src=<span class="string">"Connor.jpg"</span> <span class="class"><span class="keyword">class</span>="<span class="title">full</span>-<span class="title">image</span>" /&gt;</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"># 标签的方式失效了，可能换了其它的标签名</span></span><br><span class="line"><span class="class"># 看起来没啥效果</span></span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2021/08/20/MarkDown%E5%85%A5%E9%97%A8/Connor.jpg" class="full-image" id="Connor"></p>
+<h3 id="11-3Bootstrap-Callout"><a href="#11-3Bootstrap-Callout" class="headerlink" title="11.3Bootstrap Callout"></a>11.3Bootstrap Callout</h3><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">{% note class_name %} Content (md partial supported) {% endnote %}</span><br><span class="line"></span><br><span class="line"><span class="comment"># 其中class_name可以是以下值</span></span><br><span class="line"><span class="comment"># danger primary success info warning default</span></span><br></pre></td></tr></tbody></table></figure>
+<div class="note danger">
+            <p>It’s danger </p>
+          </div>
+<div class="note primary">
+            <p>It’s primary </p>
+          </div>
+<div class="note success">
+            <p>It’s success </p>
+          </div>
+<div class="note info">
+            <p>It’s info </p>
+          </div>
+<div class="note warning">
+            <p>It’s warning </p>
+          </div>
+<div class="note default">
+            <p>It’s default </p>
+          </div>
+]]></content>
+      <categories>
+        <category>Markdown</category>
+      </categories>
+  </entry>
+</search>

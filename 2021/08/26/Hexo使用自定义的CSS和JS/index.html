@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Hexo的执行逻辑Hexo是根据用户写的md文件进行渲染，得到对应的html文件在网站上显示。但有的时候会需要自定义页面，当然Hexo也给我们预留了解决方案。 这里我要实现的效果就是新建一个游戏标签页，效果如下。   创建标签首先，要新建一个标签页面就需要在NexT的配置文件中添加标签以及对应路由。 其中fa fa-gamepad是Font Awesome提供的矢量图标。 12345678910m">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo使用自定义的CSS和JS">
+<meta property="og:url" content="http://example.com/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/index.html">
+<meta property="og:site_name" content="紫梦沁香">
+<meta property="og:description" content="Hexo的执行逻辑Hexo是根据用户写的md文件进行渲染，得到对应的html文件在网站上显示。但有的时候会需要自定义页面，当然Hexo也给我们预留了解决方案。 这里我要实现的效果就是新建一个游戏标签页，效果如下。   创建标签首先，要新建一个标签页面就需要在NexT的配置文件中添加标签以及对应路由。 其中fa fa-gamepad是Font Awesome提供的矢量图标。 12345678910m">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/example1.png">
+<meta property="og:image" content="http://example.com/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/example1.png">
+<meta property="og:image" content="http://example.com/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/example2.png">
+<meta property="og:image" content="https://github.githubassets.com/images/icons/emoji/unicode/1f31d.png?v8">
+<meta property="article:published_time" content="2021-08-26T14:16:42.000Z">
+<meta property="article:modified_time" content="2021-08-26T17:41:43.770Z">
+<meta property="article:author" content="紫梦沁香">
+<meta property="article:tag" content="Customize">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/example1.png">
+
+<link rel="canonical" href="http://example.com/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Hexo使用自定义的CSS和JS | 紫梦沁香</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6bc20780b9c032635241d71c52b76953";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<script type="text/javascript" src="/js/game/modernizr.custom.js"></script>
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">紫梦沁香</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-game">
+
+    <a href="/game/" rel="section"><i class="fa fa-gamepad fa-fw"></i>游戏</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/images/head-icon.jpg">
+      <meta itemprop="name" content="紫梦沁香">
+      <meta itemprop="description" content="如果说我看得比别人更远些，那是因为我站在巨人的肩膀上">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="紫梦沁香">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Hexo使用自定义的CSS和JS
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-08-26 22:16:42" itemprop="dateCreated datePublished" datetime="2021-08-26T22:16:42+08:00">2021-08-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-08-27 01:41:43" itemprop="dateModified" datetime="2021-08-27T01:41:43+08:00">2021-08-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Hexo/" itemprop="url" rel="index"><span itemprop="name">Hexo</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/" class="post-meta-item leancloud_visitors" data-flag-title="Hexo使用自定义的CSS和JS" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Hexo的执行逻辑"><a href="#Hexo的执行逻辑" class="headerlink" title="Hexo的执行逻辑"></a>Hexo的执行逻辑</h2><p>Hexo是根据用户写的md文件进行渲染，得到对应的html文件在网站上显示。但有的时候会需要自定义页面，当然Hexo也给我们预留了解决方案。</p>
+<p>这里我要实现的效果就是新建一个游戏标签页，效果如下。</p>
+<p><img src="/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/example1.png" alt="game"></p>
+<p><br></p>
+<h2 id="创建标签"><a href="#创建标签" class="headerlink" title="创建标签"></a>创建标签</h2><p>首先，要新建一个标签页面就需要在NexT的配置文件中添加标签以及对应路由。</p>
+<p>其中<code>fa fa-gamepad</code>是<a target="_blank" rel="noopener" href="http://www.fontawesome.com.cn">Font Awesome</a>提供的矢量图标。</p>
+<figure class="highlight markdown"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">menu:</span><br><span class="line">  home: / || fa fa-home</span><br><span class="line">  #about: /about/ || fa fa-user</span><br><span class="line">  tags: /tags/ || fa fa-tags</span><br><span class="line">  categories: /categories/ || fa fa-th</span><br><span class="line">  archives: /archives/ || fa fa-archive</span><br><span class="line">  #schedule: /schedule/ || fa fa-calendar</span><br><span class="line">  #sitemap: /sitemap.xml || fa fa-sitemap</span><br><span class="line">  #commonweal: /404/ || fa fa-heartbeat</span><br><span class="line">  game: /game/ || fa fa-gamepad</span><br></pre></td></tr></tbody></table></figure>
+<p>如果不想要英文的标签的话，以中文举例，可以到<code>themes/next/languages/zh-CN.yml</code>下添加game对应的中文。</p>
+<figure class="highlight markdown"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">menu:</span><br><span class="line">  home: 首页</span><br><span class="line">  archives: 归档</span><br><span class="line">  categories: 分类</span><br><span class="line">  tags: 标签</span><br><span class="line">  about: 关于</span><br><span class="line">  search: 搜索</span><br><span class="line">  schedule: 日程表</span><br><span class="line">  sitemap: 站点地图</span><br><span class="line">  commonweal: 公益 404</span><br><span class="line">  game: 游戏</span><br></pre></td></tr></tbody></table></figure>
+<p>然后使用git命令<code>hexo new page game</code>，创建/game对应md文件。</p>
+<p>注：如需更改一些全局样式，可到<code>source/_data/styles.styl</code>中修改</p>
+<span id="more"></span>
+<p><br></p>
+<h2 id="自定义渲染"><a href="#自定义渲染" class="headerlink" title="自定义渲染"></a>自定义渲染</h2><p>自定义渲染分为两种，一种是主题内渲染，一种是完全页面渲染。</p>
+<h4 id="1-主题内渲染"><a href="#1-主题内渲染" class="headerlink" title="1.主题内渲染"></a>1.主题内渲染</h4><p><code>layout: false</code>表示该md不会经过layout的渲染。</p>
+<p>同时可以保存添加的模块，主题的头部信息，仅对主体部分进行自定义。</p>
+<figure class="highlight markdown"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">title: game</span><br><span class="line">date: 2021-08-26 15:45:42</span><br><span class="line">layout: false</span><br></pre></td></tr></tbody></table></figure>
+<p>这里头部的导航栏以及侧边的统计栏都是保存的。</p>
+<p><img src="/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/example1.png" alt="game"></p>
+<h4 id="2-完全页面渲染"><a href="#2-完全页面渲染" class="headerlink" title="2.完全页面渲染"></a>2.完全页面渲染</h4><p>在Hexo的配置文件中，<code>skip_render</code>用来配置跳过渲染的文件。</p>
+<p>例：<code>skip_render: game/*</code>，指game/下的文件不会被渲染。</p>
+<p>若是<code>game/**</code>则代表目录递归，包含子目录中的文件。</p>
+<p>或是指定某个文件：<code>game/index.md</code></p>
+<figure class="highlight markdown"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># Directory</span></span><br><span class="line">source<span class="emphasis">_dir: source</span></span><br><span class="line"><span class="emphasis">public_</span>dir: public</span><br><span class="line">tag<span class="emphasis">_dir: tags</span></span><br><span class="line"><span class="emphasis">archive_</span>dir: archives</span><br><span class="line">category<span class="emphasis">_dir: categories</span></span><br><span class="line"><span class="emphasis">code_</span>dir: downloads/code</span><br><span class="line">i18n<span class="emphasis">_dir: :lang</span></span><br><span class="line"><span class="emphasis">skip_</span>render: game/<span class="emphasis">*</span></span><br></pre></td></tr></tbody></table></figure>
+<p>完全页面渲染正如其名，不会包含主题模块等信息，全权由自己来设计。</p>
+<p>这里我还没有添加CSS和JS。</p>
+<p><img src="/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/example2.png" alt="example2"></p>
+<p><br></p>
+<h2 id="自定义CSS"><a href="#自定义CSS" class="headerlink" title="自定义CSS"></a>自定义CSS</h2><p>主题内渲染由于头部信息是主题给定的，因此CSS不能直接使用html的<code>&lt;style&gt;</code>导入CSS，JS同理。</p>
+<p>所以需要直接给NexT添加我们需要的CSS文件。</p>
+<p>在<code>themes/next/source/css</code>中，首先创建CSS文件的目录，为了与主题自带的CSS区分开，我们新建一个文件夹<code>_mycss</code>，然后创建<code>game.styl</code>，代码如下。</p>
+<figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line">.game_img *,.game_img *:after,.game_img *:before { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }</span><br><span class="line">body .game_img, html .game_img { font-size: 100%; padding: 0; margin: 0;}</span><br><span class="line">body .game_img{</span><br><span class="line">	font-family: 'Lato', Calibri, Arial, sans-serif;</span><br><span class="line">	color: #b3b9bf;</span><br><span class="line">	background: #f9f9f9;</span><br><span class="line">}</span><br><span class="line">.game_img a {</span><br><span class="line">	color: #888;</span><br><span class="line">	text-decoration: none;</span><br><span class="line">}</span><br><span class="line">.game_img a:hover,.game_img a:active {</span><br><span class="line">	color: #333;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">.grid {</span><br><span class="line">	padding: 20px 20px 100px 20px;</span><br><span class="line">	max-width: 1300px;</span><br><span class="line">	margin: 0 auto;</span><br><span class="line">	list-style: none;</span><br><span class="line">	text-align: center;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">.grid li {</span><br><span class="line">	display: inline-block;</span><br><span class="line">	width: 350px;</span><br><span class="line">	margin: 0;</span><br><span class="line">	padding: 20px;</span><br><span class="line">	text-align: left;</span><br><span class="line">	position: relative;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">.grid figure {</span><br><span class="line">	margin: 0;</span><br><span class="line">	position: relative;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">.grid figure img {</span><br><span class="line">	max-width: 100%;</span><br><span class="line">	display: block;</span><br><span class="line">	position: relative;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">.grid figcaption {</span><br><span class="line">	position: absolute;</span><br><span class="line">	top: 0;</span><br><span class="line">	left: 0;</span><br><span class="line">	padding: 20px;</span><br><span class="line">	background: #2c3f52;</span><br><span class="line">	color: #ed4e6e;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">.grid figcaption h3 {</span><br><span class="line">	margin: 0;</span><br><span class="line">	padding: 0;</span><br><span class="line">	color: #fff;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">.grid figcaption span:before {</span><br><span class="line">	content: 'by ';</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">.grid figcaption a {</span><br><span class="line">	text-align: center;</span><br><span class="line">	padding: 5px 10px;</span><br><span class="line">	border-radius: 2px;</span><br><span class="line">	display: inline-block;</span><br><span class="line">	background: #ed4e6e;</span><br><span class="line">	color: #fff;</span><br><span class="line">}</span><br><span class="line">   </span><br><span class="line">/* 说明文字样式 1 */</span><br><span class="line"></span><br><span class="line">.cs-style-1 figcaption {</span><br><span class="line">	height: 100%;</span><br><span class="line">	width: 100%;</span><br><span class="line">	opacity: 0;</span><br><span class="line">	text-align: center;</span><br><span class="line">	-webkit-backface-visibility: hidden;</span><br><span class="line">	-moz-backface-visibility: hidden;</span><br><span class="line">	backface-visibility: hidden;</span><br><span class="line">	-webkit-transition: -webkit-transform 0.3s, opacity 0.3s;</span><br><span class="line">	-moz-transition: -moz-transform 0.3s, opacity 0.3s;</span><br><span class="line">	transition: transform 0.3s, opacity 0.3s;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">.no-touch .cs-style-1 figure:hover figcaption,</span><br><span class="line">.cs-style-1 figure.cs-hover figcaption {</span><br><span class="line">	opacity: 1;</span><br><span class="line">	-webkit-transform: translate(15px, 15px);</span><br><span class="line">	-moz-transform: translate(15px, 15px);</span><br><span class="line">	-ms-transform: translate(15px, 15px);</span><br><span class="line">	transform: translate(15px, 15px);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">.cs-style-1 figcaption h3 {</span><br><span class="line">	margin-top: 35px;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">.cs-style-1 figcaption span {</span><br><span class="line">	display: block;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">.cs-style-1 figcaption a {</span><br><span class="line">	margin-top: 20px;</span><br><span class="line">} </span><br></pre></td></tr></tbody></table></figure>
+<p>然后返回上一级目录，现在在<code>themes/next/source/css</code>中，打开<code>main.styl</code>在尾部添加如下代码，将我们的CSS导入进来就好了！</p>
+<p>一定要加注释！不然过几天都不知道这一段CSS是干什么用的。</p>
+<figure class="highlight markdown"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//Games</span><br><span class="line">@import "<span class="emphasis">_mycss/game";</span></span><br></pre></td></tr></tbody></table></figure>
+<p><br></p>
+<h2 id="自定义JS"><a href="#自定义JS" class="headerlink" title="自定义JS"></a>自定义JS</h2><p>同CSS一样，来到<code>themes/next/source/js</code>下，先创建一个我们自己的JS文件夹<code>game</code>，然后将我们预先下载好的<code>modernizr.custom.js</code>放在该目录下，准备工作就完毕了。</p>
+<p>然后就需要导入JS文件，我们打开<code>themes/next/layout/_layout.swig</code>，在<code>&lt;head&gt;</code>标签下，添加JS路径，就大功告成了！</p>
+<figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"/js/game/modernizr.custom.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+<p><br></p>
+<h2 id="HTML代码"><a href="#HTML代码" class="headerlink" title="HTML代码"></a>HTML代码</h2><p>最后附上我的HTML代码，目前只有一个框架，游戏还没有写<span class="github-emoji" style="display:inline;vertical-align:middle"><span>🌝</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f31d.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span></p>
+<figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"game_img"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">"grid cs-style-1"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">li</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">figure</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"/uploads/images/tetris.jpg"</span> <span class="attr">alt</span>=<span class="string">"img04"</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">figcaption</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">h3</span>&gt;</span>俄罗斯方块<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">span</span>&gt;</span>DeFlory<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span>Take a look<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">figcaption</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">figure</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">li</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">figure</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"/uploads/images/tetris.jpg"</span> <span class="attr">alt</span>=<span class="string">"img04"</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">figcaption</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">h3</span>&gt;</span>俄罗斯方块<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">span</span>&gt;</span>DeFlory<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span>Take a look<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">figcaption</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">figure</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">li</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">figure</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"/uploads/images/tetris.jpg"</span> <span class="attr">alt</span>=<span class="string">"img04"</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">figcaption</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">h3</span>&gt;</span>俄罗斯方块<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">span</span>&gt;</span>DeFlory<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span>Take a look<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">figcaption</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">figure</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Customize/" rel="tag"># Customize</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/08/20/MarkDown%E5%85%A5%E9%97%A8/" rel="prev" title="Markdown入门">
+      <i class="fa fa-chevron-left"></i> Markdown入门
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Hexo%E7%9A%84%E6%89%A7%E8%A1%8C%E9%80%BB%E8%BE%91"><span class="nav-number">1.</span> <span class="nav-text">Hexo的执行逻辑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E6%A0%87%E7%AD%BE"><span class="nav-number">2.</span> <span class="nav-text">创建标签</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B8%B2%E6%9F%93"><span class="nav-number">3.</span> <span class="nav-text">自定义渲染</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E4%B8%BB%E9%A2%98%E5%86%85%E6%B8%B2%E6%9F%93"><span class="nav-number">3.0.1.</span> <span class="nav-text">1.主题内渲染</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%AE%8C%E5%85%A8%E9%A1%B5%E9%9D%A2%E6%B8%B2%E6%9F%93"><span class="nav-number">3.0.2.</span> <span class="nav-text">2.完全页面渲染</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89CSS"><span class="nav-number">4.</span> <span class="nav-text">自定义CSS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89JS"><span class="nav-number">5.</span> <span class="nav-text">自定义JS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTML%E4%BB%A3%E7%A0%81"><span class="nav-number">6.</span> <span class="nav-text">HTML代码</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="紫梦沁香"
+      src="/uploads/images/head-icon.jpg">
+  <p class="site-author-name" itemprop="name">紫梦沁香</p>
+  <div class="site-description" itemprop="description">如果说我看得比别人更远些，那是因为我站在巨人的肩膀上</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:1149911598@qq.com" title="E-Mail → mailto:1149911598@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">紫梦沁香</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'xxQvJd4TcJMGK327OtwyS41T-gzGzoHsz',
+      appKey     : 'GJqvYfNtvELk0Vvow1MAQo5i',
+      placeholder: "",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
