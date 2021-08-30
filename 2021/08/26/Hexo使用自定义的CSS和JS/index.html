@@ -27,16 +27,16 @@
 <meta property="og:site_name" content="紫梦沁香">
 <meta property="og:description" content="Hexo的执行逻辑Hexo是根据用户写的md文件进行渲染，得到对应的html文件在网站上显示。但有的时候会需要自定义页面，当然Hexo也给我们预留了解决方案。 这里我要实现的效果就是新建一个游戏标签页，效果如下。   创建标签首先，要新建一个标签页面就需要在NexT的配置文件中添加标签以及对应路由。 其中fa fa-gamepad是Font Awesome提供的矢量图标。 12345678910m">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/example1.png">
-<meta property="og:image" content="http://example.com/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/example1.png">
-<meta property="og:image" content="http://example.com/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/example2.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/08/29/hG12W9.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/08/29/hG12W9.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/08/29/hG1fQ1.png">
 <meta property="og:image" content="https://github.githubassets.com/images/icons/emoji/unicode/1f31d.png?v8">
 <meta property="article:published_time" content="2021-08-26T14:16:42.000Z">
-<meta property="article:modified_time" content="2021-08-26T17:41:43.770Z">
+<meta property="article:modified_time" content="2021-08-30T10:44:19.546Z">
 <meta property="article:author" content="紫梦沁香">
-<meta property="article:tag" content="Customize">
+<meta property="article:tag" content="入门">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/example1.png">
+<meta name="twitter:image" content="https://z3.ax1x.com/2021/08/29/hG12W9.png">
 
 <link rel="canonical" href="http://example.com/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/">
 
@@ -213,7 +213,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-08-27 01:41:43" itemprop="dateModified" datetime="2021-08-27T01:41:43+08:00">2021-08-27</time>
+                <time title="修改时间：2021-08-30 18:44:19" itemprop="dateModified" datetime="2021-08-30T18:44:19+08:00">2021-08-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -259,7 +259,7 @@
       
         <h2 id="Hexo的执行逻辑"><a href="#Hexo的执行逻辑" class="headerlink" title="Hexo的执行逻辑"></a>Hexo的执行逻辑</h2><p>Hexo是根据用户写的md文件进行渲染，得到对应的html文件在网站上显示。但有的时候会需要自定义页面，当然Hexo也给我们预留了解决方案。</p>
 <p>这里我要实现的效果就是新建一个游戏标签页，效果如下。</p>
-<p><img src="/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/example1.png" alt="game"></p>
+<p><img src="https://z3.ax1x.com/2021/08/29/hG12W9.png" alt="game"></p>
 <p><br></p>
 <h2 id="创建标签"><a href="#创建标签" class="headerlink" title="创建标签"></a>创建标签</h2><p>首先，要新建一个标签页面就需要在NexT的配置文件中添加标签以及对应路由。</p>
 <p>其中<code>fa fa-gamepad</code>是<a target="_blank" rel="noopener" href="http://www.fontawesome.com.cn">Font Awesome</a>提供的矢量图标。</p>
@@ -267,7 +267,7 @@
 <p>如果不想要英文的标签的话，以中文举例，可以到<code>themes/next/languages/zh-CN.yml</code>下添加game对应的中文。</p>
 <figure class="highlight markdown"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">menu:</span><br><span class="line">  home: 首页</span><br><span class="line">  archives: 归档</span><br><span class="line">  categories: 分类</span><br><span class="line">  tags: 标签</span><br><span class="line">  about: 关于</span><br><span class="line">  search: 搜索</span><br><span class="line">  schedule: 日程表</span><br><span class="line">  sitemap: 站点地图</span><br><span class="line">  commonweal: 公益 404</span><br><span class="line">  game: 游戏</span><br></pre></td></tr></tbody></table></figure>
 <p>然后使用git命令<code>hexo new page game</code>，创建/game对应md文件。</p>
-<p>注：如需更改一些全局样式，可到<code>source/_data/styles.styl</code>中修改</p>
+<p>注：如需更改一些全局样式，可到Next配置文件的<code>custom_file_path</code>中修改</p>
 <span id="more"></span>
 <p><br></p>
 <h2 id="自定义渲染"><a href="#自定义渲染" class="headerlink" title="自定义渲染"></a>自定义渲染</h2><p>自定义渲染分为两种，一种是主题内渲染，一种是完全页面渲染。</p>
@@ -275,7 +275,7 @@
 <p>同时可以保存添加的模块，主题的头部信息，仅对主体部分进行自定义。</p>
 <figure class="highlight markdown"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">title: game</span><br><span class="line">date: 2021-08-26 15:45:42</span><br><span class="line">layout: false</span><br></pre></td></tr></tbody></table></figure>
 <p>这里头部的导航栏以及侧边的统计栏都是保存的。</p>
-<p><img src="/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/example1.png" alt="game"></p>
+<p><img src="https://z3.ax1x.com/2021/08/29/hG12W9.png" alt="game"></p>
 <h4 id="2-完全页面渲染"><a href="#2-完全页面渲染" class="headerlink" title="2.完全页面渲染"></a>2.完全页面渲染</h4><p>在Hexo的配置文件中，<code>skip_render</code>用来配置跳过渲染的文件。</p>
 <p>例：<code>skip_render: game/*</code>，指game/下的文件不会被渲染。</p>
 <p>若是<code>game/**</code>则代表目录递归，包含子目录中的文件。</p>
@@ -283,7 +283,7 @@
 <figure class="highlight markdown"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># Directory</span></span><br><span class="line">source<span class="emphasis">_dir: source</span></span><br><span class="line"><span class="emphasis">public_</span>dir: public</span><br><span class="line">tag<span class="emphasis">_dir: tags</span></span><br><span class="line"><span class="emphasis">archive_</span>dir: archives</span><br><span class="line">category<span class="emphasis">_dir: categories</span></span><br><span class="line"><span class="emphasis">code_</span>dir: downloads/code</span><br><span class="line">i18n<span class="emphasis">_dir: :lang</span></span><br><span class="line"><span class="emphasis">skip_</span>render: game/<span class="emphasis">*</span></span><br></pre></td></tr></tbody></table></figure>
 <p>完全页面渲染正如其名，不会包含主题模块等信息，全权由自己来设计。</p>
 <p>这里我还没有添加CSS和JS。</p>
-<p><img src="/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/example2.png" alt="example2"></p>
+<p><img src="https://z3.ax1x.com/2021/08/29/hG1fQ1.png" alt="example2"></p>
 <p><br></p>
 <h2 id="自定义CSS"><a href="#自定义CSS" class="headerlink" title="自定义CSS"></a>自定义CSS</h2><p>主题内渲染由于头部信息是主题给定的，因此CSS不能直接使用html的<code>&lt;style&gt;</code>导入CSS，JS同理。</p>
 <p>所以需要直接给NexT添加我们需要的CSS文件。</p>
@@ -308,7 +308,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Customize/" rel="tag"># Customize</a>
+              <a href="/tags/%E5%85%A5%E9%97%A8/" rel="tag"># 入门</a>
           </div>
 
         
@@ -320,7 +320,10 @@
     <a href="/2021/08/20/MarkDown%E5%85%A5%E9%97%A8/" rel="prev" title="Markdown入门">
       <i class="fa fa-chevron-left"></i> Markdown入门
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2021/08/29/%E5%88%B6%E4%BD%9C%E4%BF%84%E7%BD%97%E6%96%AF%E6%96%B9%E5%9D%97/" rel="next" title="制作俄罗斯方块">
+      制作俄罗斯方块 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -396,20 +399,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

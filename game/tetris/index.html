@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+<script src="./tetris.js"></script>
+<style>
+	.container{
+		position: relative;
+		width: 720px;
+		height: 720px;
+		margin: 0px auto;
+		margin-top: 20px;
+		border: #000000 2px solid;
+	}
+	
+	#game{
+		position: absolute;
+		/* 4px的边框 */
+		width: 424px;
+		height: 669px;
+		top: 20px;
+		left: 20px;
+		border: #000000 2px solid;
+	}
+	
+	#next_div{
+		position: absolute;
+		width: 215px;
+		height: 210px;
+		top: 20px;
+		right: 25px;
+		border: #000000 2px solid;
+	}
+	
+	#score_div{
+		position: absolute;
+		top: 250px;
+		right: 25px;
+		width: 215px;
+		height: 75px;
+		border: #000000 2px solid;
+	}
+	
+	#level_div{
+		position: absolute;
+		top: 340px;
+		right: 25px;
+		width: 215px;
+		height: 75px;
+		border: #000000 2px solid;
+	}
+	
+	#opreation{
+		position: absolute;
+		top: 430px;
+		right: 25px;
+		width: 215px;
+		height: 190px;
+		border: #000000 2px solid;
+	}
+	
+	#opreation table{
+		width: 195px;
+		height: 150px;
+		margin: 0px auto;
+		text-align: center;
+		font-weight: 600;
+	}
+	
+	#author{
+		position: absolute;
+		top: 635px;
+		right: 25px;
+		width: 215px;
+		height: 54px;
+		border: #000000 2px solid;
+	}
+	
+	#author img{
+		position: absolute;
+		left: 5px;
+		height: 45px;
+		width: 200px;
+	}
+	
+	.container h3{
+		text-align: center;
+		font-weight: 600;
+		margin: 5px;
+	}
+	
+	.container h4{
+		text-align: center;
+		font-weight: 600;
+	}
+	
+	.ActiveCube{
+		position: absolute;
+		width: 32px;
+		height: 32px;
+		border-radius: 5px;
+	}
+	
+	.DeadCube{
+		position: absolute;
+		width: 32px;
+		height: 32px;
+		border-radius: 5px;
+	}
+	
+	.NextCube{
+		position: absolute;
+		width: 46px;
+		height: 46px;
+		background-color: #000000;
+		border-radius: 8px;
+	}
+	
+	.btn{
+		height: 70px;
+		width: 140px;
+		z-index: 9999;
+	}
+	
+	#start_btn{
+		position: absolute;
+		top: 40%;
+		left: 23%;
+	}
+</style>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div class="container">
+			<button type="button" class="btn btn-dark" id="start_btn" onclick="init()">开始！</button>
+			<div id="game">
+			</div>
+			<div id="next_div">
+				<h3>预览</h3>
+			</div>
+			<div id="level_div">
+				<h3>等级</h3>
+				<h4 id="level">1</h3>
+			</div>
+			<div id="score_div">
+				<h3>得分</h3>
+				<h4 id="score">0</h3>
+			</div>
+			<div id="opreation">
+				<h3>操作说明</h3>
+				<table>
+					<tr>
+						<td>方向键</td>
+						<td>上下左右</td>
+					</tr>
+					<tr>
+						<td>空格键</td>
+						<td>快速下落</td>
+					</tr>
+					<tr>
+						<td>Z 键</td>
+						<td>旋转方块</td>
+					</tr>
+					<tr>
+						<td>T 键</td>
+						<td>暂停</td>
+					</tr>
+				</table>
+			</div>
+			<div id="author">
+				<img src="https://z3.ax1x.com/2021/08/30/htDG11.png"/>
+			</div>
+		</div>
+	</body>
+</html>

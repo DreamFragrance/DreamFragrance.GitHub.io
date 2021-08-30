@@ -20,23 +20,28 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="俄罗斯方块 					DeFlory 					Take a look 				 			 		 		 			 				 				 					俄罗斯方块 					DeFlory 					Take a look 				 			 		 		 			 				 				 					俄罗斯方块 					DeFlory 					Take a look">
-<meta property="og:type" content="website">
-<meta property="og:title" content="紫梦沁香">
-<meta property="og:url" content="http://example.com/game/index.html">
+  <meta name="description" content="前言之前游戏标签下只是大致做了个目录，游戏实质内容并没有实现，最近又超级不想学Deep Learning，就来把这个俄罗斯方块给写了吧，后续的游戏等有空再写（下次一定）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="制作俄罗斯方块">
+<meta property="og:url" content="http://example.com/2021/08/29/%E5%88%B6%E4%BD%9C%E4%BF%84%E7%BD%97%E6%96%AF%E6%96%B9%E5%9D%97/index.html">
 <meta property="og:site_name" content="紫梦沁香">
-<meta property="og:description" content="俄罗斯方块 					DeFlory 					Take a look 				 			 		 		 			 				 				 					俄罗斯方块 					DeFlory 					Take a look 				 			 		 		 			 				 				 					俄罗斯方块 					DeFlory 					Take a look">
+<meta property="og:description" content="前言之前游戏标签下只是大致做了个目录，游戏实质内容并没有实现，最近又超级不想学Deep Learning，就来把这个俄罗斯方块给写了吧，后续的游戏等有空再写（下次一定）。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://z3.ax1x.com/2021/08/29/h3zsTe.jpg">
-<meta property="og:image" content="https://z3.ax1x.com/2021/08/29/h3zsTe.jpg">
-<meta property="og:image" content="https://z3.ax1x.com/2021/08/29/h3zsTe.jpg">
-<meta property="article:published_time" content="2021-08-28T16:06:01.713Z">
-<meta property="article:modified_time" content="2021-08-28T16:06:01.713Z">
+<meta property="og:image" content="https://z3.ax1x.com/2021/08/29/hG3GOx.jpg">
+<meta property="og:image" content="https://z3.ax1x.com/2021/08/29/hGGVaT.jpg">
+<meta property="og:image" content="https://z3.ax1x.com/2021/08/29/hGGQMR.jpg">
+<meta property="og:image" content="https://z3.ax1x.com/2021/08/29/hGBD3V.jpg">
+<meta property="og:image" content="https://z3.ax1x.com/2021/08/29/hGzkdO.jpg">
+<meta property="og:image" content="https://github.githubassets.com/images/icons/emoji/unicode/1f622.png?v8">
+<meta property="og:image" content="https://z3.ax1x.com/2021/08/30/htyG1s.gif">
+<meta property="article:published_time" content="2021-08-29T08:33:20.000Z">
+<meta property="article:modified_time" content="2021-08-30T10:39:39.071Z">
 <meta property="article:author" content="紫梦沁香">
+<meta property="article:tag" content="游戏制作">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://z3.ax1x.com/2021/08/29/h3zsTe.jpg">
+<meta name="twitter:image" content="https://z3.ax1x.com/2021/08/29/hG3GOx.jpg">
 
-<link rel="canonical" href="http://example.com/game/">
+<link rel="canonical" href="http://example.com/2021/08/29/%E5%88%B6%E4%BD%9C%E4%BF%84%E7%BD%97%E6%96%AF%E6%96%B9%E5%9D%97/">
 
 
 <script id="page-configurations">
@@ -44,13 +49,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title> | 紫梦沁香
-</title>
+  <title>制作俄罗斯方块 | 紫梦沁香</title>
   
 
 
@@ -174,76 +178,137 @@
       <div class="main-inner">
         <div class="content-wrap">
           
-  
-  
 
-          <div class="content page posts-expand">
+          <div class="content post posts-expand">
             
 
     
-    
-    
-    <div class="post-block" lang="zh-CN">
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/29/%E5%88%B6%E4%BD%9C%E4%BF%84%E7%BD%97%E6%96%AF%E6%96%B9%E5%9D%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/images/head-icon.jpg">
+      <meta itemprop="name" content="紫梦沁香">
+      <meta itemprop="description" content="如果说我看得比别人更远些，那是因为我站在巨人的肩膀上">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="紫梦沁香">
+    </span>
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          制作俄罗斯方块
+        </h1>
 
-<h1 class="post-title" itemprop="name headline">
-</h1>
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
 
-<div class="post-meta">
+              <time title="创建时间：2021-08-29 16:33:20" itemprop="dateCreated datePublished" datetime="2021-08-29T16:33:20+08:00">2021-08-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-08-30 18:39:39" itemprop="dateModified" datetime="2021-08-30T18:39:39+08:00">2021-08-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/HTML/" itemprop="url" rel="index"><span itemprop="name">HTML</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/08/29/%E5%88%B6%E4%BD%9C%E4%BF%84%E7%BD%97%E6%96%AF%E6%96%B9%E5%9D%97/" class="post-meta-item leancloud_visitors" data-flag-title="制作俄罗斯方块" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/08/29/%E5%88%B6%E4%BD%9C%E4%BF%84%E7%BD%97%E6%96%AF%E6%96%B9%E5%9D%97/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/08/29/%E5%88%B6%E4%BD%9C%E4%BF%84%E7%BD%97%E6%96%AF%E6%96%B9%E5%9D%97/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
   
 
-</div>
+        </div>
+      </header>
 
-</header>
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-      
-      
-      <div class="post-body">
-          <div class="game_img">
-	<ul class="grid cs-style-1">
-		<li>
-			<figure>
-				<img src="https://z3.ax1x.com/2021/08/29/h3zsTe.jpg" alt="h3zsTe.jpg" border="0">
-				<figcaption>
-					<h3>俄罗斯方块</h3>
-					<span>DeFlory</span>
-					<a href="tetris/" target="_blank">Take a look</a>
-				</figcaption>
-			</figure>
-		</li>
-		<li>
-			<figure>
-				<img src="https://z3.ax1x.com/2021/08/29/h3zsTe.jpg" alt="h3zsTe.jpg" border="0">
-				<figcaption>
-					<h3>俄罗斯方块</h3>
-					<span>DeFlory</span>
-					<a href="tetris/" target="_blank">Take a look</a>
-				</figcaption>
-			</figure>
-		</li>
-		<li>
-			<figure>
-				<img src="https://z3.ax1x.com/2021/08/29/h3zsTe.jpg" alt="h3zsTe.jpg" border="0">
-				<figcaption>
-					<h3>俄罗斯方块</h3>
-					<span>DeFlory</span>
-					<a href="tetris/" target="_blank">Take a look</a>
-				</figcaption>
-			</figure>
-		</li>
-	</ul>
-</div>
-      </div>
-      
-      
-      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前游戏标签下只是大致做了个目录，游戏实质内容并没有实现，最近又超级不想学<code>Deep Learning</code>，就来把这个俄罗斯方块给写了吧，后续的游戏等有空再写（下次一定）。</p>
+<p><img src="https://z3.ax1x.com/2021/08/29/hG3GOx.jpg" alt="empty"></p>
+<span id="more"></span>
+<h2 id="制作"><a href="#制作" class="headerlink" title="制作"></a>制作</h2><p>写游戏嘛，肯定要先把大致的框架和要实现的功能想好。于是我就画了个比较简略的图，不过应该还是挺清楚的，还附加了尺寸，没提到的部分就自由发挥吧，怎么舒服怎么来。</p>
+<p>其中每个俄罗斯方块都是由四个小方块组成，每个小方块都是32px * 32px的，一共19行，12列。</p>
+<p><img src="https://z3.ax1x.com/2021/08/29/hGGVaT.jpg" alt="design"></p>
+<p>实际HTML实现效果如下。</p>
+<p><img src="https://z3.ax1x.com/2021/08/29/hGGQMR.jpg" alt="efficiency"></p>
+<p>然后设计每一个俄罗斯方块，由于考虑到旋转的问题，这里将他们都用一个大的矩形框起来。</p>
+<p><img src="https://z3.ax1x.com/2021/08/29/hGBD3V.jpg" alt="tetrisCube"></p>
+<p>平移就不用多说了，我就着重说下旋转吧！</p>
+<p>下面是L型的旋转图示，从左至右，从上至下，我把对应方块的X，Y坐标也写在旁边了。</p>
+<p>仔细观察的话可以发现，旋转之后图形的Y就是旋转之前图形的X，而旋转之后图形的X就是旋转之前的（3 - Y）。</p>
+<p>不过需要注意的是，旋转也会越界，需做一定的判断。</p>
+<p><img src="https://z3.ax1x.com/2021/08/29/hGzkdO.jpg" alt="rotate"></p>
+<p>设计好实现的框架后，再添加亿点代码就完事了<span class="github-emoji" style="display:inline;vertical-align:middle"><span>😢</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f622.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span></p>
+<p>这里就不把代码贴出来了，没怎么写注释，让我再看一遍也费劲，相信聪明的人看了上面的设计图就会有思路了。</p>
+<p>从昨天下午写到今天下午，一半的时间都在改bug，不是很会用JS的debug。</p>
+<p><img src="https://z3.ax1x.com/2021/08/30/htyG1s.gif" alt="code"></p>
+
     </div>
-    
 
     
     
     
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%B8%E6%88%8F%E5%88%B6%E4%BD%9C/" rel="tag"># 游戏制作</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/" rel="prev" title="Hexo使用自定义的CSS和JS">
+      <i class="fa fa-chevron-left"></i> Hexo使用自定义的CSS和JS
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
 
 
           </div>
@@ -295,7 +360,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">俄罗斯方块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">俄罗斯方块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">俄罗斯方块</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%B6%E4%BD%9C"><span class="nav-number">2.</span> <span class="nav-text">制作</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -415,6 +480,59 @@
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 

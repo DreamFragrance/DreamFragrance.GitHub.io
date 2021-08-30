@@ -5,7 +5,7 @@
     <url>/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/</url>
     <content><![CDATA[<h2 id="Hexo的执行逻辑"><a href="#Hexo的执行逻辑" class="headerlink" title="Hexo的执行逻辑"></a>Hexo的执行逻辑</h2><p>Hexo是根据用户写的md文件进行渲染，得到对应的html文件在网站上显示。但有的时候会需要自定义页面，当然Hexo也给我们预留了解决方案。</p>
 <p>这里我要实现的效果就是新建一个游戏标签页，效果如下。</p>
-<p><img src="/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/example1.png" alt="game"></p>
+<p><img src="https://z3.ax1x.com/2021/08/29/hG12W9.png" alt="game"></p>
 <p><br></p>
 <h2 id="创建标签"><a href="#创建标签" class="headerlink" title="创建标签"></a>创建标签</h2><p>首先，要新建一个标签页面就需要在NexT的配置文件中添加标签以及对应路由。</p>
 <p>其中<code>fa fa-gamepad</code>是<a href="http://www.fontawesome.com.cn">Font Awesome</a>提供的矢量图标。</p>
@@ -13,7 +13,7 @@
 <p>如果不想要英文的标签的话，以中文举例，可以到<code>themes/next/languages/zh-CN.yml</code>下添加game对应的中文。</p>
 <figure class="highlight markdown"><table><tbody><tr><td class="code"><pre><span class="line">menu:</span><br><span class="line">  home: 首页</span><br><span class="line">  archives: 归档</span><br><span class="line">  categories: 分类</span><br><span class="line">  tags: 标签</span><br><span class="line">  about: 关于</span><br><span class="line">  search: 搜索</span><br><span class="line">  schedule: 日程表</span><br><span class="line">  sitemap: 站点地图</span><br><span class="line">  commonweal: 公益 404</span><br><span class="line">  game: 游戏</span><br></pre></td></tr></tbody></table></figure>
 <p>然后使用git命令<code>hexo new page game</code>，创建/game对应md文件。</p>
-<p>注：如需更改一些全局样式，可到<code>source/_data/styles.styl</code>中修改</p>
+<p>注：如需更改一些全局样式，可到Next配置文件的<code>custom_file_path</code>中修改</p>
 <span id="more"></span>
 <p><br></p>
 <h2 id="自定义渲染"><a href="#自定义渲染" class="headerlink" title="自定义渲染"></a>自定义渲染</h2><p>自定义渲染分为两种，一种是主题内渲染，一种是完全页面渲染。</p>
@@ -21,7 +21,7 @@
 <p>同时可以保存添加的模块，主题的头部信息，仅对主体部分进行自定义。</p>
 <figure class="highlight markdown"><table><tbody><tr><td class="code"><pre><span class="line">title: game</span><br><span class="line">date: 2021-08-26 15:45:42</span><br><span class="line">layout: false</span><br></pre></td></tr></tbody></table></figure>
 <p>这里头部的导航栏以及侧边的统计栏都是保存的。</p>
-<p><img src="/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/example1.png" alt="game"></p>
+<p><img src="https://z3.ax1x.com/2021/08/29/hG12W9.png" alt="game"></p>
 <h4 id="2-完全页面渲染"><a href="#2-完全页面渲染" class="headerlink" title="2.完全页面渲染"></a>2.完全页面渲染</h4><p>在Hexo的配置文件中，<code>skip_render</code>用来配置跳过渲染的文件。</p>
 <p>例：<code>skip_render: game/*</code>，指game/下的文件不会被渲染。</p>
 <p>若是<code>game/**</code>则代表目录递归，包含子目录中的文件。</p>
@@ -29,7 +29,7 @@
 <figure class="highlight markdown"><table><tbody><tr><td class="code"><pre><span class="line"><span class="section"># Directory</span></span><br><span class="line">source<span class="emphasis">_dir: source</span></span><br><span class="line"><span class="emphasis">public_</span>dir: public</span><br><span class="line">tag<span class="emphasis">_dir: tags</span></span><br><span class="line"><span class="emphasis">archive_</span>dir: archives</span><br><span class="line">category<span class="emphasis">_dir: categories</span></span><br><span class="line"><span class="emphasis">code_</span>dir: downloads/code</span><br><span class="line">i18n<span class="emphasis">_dir: :lang</span></span><br><span class="line"><span class="emphasis">skip_</span>render: game/<span class="emphasis">*</span></span><br></pre></td></tr></tbody></table></figure>
 <p>完全页面渲染正如其名，不会包含主题模块等信息，全权由自己来设计。</p>
 <p>这里我还没有添加CSS和JS。</p>
-<p><img src="/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/example2.png" alt="example2"></p>
+<p><img src="https://z3.ax1x.com/2021/08/29/hG1fQ1.png" alt="example2"></p>
 <p><br></p>
 <h2 id="自定义CSS"><a href="#自定义CSS" class="headerlink" title="自定义CSS"></a>自定义CSS</h2><p>主题内渲染由于头部信息是主题给定的，因此CSS不能直接使用html的<code>&lt;style&gt;</code>导入CSS，JS同理。</p>
 <p>所以需要直接给NexT添加我们需要的CSS文件。</p>
@@ -50,7 +50,7 @@
         <category>Hexo</category>
       </categories>
       <tags>
-        <tag>Customize</tag>
+        <tag>入门</tag>
       </tags>
   </entry>
   <entry>
@@ -128,7 +128,7 @@
 <h4 id="9-3自动链接"><a href="#9-3自动链接" class="headerlink" title="9.3自动链接"></a>9.3自动链接</h4><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">&lt;https://紫梦沁香.com&gt;</span><br><span class="line">&lt;https://www.baidu.com&gt;</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 协议也写全，不然会有bug</span></span><br></pre></td></tr></tbody></table></figure>
 <p><a href="https://紫梦沁香.com">https://紫梦沁香.com</a><br><a href="https://www.baidu.com">https://www.baidu.com</a></p>
 <h2 id="10-图片"><a href="#10-图片" class="headerlink" title="10.图片"></a>10.图片</h2><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">![康娜酱](Connor.jpg)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 相对路径在source/_posts/同名文件夹</span></span><br></pre></td></tr></tbody></table></figure>
-<p><img src="/2021/08/20/MarkDown%E5%85%A5%E9%97%A8/Connor.jpg" alt="康娜酱"></p>
+<p><img src="https://z3.ax1x.com/2021/08/29/hG1BLV.jpg" alt="康娜酱"></p>
 <h2 id="11-内置标签"><a href="#11-内置标签" class="headerlink" title="11.内置标签"></a>11.内置标签</h2><h4 id="11-1文本居中"><a href="#11-1文本居中" class="headerlink" title="11.1文本居中"></a>11.1文本居中</h4><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># HTML，其中class="blockquote-center"是必要的</span></span><br><span class="line">&lt;blockquote <span class="class"><span class="keyword">class</span>="<span class="title">blockquote</span>-<span class="title">center</span>"&gt;<span class="title">HTML</span>居中&lt;/<span class="title">blockquote</span>&gt;</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"># 标签</span></span><br><span class="line"><span class="class">{% <span class="title">centerquote</span> %}标签居中{% <span class="title">endcenterquote</span> %}</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"># 标签别名</span></span><br><span class="line"><span class="class">{% <span class="title">cq</span> %}标签别名居中{% <span class="title">endcq</span> %}</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"># 此标签将生成一个带上下分割线的引用，同时引用内文本将自动居中</span></span><br><span class="line"><span class="class"># 文本居中时，多行文本若长度不等，视觉上会显得不对称，因此建议在引用单行文本的场景下使用</span></span><br></pre></td></tr></tbody></table></figure>
 <blockquote class="blockquote-center">HTML居中</blockquote>
 
@@ -145,7 +145,7 @@
             <i class="fa fa-quote-right"></i>
           </blockquote>
 <h4 id="11-2图片越界"><a href="#11-2图片越界" class="headerlink" title="11.2图片越界"></a>11.2图片越界</h4><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># HTML，其中class="full-image"是必要的</span></span><br><span class="line">&lt;img src=<span class="string">"Connor.jpg"</span> <span class="class"><span class="keyword">class</span>="<span class="title">full</span>-<span class="title">image</span>" /&gt;</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"># 标签的方式失效了，可能换了其它的标签名</span></span><br><span class="line"><span class="class"># 看起来没啥效果</span></span><br></pre></td></tr></tbody></table></figure>
-<p><img src="/2021/08/20/MarkDown%E5%85%A5%E9%97%A8/Connor.jpg" class="full-image" id="Connor"></p>
+<p><img src="https://z3.ax1x.com/2021/08/29/hG1BLV.jpg" class="full-image" id="Connor"></p>
 <h3 id="11-3Bootstrap-Callout"><a href="#11-3Bootstrap-Callout" class="headerlink" title="11.3Bootstrap Callout"></a>11.3Bootstrap Callout</h3><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">{% note class_name %} Content (md partial supported) {% endnote %}</span><br><span class="line"></span><br><span class="line"><span class="comment"># 其中class_name可以是以下值</span></span><br><span class="line"><span class="comment"># danger primary success info warning default</span></span><br></pre></td></tr></tbody></table></figure>
 <div class="note danger">
             <p>It’s danger </p>
@@ -169,5 +169,38 @@
       <categories>
         <category>Markdown</category>
       </categories>
+      <tags>
+        <tag>入门</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>制作俄罗斯方块</title>
+    <url>/2021/08/29/%E5%88%B6%E4%BD%9C%E4%BF%84%E7%BD%97%E6%96%AF%E6%96%B9%E5%9D%97/</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前游戏标签下只是大致做了个目录，游戏实质内容并没有实现，最近又超级不想学<code>Deep Learning</code>，就来把这个俄罗斯方块给写了吧，后续的游戏等有空再写（下次一定）。</p>
+<p><img src="https://z3.ax1x.com/2021/08/29/hG3GOx.jpg" alt="empty"></p>
+<span id="more"></span>
+<h2 id="制作"><a href="#制作" class="headerlink" title="制作"></a>制作</h2><p>写游戏嘛，肯定要先把大致的框架和要实现的功能想好。于是我就画了个比较简略的图，不过应该还是挺清楚的，还附加了尺寸，没提到的部分就自由发挥吧，怎么舒服怎么来。</p>
+<p>其中每个俄罗斯方块都是由四个小方块组成，每个小方块都是32px * 32px的，一共19行，12列。</p>
+<p><img src="https://z3.ax1x.com/2021/08/29/hGGVaT.jpg" alt="design"></p>
+<p>实际HTML实现效果如下。</p>
+<p><img src="https://z3.ax1x.com/2021/08/29/hGGQMR.jpg" alt="efficiency"></p>
+<p>然后设计每一个俄罗斯方块，由于考虑到旋转的问题，这里将他们都用一个大的矩形框起来。</p>
+<p><img src="https://z3.ax1x.com/2021/08/29/hGBD3V.jpg" alt="tetrisCube"></p>
+<p>平移就不用多说了，我就着重说下旋转吧！</p>
+<p>下面是L型的旋转图示，从左至右，从上至下，我把对应方块的X，Y坐标也写在旁边了。</p>
+<p>仔细观察的话可以发现，旋转之后图形的Y就是旋转之前图形的X，而旋转之后图形的X就是旋转之前的（3 - Y）。</p>
+<p>不过需要注意的是，旋转也会越界，需做一定的判断。</p>
+<p><img src="https://z3.ax1x.com/2021/08/29/hGzkdO.jpg" alt="rotate"></p>
+<p>设计好实现的框架后，再添加亿点代码就完事了<span class="github-emoji" style="display:inline;vertical-align:middle"><span>😢</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f622.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span></p>
+<p>这里就不把代码贴出来了，没怎么写注释，让我再看一遍也费劲，相信聪明的人看了上面的设计图就会有思路了。</p>
+<p>从昨天下午写到今天下午，一半的时间都在改bug，不是很会用JS的debug。</p>
+<p><img src="https://z3.ax1x.com/2021/08/30/htyG1s.gif" alt="code"></p>
+]]></content>
+      <categories>
+        <category>HTML</category>
+      </categories>
+      <tags>
+        <tag>游戏制作</tag>
+      </tags>
   </entry>
 </search>
