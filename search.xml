@@ -179,7 +179,8 @@
     <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前游戏标签下只是大致做了个目录，游戏实质内容并没有实现，最近又超级不想学<code>Deep Learning</code>，就来把这个俄罗斯方块给写了吧，后续的游戏等有空再写（下次一定）。</p>
 <p><img src="https://z3.ax1x.com/2021/08/29/hG3GOx.jpg" alt="empty"></p>
 <span id="more"></span>
-<h2 id="制作"><a href="#制作" class="headerlink" title="制作"></a>制作</h2><p>写游戏嘛，肯定要先把大致的框架和要实现的功能想好。于是我就画了个比较简略的图，不过应该还是挺清楚的，还附加了尺寸，没提到的部分就自由发挥吧，怎么舒服怎么来。</p>
+<p><br></p>
+<h2 id="设计"><a href="#设计" class="headerlink" title="设计"></a>设计</h2><p>写游戏嘛，肯定要先把大致的框架和要实现的功能想好。于是我就画了个比较简略的图，不过应该还是挺清楚的，还附加了尺寸，没提到的部分就自由发挥吧，怎么舒服怎么来。</p>
 <p>其中每个俄罗斯方块都是由四个小方块组成，每个小方块都是32px * 32px的，一共19行，12列。</p>
 <p><img src="https://z3.ax1x.com/2021/08/29/hGGVaT.jpg" alt="design"></p>
 <p>实际HTML实现效果如下。</p>
@@ -191,7 +192,8 @@
 <p>仔细观察的话可以发现，旋转之后图形的Y就是旋转之前图形的X，而旋转之后图形的X就是旋转之前的（3 - Y）。</p>
 <p>不过需要注意的是，旋转也会越界，需做一定的判断。</p>
 <p><img src="https://z3.ax1x.com/2021/08/29/hGzkdO.jpg" alt="rotate"></p>
-<p>设计好实现的框架后，再添加亿点代码就完事了<span class="github-emoji" style="display:inline;vertical-align:middle"><span>😢</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f622.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span></p>
+<p><br></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p>设计好实现的框架后，再添加亿点代码就完事了<span class="github-emoji" style="display:inline;vertical-align:middle"><span>😢</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f622.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span></p>
 <p>这里就不把代码贴出来了，没怎么写注释，让我再看一遍也费劲，相信聪明的人看了上面的设计图就会有思路了。</p>
 <p>从昨天下午写到今天下午，一半的时间都在改bug，不是很会用JS的debug。</p>
 <p><img src="https://z3.ax1x.com/2021/08/30/htyG1s.gif" alt="code"></p>
