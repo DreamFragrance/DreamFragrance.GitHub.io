@@ -54,6 +54,200 @@
       </tags>
   </entry>
   <entry>
+    <title>LeetCodeP0001——两数之和</title>
+    <url>/2021/08/31/LeetCodeP0001%E2%80%94%E2%80%94%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/</url>
+    <content><![CDATA[<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>给定一个整数数组 <code>nums</code> 和一个整数目标值 <code>target</code>，请你在该数组中找出 <strong>和为目标值</strong> <code>target</code>  的那 两个 <strong>整数</strong>，并返回它们的数组下标。</p>
+<p>你可以假设每种输入只会对应一个答案。但是，数组中同一个元素在答案里不能重复出现。</p>
+<p>你可以按任意顺序返回答案。</p>
+<h3 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h3><figure class="highlight markdown"><table><tbody><tr><td class="code"><pre><span class="line">输入：nums = [2,7,11,15], target = 9</span><br><span class="line">输出：[0,1]</span><br><span class="line">解释：因为 nums[0] + nums[1] == 9 ，返回 [0, 1] 。</span><br></pre></td></tr></tbody></table></figure>
+<span id="more"></span>
+<h3 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h3><figure class="highlight markdown"><table><tbody><tr><td class="code"><pre><span class="line">输入：nums = [3,2,4], target = 6</span><br><span class="line">输出：[1,2]</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="示例3"><a href="#示例3" class="headerlink" title="示例3"></a>示例3</h3><figure class="highlight plaintext"><table><tbody><tr><td class="code"><pre><span class="line">输入：nums = [3,3], target = 6</span><br><span class="line">输出：[0,1]</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="提示："><a href="#提示：" class="headerlink" title="提示："></a>提示：</h3><ul>
+<li>2 &lt;= nums.length &lt;= 104</li>
+<li>-109 &lt;= nums[i] &lt;= 109</li>
+<li>-109 &lt;= target &lt;= 109</li>
+<li>只会存在一个有效答案</li>
+</ul>
+<p><br></p>
+<h3 id="题解1-暴力搜索"><a href="#题解1-暴力搜索" class="headerlink" title="题解1: 暴力搜索"></a>题解1: 暴力搜索</h3><figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>{</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] twoSum(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target) {</span><br><span class="line">        <span class="keyword">int</span> len = nums.length;</span><br><span class="line">        <span class="keyword">int</span> sum = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;len;i++){</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=i+<span class="number">1</span>;j&lt;len;j++){</span><br><span class="line">                sum = nums[i] + nums[j];</span><br><span class="line">                <span class="keyword">if</span>(sum == target){</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">int</span>[]{i,j};</span><br><span class="line">                }</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>用时：50ms</p>
+<p>时间复杂度：O（$n^2$）</p>
+<p>空间复杂度：S（1）</p>
+<p><br></p>
+<h3 id="题解2-哈希查找"><a href="#题解2-哈希查找" class="headerlink" title="题解2: 哈希查找"></a>题解2: 哈希查找</h3><figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>{</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] twoSum(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target) {</span><br><span class="line">       Map&lt;Integer, Integer&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">       <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;nums.length;i++){</span><br><span class="line">    	   <span class="keyword">int</span> rest = target - nums[i];</span><br><span class="line">    	   <span class="keyword">if</span>(map.containsKey(rest)){</span><br><span class="line">    		   <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">int</span>[]{i,map.get(rest)};</span><br><span class="line">    	   }</span><br><span class="line">    	   map.put(nums[i], i);</span><br><span class="line">       }</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>用时：2ms</p>
+<p>这里将哈希查找的时间复杂度近似成O（1）</p>
+<p>时间复杂度：O（$n$）</p>
+<p>空间复杂度：S（$n$）</p>
+]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>每日一题</tag>
+        <tag>JAVA</tag>
+        <tag>哈希查找</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>LeetCodeP0002——两数相加</title>
+    <url>/2021/08/31/LeetCodeP0002%E2%80%94%E2%80%94%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0/</url>
+    <content><![CDATA[<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照 逆序 的方式存储的，并且每个节点只能存储 一位 数字。</p>
+<p>请你将两个数相加，并以相同形式返回一个表示和的链表。</p>
+<p>你可以假设除了数字 0 之外，这两个数都不会以 0 开头。</p>
+<h3 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h3><p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2021/01/02/addtwonumber1.jpg" alt="addtwonumber1.jpg (483×342) (leetcode-cn.com)"></p>
+<figure class="highlight markdown"><table><tbody><tr><td class="code"><pre><span class="line">输入：l1 = [2,4,3], l2 = [5,6,4]</span><br><span class="line">输出：[7,0,8]</span><br><span class="line">解释：342 + 465 = 807.</span><br></pre></td></tr></tbody></table></figure>
+<span id="more"></span>
+<h3 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h3><figure class="highlight markdown"><table><tbody><tr><td class="code"><pre><span class="line">输入：l1 = [0], l2 = [0]</span><br><span class="line">输出：[0]</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="示例3"><a href="#示例3" class="headerlink" title="示例3"></a>示例3</h3><figure class="highlight plaintext"><table><tbody><tr><td class="code"><pre><span class="line">输入：l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]</span><br><span class="line">输出：[8,9,9,9,0,0,0,1]</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="提示："><a href="#提示：" class="headerlink" title="提示："></a>提示：</h3><ul>
+<li>每个链表中的节点数在范围 <code>[1, 100]</code> 内</li>
+<li><code>0 &lt;= Node.val &lt;= 9</code></li>
+<li>题目数据保证列表表示的数字不含前导零</li>
+</ul>
+<p><br></p>
+<h3 id="题解1-分三类讨论"><a href="#题解1-分三类讨论" class="headerlink" title="题解1: 分三类讨论"></a>题解1: 分三类讨论</h3><figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * public class ListNode {</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     ListNode next;</span></span><br><span class="line"><span class="comment"> *     ListNode() {}</span></span><br><span class="line"><span class="comment"> *     ListNode(int val) { this.val = val; }</span></span><br><span class="line"><span class="comment"> *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }</span></span><br><span class="line"><span class="comment"> * }</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>{</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumbers</span><span class="params">(ListNode l1, ListNode l2)</span> </span>{</span><br><span class="line">        ListNode pre = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        ListNode cur = pre;</span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(l1 != <span class="keyword">null</span> || l2 != <span class="keyword">null</span>) {</span><br><span class="line">            <span class="keyword">int</span> x = l1 == <span class="keyword">null</span> ? <span class="number">0</span> : l1.val;</span><br><span class="line">            <span class="keyword">int</span> y = l2 == <span class="keyword">null</span> ? <span class="number">0</span> : l2.val;</span><br><span class="line">            <span class="keyword">int</span> sum = x + y + carry;</span><br><span class="line">            </span><br><span class="line">            carry = sum / <span class="number">10</span>;</span><br><span class="line">            sum = sum % <span class="number">10</span>;</span><br><span class="line">            cur.next = <span class="keyword">new</span> ListNode(sum);</span><br><span class="line"></span><br><span class="line">            cur = cur.next;</span><br><span class="line">            <span class="keyword">if</span>(l1 != <span class="keyword">null</span>)</span><br><span class="line">                l1 = l1.next;</span><br><span class="line">            <span class="keyword">if</span>(l2 != <span class="keyword">null</span>)</span><br><span class="line">                l2 = l2.next;</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">if</span>(carry == <span class="number">1</span>) {</span><br><span class="line">            cur.next = <span class="keyword">new</span> ListNode(carry);</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">return</span> pre.next;</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<p>分三种情况讨论</p>
+<p>(1)  l1 != null;</p>
+<p>(2)  l2 != null;</p>
+<p>(3)  l1 != null &amp;&amp; l2 != null</p>
+<p>注：链表长度不够值按0处理</p>
+<p><br></p>
+<p>用时：2ms</p>
+<p>假定两个链表长度为m，n</p>
+<p>时间复杂度：O（m + n）</p>
+<p>空间复杂度：S（1）</p>
+]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>每日一题</tag>
+        <tag>JAVA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>LeetCodeP0003——无重复字符的最长子串</title>
+    <url>/2021/08/31/LeetCodeP0003%E2%80%94%E2%80%94%E6%97%A0%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2/</url>
+    <content><![CDATA[<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>给定一个字符串 <code>s</code> ，请你找出其中不含有重复字符的 <strong>最长子串</strong> 的长度。</p>
+<h3 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h3><figure class="highlight markdown"><table><tbody><tr><td class="code"><pre><span class="line">输入: s = "abcabcbb"</span><br><span class="line">输出: 3 </span><br><span class="line">解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。</span><br></pre></td></tr></tbody></table></figure>
+<span id="more"></span>
+<h3 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h3><figure class="highlight markdown"><table><tbody><tr><td class="code"><pre><span class="line">输入: s = "bbbbb"</span><br><span class="line">输出: 1</span><br><span class="line">解释: 因为无重复字符的最长子串是 "b"，所以其长度为 1。</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="示例3"><a href="#示例3" class="headerlink" title="示例3"></a>示例3</h3><figure class="highlight plaintext"><table><tbody><tr><td class="code"><pre><span class="line">输入: s = "pwwkew"</span><br><span class="line">输出: 3</span><br><span class="line">解释: 因为无重复字符的最长子串是&nbsp;"wke"，所以其长度为 3。</span><br><span class="line">&nbsp;    请注意，你的答案必须是 子串 的长度，"pwke"&nbsp;是一个子序列，不是子串。</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="示例4"><a href="#示例4" class="headerlink" title="示例4"></a>示例4</h3><figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line">输入: s = <span class="string">""</span></span><br><span class="line">输出: <span class="number">0</span></span><br></pre></td></tr></tbody></table></figure>
+<h3 id="提示"><a href="#提示" class="headerlink" title="提示"></a>提示</h3><ul>
+<li><code>0 &lt;= s.length &lt;= 5 * 104</code></li>
+<li><code>s</code> 由英文字母、数字、符号和空格组成</li>
+</ul>
+<p><br></p>
+<h3 id="题解1-滑动窗口"><a href="#题解1-滑动窗口" class="headerlink" title="题解1: 滑动窗口"></a>题解1: 滑动窗口</h3><figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>{</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">lengthOfLongestSubstring</span><span class="params">(String s)</span> </span>{</span><br><span class="line">        <span class="keyword">int</span>[] ascll = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">128</span>];</span><br><span class="line">        <span class="keyword">int</span> maxLen = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>,j=<span class="number">0</span>;j&lt;s.length();j++){</span><br><span class="line">            <span class="comment">// i不能往回退，例：“abba”</span></span><br><span class="line">            i = Math.max(i, ascll[s.charAt(j)]);</span><br><span class="line">            maxLen = Math.max(maxLen, j-i+<span class="number">1</span>);</span><br><span class="line">            ascll[s.charAt(j)] = j+<span class="number">1</span>;</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">return</span> maxLen;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>用时：2ms</p>
+<p>时间复杂度：O（n）</p>
+<p>空间复杂度：S（1）</p>
+<h2 id="图示"><a href="#图示" class="headerlink" title="图示"></a>图示</h2><p>初始时，i和j双指针都指向下标0。另外还有一个ASCII（size = 128）的表来存储每个字符在遍历字符串过程中出现的位置再+1。<img src="https://z3.ax1x.com/2021/09/01/h0A7D0.jpg" alt="img1"></p>
+<p>大题的遍历思路：i不动，j来遍历字符串，maxLen=j - i +1，当j指向的字符有重复时，将i移到该重复字符此前出现位置的后面一个位置，因此在ASCII中存储的是每个字符出现的后一个位置，然后将ASCII表更新。</p>
+<p>下图是j=3时，这时j指向的a和i指向的a重复了，需要将i移到此前出现a的后一个位置，查看ASCII表，将a移到1处，更新ASCII表中a的位置。</p>
+<p><img src="https://z3.ax1x.com/2021/09/01/h0AHbV.jpg" alt="h0AHbV.jpg"></p>
+<p><img src="https://z3.ax1x.com/2021/09/01/h0ATuq.jpg" alt="h0ATuq.jpg"></p>
+<p><br></p>
+]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>每日一题</tag>
+        <tag>JAVA</tag>
+        <tag>滑动窗口</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>LeetCodeP0004——寻找两个正序数组的中位数</title>
+    <url>/2021/09/01/LeetCodeP0004%E2%80%94%E2%80%94%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%AD%A3%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/</url>
+    <content><![CDATA[<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>给定两个大小分别为 <code>m</code> 和 <code>n</code> 的正序（从小到大）数组 <code>nums1</code> 和 <code>nums2</code>。请你找出并返回这两个正序数组的 <strong>中位数</strong> 。</p>
+<h3 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h3><figure class="highlight markdown"><table><tbody><tr><td class="code"><pre><span class="line">输入：nums1 = [1,3], nums2 = [2]</span><br><span class="line">输出：2.00000</span><br><span class="line">解释：合并数组 = [1,2,3] ，中位数 2</span><br></pre></td></tr></tbody></table></figure>
+<span id="more"></span>
+<h3 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h3><figure class="highlight markdown"><table><tbody><tr><td class="code"><pre><span class="line">输入：nums1 = [1,2], nums2 = [3,4]</span><br><span class="line">输出：2.50000</span><br><span class="line">解释：合并数组 = [1,2,3,4] ，中位数 (2 + 3) / 2 = 2.5</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="示例3"><a href="#示例3" class="headerlink" title="示例3"></a>示例3</h3><figure class="highlight plaintext"><table><tbody><tr><td class="code"><pre><span class="line">输入：nums1 = [0,0], nums2 = [0,0]</span><br><span class="line">输出：0.00000</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="示例4"><a href="#示例4" class="headerlink" title="示例4"></a>示例4</h3><figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line">输入：nums1 = [], nums2 = [<span class="number">1</span>]</span><br><span class="line">输出：<span class="number">1.00000</span></span><br></pre></td></tr></tbody></table></figure>
+<h3 id="提示："><a href="#提示：" class="headerlink" title="提示："></a>提示：</h3><ul>
+<li><code>nums1.length == m</code></li>
+<li><code>nums2.length == n</code></li>
+<li><code>0 &lt;= m &lt;= 1000</code></li>
+<li><code>0 &lt;= n &lt;= 1000</code></li>
+<li><code>1 &lt;= m + n &lt;= 2000</code></li>
+<li><code>-106 &lt;= nums1[i], nums2[i] &lt;= 106</code></li>
+</ul>
+<p><br></p>
+<h3 id="题解1-类似归并排序"><a href="#题解1-类似归并排序" class="headerlink" title="题解1: 类似归并排序"></a>题解1: 类似归并排序</h3><figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>{</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">findMedianSortedArrays</span><span class="params">(<span class="keyword">int</span>[] nums1, <span class="keyword">int</span>[] nums2)</span> </span>{</span><br><span class="line">        <span class="keyword">int</span> len1 = nums1.length;</span><br><span class="line">        <span class="keyword">int</span> len2 = nums2.length;</span><br><span class="line">        <span class="keyword">int</span> len = len1 + len2;</span><br><span class="line">        <span class="keyword">int</span> mid = len / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">int</span> i=<span class="number">0</span>,j=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">double</span> left=<span class="number">0</span>,right=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> k=<span class="number">0</span>;k&lt;=mid;k++){</span><br><span class="line">            left = right;</span><br><span class="line">            <span class="keyword">if</span>(i &lt; len1 &amp;&amp; (j &gt;= len2 || nums1[i] &lt;= nums2[j])){</span><br><span class="line">                right = nums1[i++];</span><br><span class="line">            }<span class="keyword">else</span>{</span><br><span class="line">                right = nums2[j++];</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">if</span>(len % <span class="number">2</span> == <span class="number">0</span>){</span><br><span class="line">            <span class="keyword">return</span> (left + right) / <span class="number">2</span>;</span><br><span class="line">        }<span class="keyword">else</span>{</span><br><span class="line">            <span class="keyword">return</span> right;</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>类似归并排序的思想，但不用开辟新的空间，只移动指针来寻找中位数。</p>
+<p>需要将长度为奇数和偶数时，中位数的情况合并。</p>
+<p>这里我们设置mid = len / 2，当长度为奇数时，返回第mid个数就行；当长度为偶数时，返回第mid-1和第mid个数取平均就行。</p>
+<p>为此我们需要left和right，left保存上一个数，right保存下一个数。</p>
+<p>关于分类讨论，这里只有两种结果：移动nums1的指针和移动nums2的指针。</p>
+<p>所以只需要把移动nums1的指针的情况写完整了，另一个情况用else即可。</p>
+<p><br></p>
+<p>用时：2ms</p>
+<p>假定两个数组长度为m，n</p>
+<p>时间复杂度：O（m + n）</p>
+<p>空间复杂度：S（1）</p>
+<p><br></p>
+<h3 id="题解2-二分查找"><a href="#题解2-二分查找" class="headerlink" title="题解2: 二分查找"></a>题解2: 二分查找</h3><figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>{</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">findMedianSortedArrays</span><span class="params">(<span class="keyword">int</span>[] nums1, <span class="keyword">int</span>[] nums2)</span> </span>{</span><br><span class="line">        <span class="keyword">int</span> len1 = nums1.length;</span><br><span class="line">        <span class="keyword">int</span> len2 = nums2.length;</span><br><span class="line">        <span class="keyword">int</span> len = len1 + len2;</span><br><span class="line">        <span class="keyword">if</span>(len % <span class="number">2</span> == <span class="number">0</span>){</span><br><span class="line">            <span class="keyword">return</span> (findNum(nums1,nums2,len/<span class="number">2</span>+<span class="number">1</span>) + findNum(nums1,nums2,len/<span class="number">2</span>))/<span class="number">2</span>;</span><br><span class="line">        }<span class="keyword">else</span>{</span><br><span class="line">            <span class="keyword">return</span> findNum(nums1,nums2,len/<span class="number">2</span>+<span class="number">1</span>);</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">findNum</span><span class="params">(<span class="keyword">int</span>[] nums1,<span class="keyword">int</span>[] nums2, <span class="keyword">int</span> idx)</span></span>{</span><br><span class="line">        <span class="keyword">int</span> offset_1 = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> offset_2 = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> half = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> len1 = nums1.length;</span><br><span class="line">        <span class="keyword">int</span> len2 = nums2.length;</span><br><span class="line">        <span class="keyword">while</span>(<span class="keyword">true</span>){</span><br><span class="line">            <span class="keyword">if</span>(offset_2 &gt;= len2){</span><br><span class="line">                <span class="keyword">return</span> nums1[offset_1+idx-<span class="number">1</span>];</span><br><span class="line">            }<span class="keyword">else</span> <span class="keyword">if</span> (offset_1 &gt;= len1){</span><br><span class="line">                <span class="keyword">return</span> nums2[offset_2+idx-<span class="number">1</span>];</span><br><span class="line">            }</span><br><span class="line">            half = idx / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">int</span> index1 = Math.min(offset_1 + half - <span class="number">1</span>, len1-<span class="number">1</span>);</span><br><span class="line">            <span class="keyword">int</span> index2 = Math.min(offset_2 + half - <span class="number">1</span>, len2-<span class="number">1</span>);</span><br><span class="line">            <span class="keyword">if</span>(idx == <span class="number">1</span>){</span><br><span class="line">                <span class="keyword">return</span> Math.min(nums1[offset_1],nums2[offset_2]);</span><br><span class="line">            }</span><br><span class="line">            <span class="keyword">if</span>(nums1[index1] &gt; nums2[index2]){</span><br><span class="line">                idx -= index2 - offset_2 + <span class="number">1</span>;</span><br><span class="line">                offset_2 += half;</span><br><span class="line">            }<span class="keyword">else</span>{</span><br><span class="line">                idx -= index1 - offset_1 + <span class="number">1</span>;</span><br><span class="line">                offset_1 += half;</span><br><span class="line">            }</span><br><span class="line">            </span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>如果需要找到第n大的数字，那么只需要比较两个数组的第n/2个数，把较小的那个数和它前面的n/2-1个数全部排除，设置偏置值offset=n/2。然后n = n/2。之后再除以2，比较两个数组的第n/2个数，这里有个数组要从偏置值开始第n/2个数。</p>
+<p>除此之外还要考虑n/2大于数组长度的情况，因此每一次的偏置值不一定是n/2，可能到数组末尾就停止了。</p>
+<p>用时：2ms</p>
+<p>时间复杂度：O（log(m + n)）</p>
+<p>空间复杂度：S（1）</p>
+]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>每日一题</tag>
+        <tag>JAVA</tag>
+        <tag>二分查找</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>LeetCodeP0005——最长回文子串</title>
+    <url>/2021/09/02/LeetCodeP0005%E2%80%94%E2%80%94%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2/</url>
+    <content><![CDATA[<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>给你一个字符串 <code>s</code>，找到 <code>s</code> 中最长的回文子串。</p>
+<h3 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h3><figure class="highlight markdown"><table><tbody><tr><td class="code"><pre><span class="line">输入：s = "babad"</span><br><span class="line">输出："bab"</span><br><span class="line">解释："aba" 同样是符合题意的答案。</span><br></pre></td></tr></tbody></table></figure>
+<span id="more"></span>
+<h3 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h3><figure class="highlight markdown"><table><tbody><tr><td class="code"><pre><span class="line">输入：s = "cbbd"</span><br><span class="line">输出："bb"</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="示例3"><a href="#示例3" class="headerlink" title="示例3"></a>示例3</h3><figure class="highlight plaintext"><table><tbody><tr><td class="code"><pre><span class="line">输入：s = "a"</span><br><span class="line">输出："a"</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="提示："><a href="#提示：" class="headerlink" title="提示："></a>提示：</h3><ul>
+<li><code>1 &lt;= s.length &lt;= 1000</code></li>
+<li><code>s</code> 仅由数字和英文字母（大写和/或小写）组成</li>
+</ul>
+<p><br></p>
+<h3 id="题解1-动态规划"><a href="#题解1-动态规划" class="headerlink" title="题解1: 动态规划"></a>题解1: 动态规划</h3><figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>{</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">longestPalindrome</span><span class="params">(String s)</span> </span>{</span><br><span class="line">        <span class="keyword">int</span> maxLen = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> len = s.length();</span><br><span class="line">        <span class="keyword">if</span>(len&lt;<span class="number">2</span>){</span><br><span class="line">            <span class="keyword">return</span> s;</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">boolean</span>[][] dp = <span class="keyword">new</span> <span class="keyword">boolean</span>[len][len];</span><br><span class="line">        <span class="keyword">int</span> begin = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;len;i++){</span><br><span class="line">            dp[i][i] = <span class="keyword">true</span>;</span><br><span class="line">        }</span><br><span class="line">        <span class="comment">// 字符串转换为char数组查找快！</span></span><br><span class="line">        <span class="keyword">char</span>[] charArray = s.toCharArray();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">2</span>;i&lt;=len;i++){</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;len-i+<span class="number">1</span>;j++){</span><br><span class="line">                <span class="keyword">int</span> end = i + j - <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">if</span>(charArray[j] == charArray[end]){</span><br><span class="line">                    <span class="keyword">if</span>(i &lt;= <span class="number">3</span>){</span><br><span class="line">                        dp[j][end] = <span class="keyword">true</span>;</span><br><span class="line">                    }<span class="keyword">else</span>{</span><br><span class="line">                        dp[j][end] = dp[j+<span class="number">1</span>][end-<span class="number">1</span>];</span><br><span class="line">                    }</span><br><span class="line">                }</span><br><span class="line">                <span class="keyword">if</span>(dp[j][end] &amp;&amp; maxLen &lt; i){</span><br><span class="line">                    begin = j;</span><br><span class="line">                    maxLen = i;</span><br><span class="line">                }</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">return</span> s.substring(begin,begin+maxLen);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>字符串遍历频繁的时候，可以先转换为char数组便于查找。</p>
+<p>思路：如果一个字符串是回文字符串，那么它去掉头和尾也仍旧是回文字符串，也就可以得出动态规划的状态转移方程。</p>
+<p>P[i, j] = P[i+1, j-1] &amp;&amp; charArray[i] == charArray[j]</p>
+<p>然后对于长度为1的字符串，本身就是回文字符串。对于长度为2的字符串，只要头和尾相同就是回文字符串。因此我们就可以写出动态规划的边界条件。</p>
+<p>P[i, i] = true</p>
+<p>P[i, i+1] = true &amp;&amp; charArray[i] == charArray[i+1]</p>
+<p><br></p>
+<p>用时：124ms</p>
+<p>时间复杂度：O（$n^2$）</p>
+<p>空间复杂度：S（$n^2$）</p>
+<p><br></p>
+<h3 id="题解2"><a href="#题解2" class="headerlink" title="题解2:"></a>题解2:</h3><figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<p>用时：ms</p>
+<p>时间复杂度：O（）</p>
+<p>空间复杂度：S（）</p>
+]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>每日一题</tag>
+        <tag>JAVA</tag>
+        <tag>动态规划</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Markdown入门</title>
     <url>/2021/08/20/MarkDown%E5%85%A5%E9%97%A8/</url>
     <content><![CDATA[<h1 id="MarkDown入门"><a href="#MarkDown入门" class="headerlink" title="MarkDown入门"></a>MarkDown入门</h1><h2 id="1-代码块"><a href="#1-代码块" class="headerlink" title="1. 代码块"></a>1. 代码块</h2><figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line">```python</span><br><span class="line">    </span><br><span class="line">`行内代码块`</span><br></pre></td></tr></tbody></table></figure>

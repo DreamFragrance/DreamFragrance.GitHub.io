@@ -20,28 +20,22 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="前言之前游戏标签下只是大致做了个目录，游戏实质内容并没有实现，最近又超级不想学Deep Learning，就来把这个俄罗斯方块给写了吧，后续的游戏等有空再写（下次一定）。">
+  <meta name="description" content="题目给定一个整数数组 nums 和一个整数目标值 target，请你在该数组中找出 和为目标值 target  的那 两个 整数，并返回它们的数组下标。 你可以假设每种输入只会对应一个答案。但是，数组中同一个元素在答案里不能重复出现。 你可以按任意顺序返回答案。 示例1123输入：nums &#x3D; [2,7,11,15], target &#x3D; 9输出：[0,1]解释：因为 nums[0] + nums[">
 <meta property="og:type" content="article">
-<meta property="og:title" content="制作俄罗斯方块">
-<meta property="og:url" content="http://example.com/2021/08/29/%E5%88%B6%E4%BD%9C%E4%BF%84%E7%BD%97%E6%96%AF%E6%96%B9%E5%9D%97/index.html">
+<meta property="og:title" content="LeetCodeP0001——两数之和">
+<meta property="og:url" content="http://example.com/2021/08/31/LeetCodeP0001%E2%80%94%E2%80%94%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/index.html">
 <meta property="og:site_name" content="紫梦沁香">
-<meta property="og:description" content="前言之前游戏标签下只是大致做了个目录，游戏实质内容并没有实现，最近又超级不想学Deep Learning，就来把这个俄罗斯方块给写了吧，后续的游戏等有空再写（下次一定）。">
+<meta property="og:description" content="题目给定一个整数数组 nums 和一个整数目标值 target，请你在该数组中找出 和为目标值 target  的那 两个 整数，并返回它们的数组下标。 你可以假设每种输入只会对应一个答案。但是，数组中同一个元素在答案里不能重复出现。 你可以按任意顺序返回答案。 示例1123输入：nums &#x3D; [2,7,11,15], target &#x3D; 9输出：[0,1]解释：因为 nums[0] + nums[">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://z3.ax1x.com/2021/08/29/hG3GOx.jpg">
-<meta property="og:image" content="https://z3.ax1x.com/2021/08/29/hGGVaT.jpg">
-<meta property="og:image" content="https://z3.ax1x.com/2021/08/29/hGGQMR.jpg">
-<meta property="og:image" content="https://z3.ax1x.com/2021/08/29/hGBD3V.jpg">
-<meta property="og:image" content="https://z3.ax1x.com/2021/08/29/hGzkdO.jpg">
-<meta property="og:image" content="https://github.githubassets.com/images/icons/emoji/unicode/1f622.png?v8">
-<meta property="og:image" content="https://z3.ax1x.com/2021/08/30/htyG1s.gif">
-<meta property="article:published_time" content="2021-08-29T08:33:20.000Z">
-<meta property="article:modified_time" content="2021-08-30T11:07:04.743Z">
+<meta property="article:published_time" content="2021-08-30T16:26:54.000Z">
+<meta property="article:modified_time" content="2021-09-01T16:59:34.151Z">
 <meta property="article:author" content="紫梦沁香">
-<meta property="article:tag" content="游戏制作">
+<meta property="article:tag" content="每日一题">
+<meta property="article:tag" content="JAVA">
+<meta property="article:tag" content="哈希查找">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://z3.ax1x.com/2021/08/29/hG3GOx.jpg">
 
-<link rel="canonical" href="http://example.com/2021/08/29/%E5%88%B6%E4%BD%9C%E4%BF%84%E7%BD%97%E6%96%AF%E6%96%B9%E5%9D%97/">
+<link rel="canonical" href="http://example.com/2021/08/31/LeetCodeP0001%E2%80%94%E2%80%94%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/">
 
 
 <script id="page-configurations">
@@ -54,7 +48,7 @@
   };
 </script>
 
-  <title>制作俄罗斯方块 | 紫梦沁香</title>
+  <title>LeetCodeP0001——两数之和 | 紫梦沁香</title>
   
 
 
@@ -186,7 +180,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/29/%E5%88%B6%E4%BD%9C%E4%BF%84%E7%BD%97%E6%96%AF%E6%96%B9%E5%9D%97/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/31/LeetCodeP0001%E2%80%94%E2%80%94%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/images/head-icon.jpg">
@@ -199,7 +193,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          制作俄罗斯方块
+          LeetCodeP0001——两数之和
         </h1>
 
         <div class="post-meta">
@@ -209,14 +203,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-08-29 16:33:20" itemprop="dateCreated datePublished" datetime="2021-08-29T16:33:20+08:00">2021-08-29</time>
+              <time title="创建时间：2021-08-31 00:26:54" itemprop="dateCreated datePublished" datetime="2021-08-31T00:26:54+08:00">2021-08-31</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-08-30 19:07:04" itemprop="dateModified" datetime="2021-08-30T19:07:04+08:00">2021-08-30</time>
+                <time title="修改时间：2021-09-02 00:59:34" itemprop="dateModified" datetime="2021-09-02T00:59:34+08:00">2021-09-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -224,12 +218,12 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/HTML/" itemprop="url" rel="index"><span itemprop="name">HTML</span></a>
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
                 </span>
             </span>
 
           
-            <span id="/2021/08/29/%E5%88%B6%E4%BD%9C%E4%BF%84%E7%BD%97%E6%96%AF%E6%96%B9%E5%9D%97/" class="post-meta-item leancloud_visitors" data-flag-title="制作俄罗斯方块" title="阅读次数">
+            <span id="/2021/08/31/LeetCodeP0001%E2%80%94%E2%80%94%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/" class="post-meta-item leancloud_visitors" data-flag-title="LeetCodeP0001——两数之和" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -244,8 +238,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2021/08/29/%E5%88%B6%E4%BD%9C%E4%BF%84%E7%BD%97%E6%96%AF%E6%96%B9%E5%9D%97/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/08/29/%E5%88%B6%E4%BD%9C%E4%BF%84%E7%BD%97%E6%96%AF%E6%96%B9%E5%9D%97/" itemprop="commentCount"></span>
+    <a title="valine" href="/2021/08/31/LeetCodeP0001%E2%80%94%E2%80%94%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/08/31/LeetCodeP0001%E2%80%94%E2%80%94%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -260,27 +254,30 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前游戏标签下只是大致做了个目录，游戏实质内容并没有实现，最近又超级不想学<code>Deep Learning</code>，就来把这个俄罗斯方块给写了吧，后续的游戏等有空再写（下次一定）。</p>
-<p><img src="https://z3.ax1x.com/2021/08/29/hG3GOx.jpg" alt="empty"></p>
+        <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>给定一个整数数组 <code>nums</code> 和一个整数目标值 <code>target</code>，请你在该数组中找出 <strong>和为目标值</strong> <code>target</code>  的那 两个 <strong>整数</strong>，并返回它们的数组下标。</p>
+<p>你可以假设每种输入只会对应一个答案。但是，数组中同一个元素在答案里不能重复出现。</p>
+<p>你可以按任意顺序返回答案。</p>
+<h3 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h3><figure class="highlight markdown"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [2,7,11,15], target = 9</span><br><span class="line">输出：[0,1]</span><br><span class="line">解释：因为 nums[0] + nums[1] == 9 ，返回 [0, 1] 。</span><br></pre></td></tr></tbody></table></figure>
 <span id="more"></span>
+<h3 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h3><figure class="highlight markdown"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [3,2,4], target = 6</span><br><span class="line">输出：[1,2]</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="示例3"><a href="#示例3" class="headerlink" title="示例3"></a>示例3</h3><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [3,3], target = 6</span><br><span class="line">输出：[0,1]</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="提示："><a href="#提示：" class="headerlink" title="提示："></a>提示：</h3><ul>
+<li>2 &lt;= nums.length &lt;= 104</li>
+<li>-109 &lt;= nums[i] &lt;= 109</li>
+<li>-109 &lt;= target &lt;= 109</li>
+<li>只会存在一个有效答案</li>
+</ul>
 <p><br></p>
-<h2 id="设计"><a href="#设计" class="headerlink" title="设计"></a>设计</h2><p>写游戏嘛，肯定要先把大致的框架和要实现的功能想好。于是我就画了个比较简略的图，不过应该还是挺清楚的，还附加了尺寸，没提到的部分就自由发挥吧，怎么舒服怎么来。</p>
-<p>其中每个俄罗斯方块都是由四个小方块组成，每个小方块都是32px * 32px的，一共19行，12列。</p>
-<p><img src="https://z3.ax1x.com/2021/08/29/hGGVaT.jpg" alt="design"></p>
-<p>实际HTML实现效果如下。</p>
-<p><img src="https://z3.ax1x.com/2021/08/29/hGGQMR.jpg" alt="efficiency"></p>
-<p>然后设计每一个俄罗斯方块，由于考虑到旋转的问题，这里将他们都用一个大的矩形框起来。</p>
-<p><img src="https://z3.ax1x.com/2021/08/29/hGBD3V.jpg" alt="tetrisCube"></p>
-<p>平移就不用多说了，我就着重说下旋转吧！</p>
-<p>下面是L型的旋转图示，从左至右，从上至下，我把对应方块的X，Y坐标也写在旁边了。</p>
-<p>仔细观察的话可以发现，旋转之后图形的Y就是旋转之前图形的X，而旋转之后图形的X就是旋转之前的（3 - Y）。</p>
-<p>不过需要注意的是，旋转也会越界，需做一定的判断。</p>
-<p><img src="https://z3.ax1x.com/2021/08/29/hGzkdO.jpg" alt="rotate"></p>
+<h3 id="题解1-暴力搜索"><a href="#题解1-暴力搜索" class="headerlink" title="题解1: 暴力搜索"></a>题解1: 暴力搜索</h3><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>{</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] twoSum(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target) {</span><br><span class="line">        <span class="keyword">int</span> len = nums.length;</span><br><span class="line">        <span class="keyword">int</span> sum = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;len;i++){</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=i+<span class="number">1</span>;j&lt;len;j++){</span><br><span class="line">                sum = nums[i] + nums[j];</span><br><span class="line">                <span class="keyword">if</span>(sum == target){</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">int</span>[]{i,j};</span><br><span class="line">                }</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>用时：50ms</p>
+<p>时间复杂度：O（$n^2$）</p>
+<p>空间复杂度：S（1）</p>
 <p><br></p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p>设计好实现的框架后，再添加亿点代码就完事了<span class="github-emoji" style="display:inline;vertical-align:middle"><span>😢</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f622.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span></p>
-<p>这里就不把代码贴出来了，没怎么写注释，让我再看一遍也费劲，相信聪明的人看了上面的设计图就会有思路了。</p>
-<p>从昨天下午写到今天下午，一半的时间都在改bug，不是很会用JS的debug。</p>
-<p><img src="https://z3.ax1x.com/2021/08/30/htyG1s.gif" alt="code"></p>
+<h3 id="题解2-哈希查找"><a href="#题解2-哈希查找" class="headerlink" title="题解2: 哈希查找"></a>题解2: 哈希查找</h3><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>{</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] twoSum(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target) {</span><br><span class="line">       Map&lt;Integer, Integer&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">       <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;nums.length;i++){</span><br><span class="line">    	   <span class="keyword">int</span> rest = target - nums[i];</span><br><span class="line">    	   <span class="keyword">if</span>(map.containsKey(rest)){</span><br><span class="line">    		   <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">int</span>[]{i,map.get(rest)};</span><br><span class="line">    	   }</span><br><span class="line">    	   map.put(nums[i], i);</span><br><span class="line">       }</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>用时：2ms</p>
+<p>这里将哈希查找的时间复杂度近似成O（1）</p>
+<p>时间复杂度：O（$n$）</p>
+<p>空间复杂度：S（$n$）</p>
 
     </div>
 
@@ -290,7 +287,9 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E6%B8%B8%E6%88%8F%E5%88%B6%E4%BD%9C/" rel="tag"># 游戏制作</a>
+              <a href="/tags/%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98/" rel="tag"># 每日一题</a>
+              <a href="/tags/JAVA/" rel="tag"># JAVA</a>
+              <a href="/tags/%E5%93%88%E5%B8%8C%E6%9F%A5%E6%89%BE/" rel="tag"># 哈希查找</a>
           </div>
 
         
@@ -299,12 +298,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/08/26/Hexo%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84CSS%E5%92%8CJS/" rel="prev" title="Hexo使用自定义的CSS和JS">
-      <i class="fa fa-chevron-left"></i> Hexo使用自定义的CSS和JS
+    <a href="/2021/08/29/%E5%88%B6%E4%BD%9C%E4%BF%84%E7%BD%97%E6%96%AF%E6%96%B9%E5%9D%97/" rel="prev" title="制作俄罗斯方块">
+      <i class="fa fa-chevron-left"></i> 制作俄罗斯方块
     </a></div>
       <div class="post-nav-item">
-    <a href="/2021/08/31/LeetCodeP0001%E2%80%94%E2%80%94%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/" rel="next" title="LeetCodeP0001——两数之和">
-      LeetCodeP0001——两数之和 <i class="fa fa-chevron-right"></i>
+    <a href="/2021/08/31/LeetCodeP0002%E2%80%94%E2%80%94%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0/" rel="next" title="LeetCodeP0002——两数相加">
+      LeetCodeP0002——两数相加 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -365,7 +364,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.</span> <span class="nav-text">设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">3.</span> <span class="nav-text">代码</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B1"><span class="nav-number">1.1.</span> <span class="nav-text">示例1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B2"><span class="nav-number">1.2.</span> <span class="nav-text">示例2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B3"><span class="nav-number">1.3.</span> <span class="nav-text">示例3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E7%A4%BA%EF%BC%9A"><span class="nav-number">1.4.</span> <span class="nav-text">提示：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E8%A7%A31-%E6%9A%B4%E5%8A%9B%E6%90%9C%E7%B4%A2"><span class="nav-number">1.5.</span> <span class="nav-text">题解1: 暴力搜索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E8%A7%A32-%E5%93%88%E5%B8%8C%E6%9F%A5%E6%89%BE"><span class="nav-number">1.6.</span> <span class="nav-text">题解2: 哈希查找</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
