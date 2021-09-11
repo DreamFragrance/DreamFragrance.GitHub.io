@@ -54,6 +54,44 @@
       </tags>
   </entry>
   <entry>
+    <title>LeetCodeP0001——两数之和</title>
+    <url>/2021/08/31/LeetCodeP0001%E2%80%94%E2%80%94%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/</url>
+    <content><![CDATA[<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>给定一个整数数组 <code>nums</code> 和一个整数目标值 <code>target</code>，请你在该数组中找出 <strong>和为目标值</strong> <code>target</code>  的那 两个 <strong>整数</strong>，并返回它们的数组下标。</p>
+<p>你可以假设每种输入只会对应一个答案。但是，数组中同一个元素在答案里不能重复出现。</p>
+<p>你可以按任意顺序返回答案。</p>
+<h3 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h3><figure class="highlight markdown"><table><tbody><tr><td class="code"><pre><span class="line">输入：nums = [2,7,11,15], target = 9</span><br><span class="line">输出：[0,1]</span><br><span class="line">解释：因为 nums[0] + nums[1] == 9 ，返回 [0, 1] 。</span><br></pre></td></tr></tbody></table></figure>
+<span id="more"></span>
+<h3 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h3><figure class="highlight markdown"><table><tbody><tr><td class="code"><pre><span class="line">输入：nums = [3,2,4], target = 6</span><br><span class="line">输出：[1,2]</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="示例3"><a href="#示例3" class="headerlink" title="示例3"></a>示例3</h3><figure class="highlight plaintext"><table><tbody><tr><td class="code"><pre><span class="line">输入：nums = [3,3], target = 6</span><br><span class="line">输出：[0,1]</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="提示："><a href="#提示：" class="headerlink" title="提示："></a>提示：</h3><ul>
+<li>2 &lt;= nums.length &lt;= 104</li>
+<li>-109 &lt;= nums[i] &lt;= 109</li>
+<li>-109 &lt;= target &lt;= 109</li>
+<li>只会存在一个有效答案</li>
+</ul>
+<p><br></p>
+<h3 id="题解1-暴力搜索"><a href="#题解1-暴力搜索" class="headerlink" title="题解1: 暴力搜索"></a>题解1: 暴力搜索</h3><figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>{</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] twoSum(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target) {</span><br><span class="line">        <span class="keyword">int</span> len = nums.length;</span><br><span class="line">        <span class="keyword">int</span> sum = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;len;i++){</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=i+<span class="number">1</span>;j&lt;len;j++){</span><br><span class="line">                sum = nums[i] + nums[j];</span><br><span class="line">                <span class="keyword">if</span>(sum == target){</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">int</span>[]{i,j};</span><br><span class="line">                }</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>用时：50ms</p>
+<p>时间复杂度：O（$n^2$）</p>
+<p>空间复杂度：S（1）</p>
+<p><br></p>
+<h3 id="题解2-哈希查找"><a href="#题解2-哈希查找" class="headerlink" title="题解2: 哈希查找"></a>题解2: 哈希查找</h3><figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>{</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] twoSum(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target) {</span><br><span class="line">       Map&lt;Integer, Integer&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">       <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;nums.length;i++){</span><br><span class="line">    	   <span class="keyword">int</span> rest = target - nums[i];</span><br><span class="line">    	   <span class="keyword">if</span>(map.containsKey(rest)){</span><br><span class="line">    		   <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">int</span>[]{i,map.get(rest)};</span><br><span class="line">    	   }</span><br><span class="line">    	   map.put(nums[i], i);</span><br><span class="line">       }</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>用时：2ms</p>
+<p>这里将哈希查找的时间复杂度近似成O（1）</p>
+<p>时间复杂度：O（$n$）</p>
+<p>空间复杂度：S（$n$）</p>
+]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>每日一题</tag>
+        <tag>JAVA</tag>
+        <tag>哈希查找</tag>
+        <tag>LeetCodeTop100</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>LeetCodeP0002——两数相加</title>
     <url>/2021/08/31/LeetCodeP0002%E2%80%94%E2%80%94%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0/</url>
     <content><![CDATA[<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照 逆序 的方式存储的，并且每个节点只能存储 一位 数字。</p>
@@ -124,44 +162,6 @@
         <tag>JAVA</tag>
         <tag>LeetCodeTop100</tag>
         <tag>滑动窗口</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>LeetCodeP0001——两数之和</title>
-    <url>/2021/08/31/LeetCodeP0001%E2%80%94%E2%80%94%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/</url>
-    <content><![CDATA[<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>给定一个整数数组 <code>nums</code> 和一个整数目标值 <code>target</code>，请你在该数组中找出 <strong>和为目标值</strong> <code>target</code>  的那 两个 <strong>整数</strong>，并返回它们的数组下标。</p>
-<p>你可以假设每种输入只会对应一个答案。但是，数组中同一个元素在答案里不能重复出现。</p>
-<p>你可以按任意顺序返回答案。</p>
-<h3 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h3><figure class="highlight markdown"><table><tbody><tr><td class="code"><pre><span class="line">输入：nums = [2,7,11,15], target = 9</span><br><span class="line">输出：[0,1]</span><br><span class="line">解释：因为 nums[0] + nums[1] == 9 ，返回 [0, 1] 。</span><br></pre></td></tr></tbody></table></figure>
-<span id="more"></span>
-<h3 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h3><figure class="highlight markdown"><table><tbody><tr><td class="code"><pre><span class="line">输入：nums = [3,2,4], target = 6</span><br><span class="line">输出：[1,2]</span><br></pre></td></tr></tbody></table></figure>
-<h3 id="示例3"><a href="#示例3" class="headerlink" title="示例3"></a>示例3</h3><figure class="highlight plaintext"><table><tbody><tr><td class="code"><pre><span class="line">输入：nums = [3,3], target = 6</span><br><span class="line">输出：[0,1]</span><br></pre></td></tr></tbody></table></figure>
-<h3 id="提示："><a href="#提示：" class="headerlink" title="提示："></a>提示：</h3><ul>
-<li>2 &lt;= nums.length &lt;= 104</li>
-<li>-109 &lt;= nums[i] &lt;= 109</li>
-<li>-109 &lt;= target &lt;= 109</li>
-<li>只会存在一个有效答案</li>
-</ul>
-<p><br></p>
-<h3 id="题解1-暴力搜索"><a href="#题解1-暴力搜索" class="headerlink" title="题解1: 暴力搜索"></a>题解1: 暴力搜索</h3><figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>{</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] twoSum(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target) {</span><br><span class="line">        <span class="keyword">int</span> len = nums.length;</span><br><span class="line">        <span class="keyword">int</span> sum = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;len;i++){</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=i+<span class="number">1</span>;j&lt;len;j++){</span><br><span class="line">                sum = nums[i] + nums[j];</span><br><span class="line">                <span class="keyword">if</span>(sum == target){</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">int</span>[]{i,j};</span><br><span class="line">                }</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<p>用时：50ms</p>
-<p>时间复杂度：O（$n^2$）</p>
-<p>空间复杂度：S（1）</p>
-<p><br></p>
-<h3 id="题解2-哈希查找"><a href="#题解2-哈希查找" class="headerlink" title="题解2: 哈希查找"></a>题解2: 哈希查找</h3><figure class="highlight java"><table><tbody><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>{</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] twoSum(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target) {</span><br><span class="line">       Map&lt;Integer, Integer&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">       <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;nums.length;i++){</span><br><span class="line">    	   <span class="keyword">int</span> rest = target - nums[i];</span><br><span class="line">    	   <span class="keyword">if</span>(map.containsKey(rest)){</span><br><span class="line">    		   <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">int</span>[]{i,map.get(rest)};</span><br><span class="line">    	   }</span><br><span class="line">    	   map.put(nums[i], i);</span><br><span class="line">       }</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<p>用时：2ms</p>
-<p>这里将哈希查找的时间复杂度近似成O（1）</p>
-<p>时间复杂度：O（$n$）</p>
-<p>空间复杂度：S（$n$）</p>
-]]></content>
-      <categories>
-        <category>LeetCode</category>
-      </categories>
-      <tags>
-        <tag>每日一题</tag>
-        <tag>JAVA</tag>
-        <tag>LeetCodeTop100</tag>
-        <tag>哈希查找</tag>
       </tags>
   </entry>
   <entry>

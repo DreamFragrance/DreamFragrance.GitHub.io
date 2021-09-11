@@ -34,7 +34,7 @@ function createSnake(){
 	game_div.appendChild(snakeHead);
 	
 	// 蛇身
-	for(var i=0;i&lt;3;i++){
+	for(var i=0;i<3;i++){
 		snakeBody = document.createElement("img");
 		snakeBody.setAttribute("src","https://z3.ax1x.com/2021/09/11/hzbK7n.png")
 		snakeBody.className = "snakeCube";
@@ -46,7 +46,81 @@ function createSnake(){
 // 定位蛇的位置
 function snakeLocate(){
 	var snakes = document.getElementsByClassName("snakeCube");
-	for(var i=0;i<snakelen;i++){ snakes[i].style.left="snakeLocation[i][0]" *="" snake_size="" +="" "px";="" snakes[i].style.top="snakeLocation[i][1]" }="" switch(snakeheaddirection){="" case="" "up":{="" snakes[0].setattribute("src","https:="" z3.ax1x.com="" 2021="" 09="" 11="" hzb1hv.png")="" break;="" "down":{="" hzblt0.png")="" "left":{="" hzbu0s.png")="" "right":{="" hzbqkq.png")="" 键盘监听事件="" function="" onkeydown(){="" document.onkeydown="function(event){" if(!gameover){="" switch(event.keycode){="" w="" 和="" ↑="" 38:="" 87:{="" snakeheaddirection="up" ;="" a="" ←="" 37:="" 65:{="" s="" ↓="" 40:="" 83:{="" d="" →="" 39:="" 68:{="" 空格键="" 32:{="" pause();="" }else{="" restart();="" 贪吃蛇移动，x为横向，y为纵向="" move(x,="" y){="" for(var="" i="snakeLen-1;i">0;i--){
+	for(var i=0;i<snakeLen;i++){
+		snakes[i].style.left = snakeLocation[i][0] * SNAKE_SIZE + "px";
+		snakes[i].style.top = snakeLocation[i][1] * SNAKE_SIZE + "px";
+	}
+	
+	switch(snakeHeadDirection){
+		case "up":{
+			snakes[0].setAttribute("src","https://z3.ax1x.com/2021/09/11/hzb1hV.png")
+			break;
+		}
+		case "down":{
+			snakes[0].setAttribute("src","https://z3.ax1x.com/2021/09/11/hzblt0.png")
+			break;
+		}
+		case "left":{
+			snakes[0].setAttribute("src","https://z3.ax1x.com/2021/09/11/hzbu0s.png")
+			break;
+		}
+		case "right":{
+			snakes[0].setAttribute("src","https://z3.ax1x.com/2021/09/11/hzbQkq.png")
+			break;
+		}
+	}
+}
+
+// 键盘监听事件
+function onKeyDown(){
+	document.onkeydown = function(event){
+		if(!gameover){
+			switch(event.keyCode){
+				// W 和 ↑
+				case 38:
+				case 87:{
+					snakeHeadDirection = "up";
+					break;
+				}
+				// A 和 ←
+				case 37:
+				case 65:{
+					snakeHeadDirection = "left";
+					break;
+				}
+				// S 和 ↓
+				case 40:
+				case 83:{
+					snakeHeadDirection = "down";
+					break;
+				}
+				// D 和 →
+				case 39:
+				case 68:{
+					snakeHeadDirection = "right";
+					break;
+				}
+				// 空格键
+				case 32:{
+					pause();
+					break;
+				}
+			}
+		}else{
+			switch(event.keyCode){
+				// 空格键
+				case 32:{
+					restart();
+					break;
+				}
+			}
+		}
+	}
+}
+
+// 贪吃蛇移动，x为横向，y为纵向
+function move(x, y){
+	for(var i=snakeLen-1;i>0;i--){
 		snakeLocation[i][0] = snakeLocation[i-1][0];
 		snakeLocation[i][1] = snakeLocation[i-1][1];
 	}
@@ -62,11 +136,25 @@ function snakeLocate(){
 function isTouchItself(){
 	var left = snakeLocation[0][0];
 	var top = snakeLocation[0][1];
-	for(var i=1;i<snakelen;i++){ if(left="=" snakelocation[i][0]="" &&="" top="=" snakelocation[i][1]){="" gameover="true;" final();="" }="" 边界碰撞判定="" function="" crashboundary(){="" var="" left="snakeLocation[0][0];" <="" 0){="" snakelocation[0][0]="COLS" -="" 1;="" }else="">= COLS){
+	for(var i=1;i<snakeLen;i++){
+		if(left == snakeLocation[i][0] && top == snakeLocation[i][1]){
+			gameover = true;
+			final();
+		}
+	}
+}
+
+// 边界碰撞判定
+function crashBoundary(){
+	var left = snakeLocation[0][0];
+	var top = snakeLocation[0][1];
+	if(left < 0){
+		snakeLocation[0][0] = COLS - 1;
+	}else if(left >= COLS){
 		snakeLocation[0][0] = 0;
-	}else if(top &lt; 0){
+	}else if(top < 0){
 		snakeLocation[0][1] = ROWS - 1;
-	}else if(top &gt;= ROWS){
+	}else if(top >= ROWS){
 		snakeLocation[0][1] = 0;
 	}
 }
@@ -128,7 +216,7 @@ function restart(){
 	var gameDiv = document.getElementsByClassName("gameDiv")[0];
 	var children = gameDiv.children;
 	var childrenLen = children.length;
-	for(var i=childrenLen-1;i&gt;=0;i--){
+	for(var i=childrenLen-1;i>=0;i--){
 		gameDiv.removeChild(children[i]);
 	}
 	var end = document.getElementsByClassName("gameover")[0]
@@ -146,7 +234,7 @@ function createFood(){
 	var gameDiv = document.getElementsByClassName("gameDiv")[0];
 	var food = document.createElement("img");
 	food.className = "foodCube";
-	if(Math.random() &gt;= rarity){
+	if(Math.random() >= rarity){
 		food.setAttribute("src","https://z3.ax1x.com/2021/09/11/hzb8pT.png");
 		foodType = 0;
 	}else{
@@ -164,12 +252,12 @@ function eatFood(){
 	var left = snakeLocation[0][0];
 	var top = snakeLocation[0][1];
 	
-	if(foodLeft == left &amp;&amp; foodTop == top){
+	if(foodLeft == left && foodTop == top){
 		var food = document.getElementsByClassName("foodCube")[0];
 		var gameDiv = document.getElementsByClassName("gameDiv")[0];
 		gameDiv.removeChild(food);
 		var repeat = foodType==0?1:3;
-		while(repeat &gt; 0){
+		while(repeat > 0){
 			snakeLen++;
 			score += 10;
 			speed += 0.05;
@@ -229,4 +317,3 @@ function updateData(){
 	scoreH1.innerHTML = "分数：" + score;
 	lengthH1.innerHTML = "长度：" + snakeLen;
 }
-</snakelen;i++){></snakelen;i++){>
