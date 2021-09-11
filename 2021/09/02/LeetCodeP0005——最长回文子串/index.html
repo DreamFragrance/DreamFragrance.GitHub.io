@@ -28,10 +28,11 @@
 <meta property="og:description" content="题目给你一个字符串 s，找到 s 中最长的回文子串。 示例1123输入：s &#x3D; &quot;babad&quot;输出：&quot;bab&quot;解释：&quot;aba&quot; 同样是符合题意的答案。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-09-01T16:51:50.000Z">
-<meta property="article:modified_time" content="2021-09-01T16:59:11.570Z">
+<meta property="article:modified_time" content="2021-09-07T17:02:37.885Z">
 <meta property="article:author" content="紫梦沁香">
 <meta property="article:tag" content="每日一题">
 <meta property="article:tag" content="JAVA">
+<meta property="article:tag" content="LeetCodeTop100">
 <meta property="article:tag" content="动态规划">
 <meta name="twitter:card" content="summary">
 
@@ -202,10 +203,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-09-02 00:51:50 / 修改时间：00:59:11" itemprop="dateCreated datePublished" datetime="2021-09-02T00:51:50+08:00">2021-09-02</time>
+              <time title="创建时间：2021-09-02 00:51:50" itemprop="dateCreated datePublished" datetime="2021-09-02T00:51:50+08:00">2021-09-02</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-08 01:02:37" itemprop="dateModified" datetime="2021-09-08T01:02:37+08:00">2021-09-08</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -259,7 +266,7 @@
 </ul>
 <p><br></p>
 <h3 id="题解1-动态规划"><a href="#题解1-动态规划" class="headerlink" title="题解1: 动态规划"></a>题解1: 动态规划</h3><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>{</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">longestPalindrome</span><span class="params">(String s)</span> </span>{</span><br><span class="line">        <span class="keyword">int</span> maxLen = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> len = s.length();</span><br><span class="line">        <span class="keyword">if</span>(len&lt;<span class="number">2</span>){</span><br><span class="line">            <span class="keyword">return</span> s;</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">boolean</span>[][] dp = <span class="keyword">new</span> <span class="keyword">boolean</span>[len][len];</span><br><span class="line">        <span class="keyword">int</span> begin = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;len;i++){</span><br><span class="line">            dp[i][i] = <span class="keyword">true</span>;</span><br><span class="line">        }</span><br><span class="line">        <span class="comment">// 字符串转换为char数组查找快！</span></span><br><span class="line">        <span class="keyword">char</span>[] charArray = s.toCharArray();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">2</span>;i&lt;=len;i++){</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;len-i+<span class="number">1</span>;j++){</span><br><span class="line">                <span class="keyword">int</span> end = i + j - <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">if</span>(charArray[j] == charArray[end]){</span><br><span class="line">                    <span class="keyword">if</span>(i &lt;= <span class="number">3</span>){</span><br><span class="line">                        dp[j][end] = <span class="keyword">true</span>;</span><br><span class="line">                    }<span class="keyword">else</span>{</span><br><span class="line">                        dp[j][end] = dp[j+<span class="number">1</span>][end-<span class="number">1</span>];</span><br><span class="line">                    }</span><br><span class="line">                }</span><br><span class="line">                <span class="keyword">if</span>(dp[j][end] &amp;&amp; maxLen &lt; i){</span><br><span class="line">                    begin = j;</span><br><span class="line">                    maxLen = i;</span><br><span class="line">                }</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">return</span> s.substring(begin,begin+maxLen);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<p>字符串遍历频繁的时候，可以先转换为char数组便于查找。</p>
+<p>字符串遍历频繁的时候，可以先转换为char数组便于查找，因为<code>charAt</code>方法多了一层栈的深度（需要进出对象）。</p>
 <p>思路：如果一个字符串是回文字符串，那么它去掉头和尾也仍旧是回文字符串，也就可以得出动态规划的状态转移方程。</p>
 <p>P[i, j] = P[i+1, j-1] &amp;&amp; charArray[i] == charArray[j]</p>
 <p>然后对于长度为1的字符串，本身就是回文字符串。对于长度为2的字符串，只要头和尾相同就是回文字符串。因此我们就可以写出动态规划的边界条件。</p>
@@ -270,10 +277,21 @@
 <p>时间复杂度：O（$n^2$）</p>
 <p>空间复杂度：S（$n^2$）</p>
 <p><br></p>
-<h3 id="题解2"><a href="#题解2" class="headerlink" title="题解2:"></a>题解2:</h3><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></tbody></table></figure>
-<p>用时：ms</p>
-<p>时间复杂度：O（）</p>
-<p>空间复杂度：S（）</p>
+<h3 id="题解2-中心扩散法"><a href="#题解2-中心扩散法" class="headerlink" title="题解2: 中心扩散法"></a>题解2: 中心扩散法</h3><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>{</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">longestPalindrome</span><span class="params">(String s)</span> </span>{</span><br><span class="line">        <span class="keyword">int</span> len = s.length();</span><br><span class="line">        <span class="keyword">int</span> maxLen = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> begin = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(len &lt; <span class="number">2</span>){</span><br><span class="line">            <span class="keyword">return</span> s;</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">char</span>[] charArray = s.toCharArray();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;len;i++){</span><br><span class="line">            <span class="keyword">int</span> len1 = getPalindromeLen(charArray, i, i);</span><br><span class="line">            <span class="keyword">int</span> len2 = getPalindromeLen(charArray, i, i+<span class="number">1</span>);</span><br><span class="line">            <span class="keyword">int</span> max = Math.max(len1, len2);</span><br><span class="line">            <span class="keyword">if</span>(max &gt; maxLen){</span><br><span class="line">                maxLen = max;</span><br><span class="line">                begin = i - (maxLen-<span class="number">1</span>) / <span class="number">2</span>;</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">return</span> s.substring(begin,begin+maxLen);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getPalindromeLen</span><span class="params">(<span class="keyword">char</span>[] charArray, <span class="keyword">int</span> left, <span class="keyword">int</span> right)</span></span>{</span><br><span class="line">        <span class="keyword">int</span> len = charArray.length;</span><br><span class="line">        <span class="keyword">while</span>(left&gt;=<span class="number">0</span> &amp;&amp; right&lt;len &amp;&amp; charArray[left] == charArray[right]){</span><br><span class="line">            left--;</span><br><span class="line">            right++;</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">return</span> right - left - <span class="number">1</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>首先，我们先观察动态规划的状态转移方程</p>
+<p>P[i, i] = true</p>
+<p>P[i, i+1] = S[i] == S[i+1]</p>
+<p>P[i, j] = P[i+1, j-1] &amp;&amp; S[i] == S[j]</p>
+<p>可以找到其中的状态转移链</p>
+<p><em>P</em>(<em>i</em>,<em>j</em>)←<em>P</em>(<em>i</em>+1,<em>j</em>−1)←<em>P</em>(<em>i</em>+2,<em>j</em>−2)←⋯←某一边界情况</p>
+<p>也就是说，<strong>所有的状态在转移的时候可能性都是唯一的</strong>，因此我们可以从每一种边界情况开始向外扩散，就能得到所有状态对应的答案。</p>
+<p>下面两句代码就对应着两种边界状态。</p>
+<p><code>int len1 = getPalindromeLen(charArray, i, i);</code> </p>
+<p><code>int len2 = getPalindromeLen(charArray, i, i+1);</code></p>
+<p><br></p>
+<p>用时：9ms</p>
+<p>时间复杂度：O（$n^2$）</p>
+<p>空间复杂度：S（1）</p>
 
     </div>
 
@@ -285,6 +303,7 @@
           <div class="post-tags">
               <a href="/tags/%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98/" rel="tag"># 每日一题</a>
               <a href="/tags/JAVA/" rel="tag"># JAVA</a>
+              <a href="/tags/LeetCodeTop100/" rel="tag"># LeetCodeTop100</a>
               <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag"># 动态规划</a>
           </div>
 
@@ -297,7 +316,10 @@
     <a href="/2021/09/01/LeetCodeP0004%E2%80%94%E2%80%94%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%AD%A3%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/" rel="prev" title="LeetCodeP0004——寻找两个正序数组的中位数">
       <i class="fa fa-chevron-left"></i> LeetCodeP0004——寻找两个正序数组的中位数
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2021/09/02/LeetCodeP0010%E2%80%94%E2%80%94%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%8C%B9%E9%85%8D/" rel="next" title="LeetCodeP0010——正则表达式匹配">
+      LeetCodeP0010——正则表达式匹配 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -357,7 +379,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B1"><span class="nav-number">1.1.</span> <span class="nav-text">示例1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B2"><span class="nav-number">1.2.</span> <span class="nav-text">示例2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B3"><span class="nav-number">1.3.</span> <span class="nav-text">示例3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E7%A4%BA%EF%BC%9A"><span class="nav-number">1.4.</span> <span class="nav-text">提示：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E8%A7%A31-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92"><span class="nav-number">1.5.</span> <span class="nav-text">题解1: 动态规划</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E8%A7%A32"><span class="nav-number">1.6.</span> <span class="nav-text">题解2:</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B1"><span class="nav-number">1.1.</span> <span class="nav-text">示例1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B2"><span class="nav-number">1.2.</span> <span class="nav-text">示例2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B3"><span class="nav-number">1.3.</span> <span class="nav-text">示例3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E7%A4%BA%EF%BC%9A"><span class="nav-number">1.4.</span> <span class="nav-text">提示：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E8%A7%A31-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92"><span class="nav-number">1.5.</span> <span class="nav-text">题解1: 动态规划</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E8%A7%A32-%E4%B8%AD%E5%BF%83%E6%89%A9%E6%95%A3%E6%B3%95"><span class="nav-number">1.6.</span> <span class="nav-text">题解2: 中心扩散法</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -373,7 +395,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-count">17</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -386,7 +408,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

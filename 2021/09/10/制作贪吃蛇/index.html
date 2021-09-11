@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="设计直接步入正题，由于游戏本身游玩以及操作比较简单，因此这次的游戏界面会有点简陋，实在是不知道该加啥东西了😿 游戏主体部分是宽为650px，高为450px，而小蛇的每一格身体都是25 * 25的，因此整个游戏界面有18行，26列。 这一次我会尽量把每一个功能的代码都记录下来，一是因为这个贪吃蛇代码肯定比俄罗斯方块要少，二是因为，不写代码的话，我这篇博客已经结束了，这也太短了吧喂！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="制作贪吃蛇">
+<meta property="og:url" content="http://example.com/2021/09/10/%E5%88%B6%E4%BD%9C%E8%B4%AA%E5%90%83%E8%9B%87/index.html">
+<meta property="og:site_name" content="紫梦沁香">
+<meta property="og:description" content="设计直接步入正题，由于游戏本身游玩以及操作比较简单，因此这次的游戏界面会有点简陋，实在是不知道该加啥东西了😿 游戏主体部分是宽为650px，高为450px，而小蛇的每一格身体都是25 * 25的，因此整个游戏界面有18行，26列。 这一次我会尽量把每一个功能的代码都记录下来，一是因为这个贪吃蛇代码肯定比俄罗斯方块要少，二是因为，不写代码的话，我这篇博客已经结束了，这也太短了吧喂！">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.githubassets.com/images/icons/emoji/unicode/1f63f.png?v8">
+<meta property="og:image" content="https://z3.ax1x.com/2021/09/10/hjBnGF.jpg">
+<meta property="og:image" content="https://z3.ax1x.com/2021/09/10/hjfPHg.jpg">
+<meta property="og:image" content="https://z3.ax1x.com/2021/09/10/hjIFs0.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/09/10/hjozgs.jpg">
+<meta property="og:image" content="https://z3.ax1x.com/2021/09/10/hjogHK.jpg">
+<meta property="og:image" content="https://z3.ax1x.com/2021/09/10/hjbUM9.jpg">
+<meta property="og:image" content="https://z3.ax1x.com/2021/09/10/hjO7RO.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/09/10/hjzREj.gif">
+<meta property="og:image" content="https://z3.ax1x.com/2021/09/10/hvSKsS.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/09/10/hvSWLD.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/09/10/hvwSEV.gif">
+<meta property="og:image" content="https://z3.ax1x.com/2021/09/10/hvWBxx.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/09/10/hvgmVJ.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/09/11/hvLwJf.gif">
+<meta property="og:image" content="https://github.githubassets.com/images/icons/emoji/unicode/1f62d.png?v8">
+<meta property="article:published_time" content="2021-09-10T08:06:50.000Z">
+<meta property="article:modified_time" content="2021-09-11T11:54:22.298Z">
+<meta property="article:author" content="紫梦沁香">
+<meta property="article:tag" content="游戏制作">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.githubassets.com/images/icons/emoji/unicode/1f63f.png?v8">
+
+<link rel="canonical" href="http://example.com/2021/09/10/%E5%88%B6%E4%BD%9C%E8%B4%AA%E5%90%83%E8%9B%87/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>制作贪吃蛇 | 紫梦沁香</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6bc20780b9c032635241d71c52b76953";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<script type="text/javascript" src="/js/game/modernizr.custom.js"></script>
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">紫梦沁香</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-game">
+
+    <a href="/game/" rel="section"><i class="fa fa-gamepad fa-fw"></i>游戏</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/10/%E5%88%B6%E4%BD%9C%E8%B4%AA%E5%90%83%E8%9B%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/images/head-icon.jpg">
+      <meta itemprop="name" content="紫梦沁香">
+      <meta itemprop="description" content="如果说我看得比别人更远些，那是因为我站在巨人的肩膀上">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="紫梦沁香">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          制作贪吃蛇
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-09-10 16:06:50" itemprop="dateCreated datePublished" datetime="2021-09-10T16:06:50+08:00">2021-09-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-11 19:54:22" itemprop="dateModified" datetime="2021-09-11T19:54:22+08:00">2021-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Game/" itemprop="url" rel="index"><span itemprop="name">Game</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/09/10/%E5%88%B6%E4%BD%9C%E8%B4%AA%E5%90%83%E8%9B%87/" class="post-meta-item leancloud_visitors" data-flag-title="制作贪吃蛇" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/09/10/%E5%88%B6%E4%BD%9C%E8%B4%AA%E5%90%83%E8%9B%87/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/09/10/%E5%88%B6%E4%BD%9C%E8%B4%AA%E5%90%83%E8%9B%87/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="设计"><a href="#设计" class="headerlink" title="设计"></a>设计</h2><p>直接步入正题，由于游戏本身游玩以及操作比较简单，因此这次的游戏界面会有点简陋，实在是不知道该加啥东西了<span class="github-emoji" style="display:inline;vertical-align:middle"><span>😿</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f63f.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span></p>
+<p>游戏主体部分是宽为650px，高为450px，而小蛇的每一格身体都是25 * 25的，因此整个游戏界面有18行，26列。</p>
+<p>这一次我会尽量把每一个功能的代码都记录下来，一是因为这个贪吃蛇代码肯定比俄罗斯方块要少，二是因为，不写代码的话，我这篇博客已经结束了，这也太短了吧喂！</p>
+<p><img src="https://z3.ax1x.com/2021/09/10/hjBnGF.jpg" alt=""></p>
+<span id="more"></span>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p>HTML代码如下，布局都是采用position：absolute的方式，因为部件比较少，这样代码也不会很繁琐，而且很简单。</p>
+<figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">title</span>&gt;</span>贪吃蛇<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"./snake.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="css"></span></span><br><span class="line"><span class="css">			<span class="selector-tag">div</span>{</span></span><br><span class="line"><span class="css">				<span class="attribute">border</span>: <span class="number">#000000</span> <span class="number">3.5px</span> solid;</span></span><br><span class="line"><span class="css">			}</span></span><br><span class="line"><span class="css">			</span></span><br><span class="line"><span class="css">			<span class="selector-class">.container</span>{</span></span><br><span class="line"><span class="css">				<span class="attribute">height</span>: <span class="number">570px</span>;</span></span><br><span class="line"><span class="css">				<span class="attribute">width</span>: <span class="number">707px</span>;</span></span><br><span class="line"><span class="css">				<span class="attribute">position</span>: relative;</span></span><br><span class="line"><span class="css">				<span class="attribute">margin</span>: <span class="number">0px</span> auto;</span></span><br><span class="line"><span class="css">				<span class="attribute">margin-top</span>: <span class="number">75px</span>;</span></span><br><span class="line"><span class="css">				<span class="attribute">text-align</span>: center;</span></span><br><span class="line"><span class="css">			}</span></span><br><span class="line"><span class="css">			</span></span><br><span class="line"><span class="css">			<span class="selector-class">.gameDiv</span>{</span></span><br><span class="line"><span class="css">				<span class="attribute">height</span>: <span class="number">450px</span>;</span></span><br><span class="line"><span class="css">				<span class="attribute">width</span>: <span class="number">650px</span>;</span></span><br><span class="line"><span class="css">				<span class="attribute">position</span>: absolute;</span></span><br><span class="line"><span class="css">				<span class="attribute">left</span>: <span class="number">25px</span>;</span></span><br><span class="line"><span class="css">				<span class="attribute">top</span>: <span class="number">70px</span>;</span></span><br><span class="line"><span class="css">			}</span></span><br><span class="line"><span class="css">			</span></span><br><span class="line"><span class="css">			<span class="selector-tag">p</span>{</span></span><br><span class="line"><span class="css">				<span class="attribute">position</span>: absolute;</span></span><br><span class="line"><span class="css">				<span class="attribute">font-weight</span>: <span class="number">600</span>;</span></span><br><span class="line"><span class="css">				<span class="attribute">right</span>: <span class="number">50px</span>;</span></span><br><span class="line"><span class="css">			}</span></span><br><span class="line"><span class="css">			</span></span><br><span class="line"><span class="css">			<span class="selector-class">.length</span>{</span></span><br><span class="line"><span class="css">				<span class="attribute">top</span>: -<span class="number">5px</span>;</span></span><br><span class="line"><span class="css">			}</span></span><br><span class="line"><span class="css">			</span></span><br><span class="line"><span class="css">			<span class="selector-class">.score</span>{</span></span><br><span class="line"><span class="css">				<span class="attribute">top</span>: <span class="number">20px</span>;</span></span><br><span class="line"><span class="css">			}</span></span><br><span class="line"><span class="css">			</span></span><br><span class="line"><span class="css">			<span class="selector-tag">h2</span>{</span></span><br><span class="line"><span class="css">				<span class="attribute">position</span>: absolute;</span></span><br><span class="line"><span class="css">				<span class="attribute">font-weight</span>: <span class="number">600</span>;</span></span><br><span class="line"><span class="css">				<span class="attribute">left</span>: <span class="number">305px</span>;</span></span><br><span class="line"><span class="css">				<span class="attribute">font-size</span>: <span class="number">30px</span>;</span></span><br><span class="line"><span class="css">				<span class="attribute">top</span>: -<span class="number">10px</span>;</span></span><br><span class="line"><span class="css">			}</span></span><br><span class="line"><span class="css">			</span></span><br><span class="line"><span class="css">			<span class="selector-class">.deflory</span>{</span></span><br><span class="line"><span class="css">				<span class="attribute">position</span>: absolute;</span></span><br><span class="line"><span class="css">				<span class="attribute">bottom</span>: <span class="number">10px</span>;</span></span><br><span class="line"><span class="css">				<span class="attribute">right</span>: <span class="number">5px</span>;</span></span><br><span class="line"><span class="css">				<span class="attribute">height</span>: <span class="number">30px</span>;</span></span><br><span class="line"><span class="css">				<span class="attribute">width</span>: <span class="number">150px</span>;</span></span><br><span class="line"><span class="css">			}</span></span><br><span class="line"><span class="css">			</span></span><br><span class="line"><span class="css">			<span class="selector-class">.snakeCube</span>{</span></span><br><span class="line"><span class="css">				<span class="attribute">position</span>: absolute;</span></span><br><span class="line"><span class="css">			}</span></span><br><span class="line"><span class="css">		</span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">"init()"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">h2</span>&gt;</span>贪吃蛇<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"length"</span>&gt;</span></span><br><span class="line">				长度：</span><br><span class="line">			<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"score"</span>&gt;</span></span><br><span class="line">				分数：</span><br><span class="line">			<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"gameDiv"</span>&gt;</span></span><br><span class="line">				</span><br><span class="line">			<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"img/Deflory.png"</span> <span class="attr">class</span>=<span class="string">"deflory"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<h4 id="1-移动贪吃蛇"><a href="#1-移动贪吃蛇" class="headerlink" title="1. 移动贪吃蛇"></a>1. 移动贪吃蛇</h4><p>（1） 键盘监听</p>
+<p>首先需要让小蛇动起来，因此就会需要键盘监听事件。</p>
+<p>凡事都不能一口吃成一个大胖子，不要急着写移动的功能，先看看能否监听到键盘。</p>
+<figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ROWS = <span class="number">18</span></span><br><span class="line"><span class="keyword">var</span> COLS = <span class="number">26</span></span><br><span class="line"><span class="keyword">var</span> SNAKE_SIZE = <span class="number">25</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">init</span>(<span class="params"></span>)</span>{</span><br><span class="line">	onKeyDown();</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// 键盘监听事件</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">onKeyDown</span>(<span class="params"></span>)</span>{</span><br><span class="line">	<span class="built_in">document</span>.onkeydown = <span class="function"><span class="keyword">function</span>(<span class="params">event</span>)</span>{</span><br><span class="line">		<span class="keyword">switch</span>(event.keyCode){</span><br><span class="line">			<span class="comment">// W 和 ↑</span></span><br><span class="line">			<span class="keyword">case</span> <span class="number">38</span>:</span><br><span class="line">			<span class="keyword">case</span> <span class="number">87</span>:{</span><br><span class="line">				<span class="built_in">console</span>.log(<span class="string">"上"</span>);</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			}</span><br><span class="line">			<span class="comment">// A 和 ←</span></span><br><span class="line">			<span class="keyword">case</span> <span class="number">37</span>:</span><br><span class="line">			<span class="keyword">case</span> <span class="number">65</span>:{</span><br><span class="line">				<span class="built_in">console</span>.log(<span class="string">"左"</span>);</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			}</span><br><span class="line">			<span class="comment">// S 和 ↓</span></span><br><span class="line">			<span class="keyword">case</span> <span class="number">40</span>:</span><br><span class="line">			<span class="keyword">case</span> <span class="number">83</span>:{</span><br><span class="line">				<span class="built_in">console</span>.log(<span class="string">"下"</span>);</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			}</span><br><span class="line">			<span class="comment">// D 和 →</span></span><br><span class="line">			<span class="keyword">case</span> <span class="number">39</span>:</span><br><span class="line">			<span class="keyword">case</span> <span class="number">68</span>:{</span><br><span class="line">				<span class="built_in">console</span>.log(<span class="string">"右"</span>);</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			}</span><br><span class="line">		}</span><br><span class="line">	}</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>稍微按了几下，浏览器的输出也正常，接下来就开始写移动的函数了。</p>
+<p><img src="https://z3.ax1x.com/2021/09/10/hjfPHg.jpg" alt="console"></p>
+<p>但在此之前，还有一件事。</p>
+<p><img src="https://z3.ax1x.com/2021/09/10/hjIFs0.png" alt="havesomethingmore"></p>
+<p>（2） 创建小蛇</p>
+<p>我们没有东西去移动啊！所以要写一个小蛇初始化的函数。</p>
+<p>此处snakeCube类我只写了个position：absolute，不然每次写挺麻烦的。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建初始的贪吃蛇</span></span><br><span class="line"><span class="function">function <span class="title">createSnake</span><span class="params">()</span></span>{</span><br><span class="line">	game_div = document.getElementsByClassName(<span class="string">"gameDiv"</span>)[<span class="number">0</span>];</span><br><span class="line">	<span class="comment">// 蛇头</span></span><br><span class="line">	snakeHead = document.createElement(<span class="string">"img"</span>);</span><br><span class="line">	snakeHead.setAttribute(<span class="string">"src"</span>,<span class="string">"./img/right.png"</span>)</span><br><span class="line">	snakeHead.className = <span class="string">"snakeCube"</span>;</span><br><span class="line">	game_div.appendChild(snakeHead);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 蛇身×3</span></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;<span class="number">3</span>;i++){</span><br><span class="line">		snakeBody = document.createElement(<span class="string">"img"</span>);</span><br><span class="line">		snakeBody.setAttribute(<span class="string">"src"</span>,<span class="string">"./img/body.png"</span>)</span><br><span class="line">		snakeBody.className = <span class="string">"snakeCube"</span>;</span><br><span class="line">		game_div.appendChild(snakeBody);</span><br><span class="line">	}</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>如果单单只是创建元素，而不给它“定位”，也就是设定top和left值，他显示是会叠在一起的。</p>
+<p><img src="https://z3.ax1x.com/2021/09/10/hjozgs.jpg" alt="error"></p>
+<p>（3） 定位</p>
+<p>综上所述，还有一件事，再写一个定位的函数。不要忘了在createSnake的末尾加上这个定位函数。</p>
+<p><img src="https://z3.ax1x.com/2021/09/10/hjogHK.jpg" alt=""></p>
+<figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定位蛇的位置</span></span><br><span class="line"><span class="keyword">var</span> snakeLocation = [[<span class="number">200</span>, <span class="number">125</span>],[<span class="number">175</span>, <span class="number">125</span>],[<span class="number">150</span>, <span class="number">125</span>],[<span class="number">125</span>, <span class="number">125</span>]]</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">snakeLocate</span>(<span class="params"></span>)</span>{</span><br><span class="line">	<span class="keyword">var</span> snakes = <span class="built_in">document</span>.getElementsByClassName(<span class="string">"snakeCube"</span>);</span><br><span class="line">	<span class="keyword">var</span> len = snakes.length;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;len;i++){</span><br><span class="line">		snakes[i].style.left = snakeLocation[i][<span class="number">0</span>] + <span class="string">"px"</span>;</span><br><span class="line">		snakes[i].style.top = snakeLocation[i][<span class="number">1</span>] + <span class="string">"px"</span>;</span><br><span class="line">	}</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="https://z3.ax1x.com/2021/09/10/hjbUM9.jpg" alt=""></p>
+<p>（4） 移动</p>
+<p>好了，历经千辛万苦，终于可以准备让这个小蛇动起来了。</p>
+<p>先来解释下这里的逻辑吧，想想贪吃蛇是怎么移动的呢？</p>
+<p>是不是头先动，然后紧接着第一节身体移动到原先头的位置，第二节身体移动到原先第一节身体的位置。因此我们只需要把snakeLocation数组从后往前覆盖就行了（不能从先往后噢，想想就明白了）。</p>
+<p>此外这里x，y都是单位长度，因此还要乘以蛇的大小。</p>
+<figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 贪吃蛇移动，x为横向，y为纵向</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">move</span>(<span class="params">x, y</span>)</span>{</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">var</span> i=snakeLen-<span class="number">1</span>;i&gt;<span class="number">0</span>;i--){</span><br><span class="line">		snakeLocation[i][<span class="number">0</span>] = snakeLocation[i-<span class="number">1</span>][<span class="number">0</span>];</span><br><span class="line">		snakeLocation[i][<span class="number">1</span>] = snakeLocation[i-<span class="number">1</span>][<span class="number">1</span>];</span><br><span class="line">	}</span><br><span class="line">	snakeLocation[<span class="number">0</span>][<span class="number">0</span>] = snakeLocation[<span class="number">0</span>][<span class="number">0</span>] + SNAKE_SIZE * x;</span><br><span class="line">	snakeLocation[<span class="number">0</span>][<span class="number">1</span>] = snakeLocation[<span class="number">0</span>][<span class="number">1</span>] + SNAKE_SIZE * y;</span><br><span class="line">	snakeLocate();</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>好像略微有些惊悚嘛，不过没关系，修改一下移动时头部的方向就行。</p>
+<p><img src="https://z3.ax1x.com/2021/09/10/hjO7RO.png" alt=""></p>
+<p>只需要在移动前修改方向变量，定位时判断方向即可，这里代码太多就放出来一部分。</p>
+<figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> snakeHeadDirection = <span class="string">"right"</span>;</span><br><span class="line"><span class="comment">// 键盘监听事件，</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">onKeyDown</span>(<span class="params"></span>)</span>{</span><br><span class="line">	<span class="built_in">document</span>.onkeydown = <span class="function"><span class="keyword">function</span>(<span class="params">event</span>)</span>{</span><br><span class="line">		<span class="keyword">switch</span>(event.keyCode){</span><br><span class="line">			<span class="comment">// W 和 ↑</span></span><br><span class="line">			<span class="keyword">case</span> <span class="number">38</span>:</span><br><span class="line">			<span class="keyword">case</span> <span class="number">87</span>:{</span><br><span class="line">				snakeHeadDirection = <span class="string">"up"</span>;</span><br><span class="line">				move(<span class="number">0</span>, -<span class="number">1</span>);</span><br><span class="line">				<span class="built_in">console</span>.log(<span class="string">"上"</span>);</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			}</span><br><span class="line">		}</span><br><span class="line">	}</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定位蛇的位置</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">snakeLocate</span>(<span class="params"></span>)</span>{</span><br><span class="line">	<span class="keyword">var</span> snakes = <span class="built_in">document</span>.getElementsByClassName(<span class="string">"snakeCube"</span>);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;snakeLen;i++){</span><br><span class="line">		snakes[i].style.left = snakeLocation[i][<span class="number">0</span>] + <span class="string">"px"</span>;</span><br><span class="line">		snakes[i].style.top = snakeLocation[i][<span class="number">1</span>] + <span class="string">"px"</span>;</span><br><span class="line">	}</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">switch</span>(snakeHeadDirection){</span><br><span class="line">		<span class="keyword">case</span> <span class="string">"up"</span>:{</span><br><span class="line">			snakes[<span class="number">0</span>].setAttribute(<span class="string">"src"</span>,<span class="string">"./img/up.png"</span>)</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		}</span><br><span class="line">	}</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="https://z3.ax1x.com/2021/09/10/hjzREj.gif" alt=""></p>
+<h4 id="2-碰撞判定"><a href="#2-碰撞判定" class="headerlink" title="2. 碰撞判定"></a>2. 碰撞判定</h4><p>（1） 自身碰撞判定</p>
+<p>贪吃蛇碰到自己身体就应该结束游戏了。</p>
+<p><img src="https://z3.ax1x.com/2021/09/10/hvSKsS.png" alt=""></p>
+<p>自身碰撞判定无非就是判断头和身体有没有碰撞，一个for-loop就行了。</p>
+<p>当然，我们还需要一个flag，来判断当前是否已经结束，默认是false。</p>
+<p>函数实现起来比较轻松，注意每次move都需判断，而且得在“定位”之前判断。</p>
+<figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 自身碰撞判定</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isTouchItself</span>(<span class="params"></span>)</span>{</span><br><span class="line">	<span class="keyword">var</span> left = snakeLocation[<span class="number">0</span>][<span class="number">0</span>];</span><br><span class="line">	<span class="keyword">var</span> top = snakeLocation[<span class="number">0</span>][<span class="number">1</span>];</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">1</span>;i&lt;snakeLen;i++){</span><br><span class="line">		<span class="keyword">if</span>(left == snakeLocation[i][<span class="number">0</span>] &amp;&amp; top == snakeLocation[i][<span class="number">1</span>]){</span><br><span class="line">			gameover = <span class="literal">true</span>;</span><br><span class="line">		}</span><br><span class="line">	}</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>然后还得修改一下键盘监听事件，只有gameover = false时才监听移动事件。</p>
+<p>这里我多添加了两个方法，一会儿实现。</p>
+<p>一个是gameover = true时的restart()；一个是gameover = false时的pause()。</p>
+<p>前者用于重新开始，后者用于游戏暂停</p>
+<figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 键盘监听事件</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">onKeyDown</span>(<span class="params"></span>)</span>{</span><br><span class="line">	<span class="built_in">document</span>.onkeydown = <span class="function"><span class="keyword">function</span>(<span class="params">event</span>)</span>{</span><br><span class="line">		<span class="keyword">if</span>(!gameover){</span><br><span class="line">			<span class="keyword">switch</span>(event.keyCode){</span><br><span class="line">				<span class="comment">// W 和 ↑</span></span><br><span class="line">				<span class="keyword">case</span> <span class="number">38</span>:</span><br><span class="line">				<span class="keyword">case</span> <span class="number">87</span>:{</span><br><span class="line">					snakeHeadDirection = <span class="string">"up"</span>;</span><br><span class="line">					move(<span class="number">0</span>, -<span class="number">1</span>);</span><br><span class="line">					<span class="built_in">console</span>.log(<span class="string">"上"</span>);</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">				}</span><br><span class="line">				<span class="comment">// A 和 ←</span></span><br><span class="line">				<span class="keyword">case</span> <span class="number">37</span>:</span><br><span class="line">				<span class="keyword">case</span> <span class="number">65</span>:{</span><br><span class="line">					snakeHeadDirection = <span class="string">"left"</span>;</span><br><span class="line">					move(-<span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">					<span class="built_in">console</span>.log(<span class="string">"左"</span>);</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">				}</span><br><span class="line">				<span class="comment">// S 和 ↓</span></span><br><span class="line">				<span class="keyword">case</span> <span class="number">40</span>:</span><br><span class="line">				<span class="keyword">case</span> <span class="number">83</span>:{</span><br><span class="line">					snakeHeadDirection = <span class="string">"down"</span>;</span><br><span class="line">					move(<span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">					<span class="built_in">console</span>.log(<span class="string">"下"</span>);</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">				}</span><br><span class="line">				<span class="comment">// D 和 →</span></span><br><span class="line">				<span class="keyword">case</span> <span class="number">39</span>:</span><br><span class="line">				<span class="keyword">case</span> <span class="number">68</span>:{</span><br><span class="line">					snakeHeadDirection = <span class="string">"right"</span>;</span><br><span class="line">					move(<span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">					<span class="built_in">console</span>.log(<span class="string">"右"</span>);</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">				}</span><br><span class="line">				<span class="comment">// 空格键</span></span><br><span class="line">				<span class="keyword">case</span> <span class="number">32</span>:{</span><br><span class="line">					pause();</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">				}</span><br><span class="line">			}</span><br><span class="line">		}<span class="keyword">else</span>{</span><br><span class="line">			<span class="keyword">switch</span>(event.keyCode){</span><br><span class="line">				<span class="comment">// 空格键</span></span><br><span class="line">				<span class="keyword">case</span> <span class="number">32</span>:{</span><br><span class="line">					restart();</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">				}</span><br><span class="line">			}</span><br><span class="line">		}</span><br><span class="line">	}</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>（2） 边框碰撞判定</p>
+<p>贪吃蛇是不能穿越这个游戏的边框的，至于碰到边框是会死，还是从另一边出来可以自由发挥。</p>
+<p>我这里实现的是从另一头出来的方式。</p>
+<p><img src="https://z3.ax1x.com/2021/09/10/hvSWLD.png" alt=""></p>
+<p>类似自身碰撞判定，也是要在“定位”之前判断。</p>
+<figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 边界碰撞判定</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">crashBoundary</span>(<span class="params"></span>)</span>{</span><br><span class="line">	<span class="keyword">var</span> left = snakeLocation[<span class="number">0</span>][<span class="number">0</span>];</span><br><span class="line">	<span class="keyword">var</span> top = snakeLocation[<span class="number">0</span>][<span class="number">1</span>];</span><br><span class="line">	<span class="keyword">if</span>(left &lt; <span class="number">0</span>){</span><br><span class="line">		snakeLocation[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">625</span>;</span><br><span class="line">	}<span class="keyword">else</span> <span class="keyword">if</span>(left &gt; <span class="number">625</span>){</span><br><span class="line">		snakeLocation[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">	}<span class="keyword">else</span> <span class="keyword">if</span>(top &lt; <span class="number">0</span>){</span><br><span class="line">		snakeLocation[<span class="number">0</span>][<span class="number">1</span>] = <span class="number">425</span>;</span><br><span class="line">	}<span class="keyword">else</span> <span class="keyword">if</span>(top &gt; <span class="number">425</span>){</span><br><span class="line">		snakeLocation[<span class="number">0</span>][<span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line">	}</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="https://z3.ax1x.com/2021/09/10/hvwSEV.gif" alt=""></p>
+<h4 id="3-游戏结束"><a href="#3-游戏结束" class="headerlink" title="3.游戏结束"></a>3.游戏结束</h4><p>（1） 计时器</p>
+<p>首先，我们的小蛇不能自己动，需要设置一个计时器。</p>
+<p>因为需要暂停和继续游戏，所以我们在方法中判断，如果当前有计时器就取消它，没有则设置一个。</p>
+<p>记得在初始化的时候调用一下。</p>
+<figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 暂停/继续游戏</span></span><br><span class="line"><span class="keyword">var</span> timer = <span class="literal">null</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">pause</span>(<span class="params"></span>)</span>{</span><br><span class="line">	<span class="keyword">if</span>(timer == <span class="literal">null</span>){</span><br><span class="line">		timer = <span class="built_in">setInterval</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>{</span><br><span class="line">			<span class="keyword">switch</span>(snakeHeadDirection){</span><br><span class="line">				<span class="keyword">case</span> <span class="string">"up"</span>:{</span><br><span class="line">					move(<span class="number">0</span>, -<span class="number">1</span>);</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">				}</span><br><span class="line">				<span class="keyword">case</span> <span class="string">"down"</span>:{</span><br><span class="line">					move(<span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">				}</span><br><span class="line">				<span class="keyword">case</span> <span class="string">"left"</span>:{</span><br><span class="line">					move(-<span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">				}</span><br><span class="line">				<span class="keyword">case</span> <span class="string">"right"</span>:{</span><br><span class="line">					move(<span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">				}</span><br><span class="line">			}</span><br><span class="line">		}, <span class="number">200</span>);</span><br><span class="line">	}<span class="keyword">else</span>{</span><br><span class="line">		<span class="built_in">clearInterval</span>(timer);</span><br><span class="line">		timer = <span class="literal">null</span>;</span><br><span class="line">	}</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>暂停的时候，屏幕上空荡荡的也不大好，给人有一种没有暂停的错觉。所以加一个div，美化下暂停的界面。</p>
+<figure class="highlight css"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.paused</span>{</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">display</span>: none;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">210px</span>;</span><br><span class="line">    <span class="attribute">z-index</span>: <span class="number">9</span>; </span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#ffffff</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">205px</span>;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">60px</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h1</span> <span class="attr">class</span>=<span class="string">"paused"</span>&gt;</span></span><br><span class="line">    按下 SPACE 继续游戏</span><br><span class="line"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+<p><img src="https://z3.ax1x.com/2021/09/10/hvWBxx.png" alt=""></p>
+<p>在修改下上面pause方法，暂停的时候显示提示，继续时隐去提示。</p>
+<figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">pause</span>(<span class="params"></span>)</span>{</span><br><span class="line">	<span class="keyword">if</span>(timer == <span class="literal">null</span>){</span><br><span class="line">		timer = <span class="built_in">setInterval</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>{</span><br><span class="line">			<span class="keyword">switch</span>(snakeHeadDirection){</span><br><span class="line">				<span class="keyword">case</span> <span class="string">"up"</span>:{</span><br><span class="line">					move(<span class="number">0</span>, -<span class="number">1</span>);</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">				}</span><br><span class="line">				<span class="keyword">case</span> <span class="string">"down"</span>:{</span><br><span class="line">					move(<span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">				}</span><br><span class="line">				<span class="keyword">case</span> <span class="string">"left"</span>:{</span><br><span class="line">					move(-<span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">				}</span><br><span class="line">				<span class="keyword">case</span> <span class="string">"right"</span>:{</span><br><span class="line">					move(<span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">				}</span><br><span class="line">			}</span><br><span class="line">		}, <span class="number">200</span>);</span><br><span class="line">		<span class="keyword">var</span> end = <span class="built_in">document</span>.getElementsByClassName(<span class="string">"paused"</span>)[<span class="number">0</span>]</span><br><span class="line">		end.style.display = <span class="string">"none"</span>;</span><br><span class="line">	}<span class="keyword">else</span>{</span><br><span class="line">		<span class="built_in">clearInterval</span>(timer);</span><br><span class="line">		timer = <span class="literal">null</span>;</span><br><span class="line">		<span class="keyword">var</span> end = <span class="built_in">document</span>.getElementsByClassName(<span class="string">"paused"</span>)[<span class="number">0</span>]</span><br><span class="line">		end.style.display = <span class="string">"block"</span>;</span><br><span class="line">	}</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>（2） 游戏结束</p>
+<p>在此之前，我又写了个div，可以先看看效果。同暂停类似，只需要将它的display值默认设为none，待到游戏结束时在改成block即可。</p>
+<p>处于美观，我将游戏背景颜色改成了深灰色。</p>
+<figure class="highlight css"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.gameover</span>{</span><br><span class="line">    <span class="attribute">display</span>: none;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">190px</span>;</span><br><span class="line">    <span class="attribute">z-index</span>: <span class="number">9</span>; </span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#ffffff</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">205px</span>;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">60px</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight html"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h1</span> <span class="attr">class</span>=<span class="string">"gameover"</span>&gt;</span></span><br><span class="line">    游戏结束</span><br><span class="line">    <span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">    按下 <span class="tag">&lt;<span class="name">font</span> <span class="attr">color</span>=<span class="string">"#ee3000"</span>&gt;</span>SPACE<span class="tag">&lt;/<span class="name">font</span>&gt;</span> 重新开始</span><br><span class="line"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">final</span>(<span class="params"></span>)</span>{</span><br><span class="line">	<span class="keyword">var</span> end = <span class="built_in">document</span>.getElementsByClassName(<span class="string">"gameover"</span>)[<span class="number">0</span>]</span><br><span class="line">	end.style.display = <span class="string">"none"</span>;</span><br><span class="line">	pause();</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="https://z3.ax1x.com/2021/09/10/hvgmVJ.png" alt=""></p>
+<p>（3） 重新开始</p>
+<p>重新开始需要把所有的变量都重置，然后删除游戏中的贪吃蛇，再把游戏结束的提示隐去，然后和init()一样。</p>
+<figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 重新开始</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">restart</span>(<span class="params"></span>)</span>{</span><br><span class="line">	snakeLocation = [[<span class="number">200</span>, <span class="number">125</span>],[<span class="number">175</span>, <span class="number">125</span>],[<span class="number">150</span>, <span class="number">125</span>],[<span class="number">125</span>, <span class="number">125</span>]]</span><br><span class="line">	snakeLen = <span class="number">4</span>;</span><br><span class="line">	snakeHeadDirection = <span class="string">"right"</span>;</span><br><span class="line">	gameover = <span class="literal">false</span>;</span><br><span class="line">	timer = <span class="literal">null</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">var</span> gameDiv = <span class="built_in">document</span>.getElementsByClassName(<span class="string">"gameDiv"</span>)[<span class="number">0</span>];</span><br><span class="line">	<span class="keyword">var</span> children = gameDiv.children;</span><br><span class="line">	<span class="keyword">var</span> childrenLen = children.length;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">var</span> i=childrenLen-<span class="number">1</span>;i&gt;=<span class="number">0</span>;i--){</span><br><span class="line">		gameDiv.removeChild(children[i]);</span><br><span class="line">	}</span><br><span class="line">	<span class="keyword">var</span> end = <span class="built_in">document</span>.getElementsByClassName(<span class="string">"gameover"</span>)[<span class="number">0</span>]</span><br><span class="line">	end.style.display = <span class="string">"none"</span>; </span><br><span class="line">	createSnake();</span><br><span class="line">	pause();</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="4-分数系统"><a href="#4-分数系统" class="headerlink" title="4. 分数系统"></a>4. 分数系统</h4><p>最后就是小蛇蛇吃的食物啦。</p>
+<p>（1） 食物是在屏幕中随机出现，而且吃完一个就会出现下一个。</p>
+<p>创建食物同创建小蛇类似，只是多了个random函数，要确保食物随机在游戏界面中。</p>
+<figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建食物</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createFood</span>(<span class="params"></span>)</span>{</span><br><span class="line">	foodLeft = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * COLS);</span><br><span class="line">	foodTop = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * ROWS);</span><br><span class="line">	<span class="keyword">var</span> gameDiv = <span class="built_in">document</span>.getElementsByClassName(<span class="string">"gameDiv"</span>)[<span class="number">0</span>];</span><br><span class="line">	<span class="keyword">var</span> food = <span class="built_in">document</span>.createElement(<span class="string">"img"</span>);</span><br><span class="line">	food.className = <span class="string">"foodCube"</span>;</span><br><span class="line">	food.setAttribute(<span class="string">"src"</span>,<span class="string">"./img/food.png"</span>);</span><br><span class="line">	food.style.top = foodTop * SNAKE_SIZE + <span class="string">"px"</span>;</span><br><span class="line">	food.style.left = foodLeft * SNAKE_SIZE + <span class="string">"px"</span>;</span><br><span class="line">	gameDiv.appendChild(food);</span><br><span class="line">	updateData();</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>（2） 吃一个长度+1，分数+10，且小蛇的身体+1。</p>
+<p>蛇头碰到食物即吃掉，删除该img，然后生成新的食物；</p>
+<figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 吃掉食物</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">eatFood</span>(<span class="params"></span>)</span>{</span><br><span class="line">	<span class="keyword">var</span> left = snakeLocation[<span class="number">0</span>][<span class="number">0</span>];</span><br><span class="line">	<span class="keyword">var</span> top = snakeLocation[<span class="number">0</span>][<span class="number">1</span>];</span><br><span class="line">	<span class="keyword">if</span>(foodLeft == left &amp;&amp; foodTop == top){</span><br><span class="line">		snakeLen++;</span><br><span class="line">		score += <span class="number">10</span>;</span><br><span class="line">		<span class="keyword">var</span> food = <span class="built_in">document</span>.getElementsByClassName(<span class="string">"foodCube"</span>)[<span class="number">0</span>];</span><br><span class="line">		<span class="keyword">var</span> gameDiv = <span class="built_in">document</span>.getElementsByClassName(<span class="string">"gameDiv"</span>)[<span class="number">0</span>];</span><br><span class="line">		gameDiv.removeChild(food);</span><br><span class="line">		createFood();</span><br><span class="line">		grow();</span><br><span class="line">	}</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 长身体</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">grow</span>(<span class="params"></span>)</span>{</span><br><span class="line">	<span class="keyword">var</span> gameDiv = <span class="built_in">document</span>.getElementsByClassName(<span class="string">"gameDiv"</span>)[<span class="number">0</span>];</span><br><span class="line">	<span class="keyword">var</span> body = <span class="built_in">document</span>.createElement(<span class="string">"img"</span>);</span><br><span class="line">	body.className = <span class="string">"snakeCube"</span>;</span><br><span class="line">	body.setAttribute(<span class="string">"src"</span>,<span class="string">"./img/body.png"</span>);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 当前最后一个身体的位置</span></span><br><span class="line">	<span class="keyword">var</span> lastTop = snakeLocation[snakeLen-<span class="number">2</span>][<span class="number">1</span>];</span><br><span class="line">	<span class="keyword">var</span> lastLeft = snakeLocation[snakeLen-<span class="number">2</span>][<span class="number">0</span>];</span><br><span class="line">	<span class="comment">// 新的身体的位置</span></span><br><span class="line">	<span class="keyword">var</span> bodyTop = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">var</span> bodyLeft = <span class="number">0</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">switch</span>(snakeHeadDirection){</span><br><span class="line">		<span class="keyword">case</span> <span class="string">"up"</span>:{</span><br><span class="line">			bodyTop = lastTop + <span class="number">1</span>;</span><br><span class="line">			bodyLeft = lastLeft;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		}</span><br><span class="line">		<span class="keyword">case</span> <span class="string">"down"</span>:{</span><br><span class="line">			bodyTop = lastTop - <span class="number">1</span>;</span><br><span class="line">			bodyLeft = lastLeft;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		}</span><br><span class="line">		<span class="keyword">case</span> <span class="string">"left"</span>:{</span><br><span class="line">			bodyTop = lastTop;</span><br><span class="line">			bodyLeft = lastLeft + <span class="number">1</span>;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		}</span><br><span class="line">		<span class="keyword">case</span> <span class="string">"right"</span>:{</span><br><span class="line">			bodyTop = lastTop;</span><br><span class="line">			bodyLeft = lastLeft - <span class="number">1</span>;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		}</span><br><span class="line">	}</span><br><span class="line">	body.style.top = bodyTop * SNAKE_SIZE + <span class="string">"px"</span>;</span><br><span class="line">	body.style.left = bodyLeft * SNAKE_SIZE + <span class="string">"px"</span>;</span><br><span class="line">	snakeLocation[snakeLen-<span class="number">1</span>] = [bodyLeft, bodyTop];</span><br><span class="line">	gameDiv.appendChild(body);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>之后更新界面分数</p>
+<figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 更新界面中分数和长度</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">updateData</span>(<span class="params"></span>)</span>{</span><br><span class="line">	<span class="keyword">var</span> scoreH1 = <span class="built_in">document</span>.getElementsByClassName(<span class="string">"score"</span>)[<span class="number">0</span>];</span><br><span class="line">	<span class="keyword">var</span> lengthH1 = <span class="built_in">document</span>.getElementsByClassName(<span class="string">"length"</span>)[<span class="number">0</span>];</span><br><span class="line">	scoreH1.innerHTML = <span class="string">"分数："</span> + score;</span><br><span class="line">	lengthH1.innerHTML = <span class="string">"长度："</span> + snakeLen;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>（3） 分数越高，小蛇移动速度越快。</p>
+<p>三句代码即可，记得添加到适当的位置，这里就不给出来了。</p>
+<figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> speed = <span class="number">1</span>;</span><br><span class="line">speed += score / <span class="number">10</span> * <span class="number">0.05</span>;</span><br><span class="line"><span class="built_in">setInterval</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>{}, <span class="number">100</span> / speed);</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="5-游戏性"><a href="#5-游戏性" class="headerlink" title="5. 游戏性"></a>5. 游戏性</h4><p>至此，贪吃蛇的代码已全部写完，之后可以按自己的想法添加一些游戏的规则，例如可以添加一个红色果实的设定，效果是绿色果实的三倍，出现概率10%。我就不实现了，现在已经凌晨了，累了。</p>
+<p>游戏运行画面如下。</p>
+<p><img src="https://z3.ax1x.com/2021/09/11/hvLwJf.gif" alt=""></p>
+<p>以后写小游戏就不写这么详细了，这也太累了<span class="github-emoji" style="display:inline;vertical-align:middle"><span>😭</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f62d.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%B8%E6%88%8F%E5%88%B6%E4%BD%9C/" rel="tag"># 游戏制作</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/09/09/LeetCodeP0022%E2%80%94%E2%80%94%E6%8B%AC%E5%8F%B7%E7%94%9F%E6%88%90/" rel="prev" title="LeetCodeP0022——括号生成">
+      <i class="fa fa-chevron-left"></i> LeetCodeP0022——括号生成
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.</span> <span class="nav-text">设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">2.</span> <span class="nav-text">代码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E7%A7%BB%E5%8A%A8%E8%B4%AA%E5%90%83%E8%9B%87"><span class="nav-number">2.0.1.</span> <span class="nav-text">1. 移动贪吃蛇</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E7%A2%B0%E6%92%9E%E5%88%A4%E5%AE%9A"><span class="nav-number">2.0.2.</span> <span class="nav-text">2. 碰撞判定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E6%B8%B8%E6%88%8F%E7%BB%93%E6%9D%9F"><span class="nav-number">2.0.3.</span> <span class="nav-text">3.游戏结束</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E5%88%86%E6%95%B0%E7%B3%BB%E7%BB%9F"><span class="nav-number">2.0.4.</span> <span class="nav-text">4. 分数系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E6%B8%B8%E6%88%8F%E6%80%A7"><span class="nav-number">2.0.5.</span> <span class="nav-text">5. 游戏性</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="紫梦沁香"
+      src="/uploads/images/head-icon.jpg">
+  <p class="site-author-name" itemprop="name">紫梦沁香</p>
+  <div class="site-description" itemprop="description">如果说我看得比别人更远些，那是因为我站在巨人的肩膀上</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:1149911598@qq.com" title="E-Mail → mailto:1149911598@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">紫梦沁香</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'xxQvJd4TcJMGK327OtwyS41T-gzGzoHsz',
+      appKey     : 'GJqvYfNtvELk0Vvow1MAQo5i',
+      placeholder: "",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
