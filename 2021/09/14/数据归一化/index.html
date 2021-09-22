@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="算法思想观察下图，可以发现每个特征之间的量纲不同，没有办法放在一起比较，学习出来的模型可解释性比较差。而且对于KNN算法来说，样本之间的距离极大部分会由发现时间（天）来引导，肿瘤大小（厘米）几乎可以忽略不计。  为此我们就需要采用归一化，把有量纲的表达式改成无量纲的表达式，将数据的所有特征都映射到一个统一的尺度下。（对于其它算法如线性回归则不会影响分类或预测结果） 而且归一化后可以加速训练，左侧因">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据归一化">
+<meta property="og:url" content="http://example.com/2021/09/14/%E6%95%B0%E6%8D%AE%E5%BD%92%E4%B8%80%E5%8C%96/index.html">
+<meta property="og:site_name" content="紫梦沁香">
+<meta property="og:description" content="算法思想观察下图，可以发现每个特征之间的量纲不同，没有办法放在一起比较，学习出来的模型可解释性比较差。而且对于KNN算法来说，样本之间的距离极大部分会由发现时间（天）来引导，肿瘤大小（厘米）几乎可以忽略不计。  为此我们就需要采用归一化，把有量纲的表达式改成无量纲的表达式，将数据的所有特征都映射到一个统一的尺度下。（对于其它算法如线性回归则不会影响分类或预测结果） 而且归一化后可以加速训练，左侧因">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://z3.ax1x.com/2021/09/14/4k3M9K.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/09/14/4kxFRU.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/09/14/4kODbt.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/09/14/4kXqTP.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/09/14/4kXEMd.png">
+<meta property="article:published_time" content="2021-09-14T06:32:32.000Z">
+<meta property="article:modified_time" content="2021-09-14T08:46:03.253Z">
+<meta property="article:author" content="紫梦沁香">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://z3.ax1x.com/2021/09/14/4k3M9K.png">
+
+<link rel="canonical" href="http://example.com/2021/09/14/%E6%95%B0%E6%8D%AE%E5%BD%92%E4%B8%80%E5%8C%96/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>数据归一化 | 紫梦沁香</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6bc20780b9c032635241d71c52b76953";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<script type="text/javascript" src="/js/game/modernizr.custom.js"></script>
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">紫梦沁香</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-game">
+
+    <a href="/game/" rel="section"><i class="fa fa-gamepad fa-fw"></i>游戏</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/14/%E6%95%B0%E6%8D%AE%E5%BD%92%E4%B8%80%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/images/head-icon.jpg">
+      <meta itemprop="name" content="紫梦沁香">
+      <meta itemprop="description" content="如果说我看得比别人更远些，那是因为我站在巨人的肩膀上">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="紫梦沁香">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据归一化
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-09-14 14:32:32 / 修改时间：16:46:03" itemprop="dateCreated datePublished" datetime="2021-09-14T14:32:32+08:00">2021-09-14</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/09/14/%E6%95%B0%E6%8D%AE%E5%BD%92%E4%B8%80%E5%8C%96/" class="post-meta-item leancloud_visitors" data-flag-title="数据归一化" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/09/14/%E6%95%B0%E6%8D%AE%E5%BD%92%E4%B8%80%E5%8C%96/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/09/14/%E6%95%B0%E6%8D%AE%E5%BD%92%E4%B8%80%E5%8C%96/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h2><p>观察下图，可以发现每个特征之间的量纲不同，没有办法放在一起比较，学习出来的模型可解释性比较差。而且对于KNN算法来说，样本之间的距离极大部分会由发现时间（天）来引导，肿瘤大小（厘米）几乎可以忽略不计。</p>
+<p><img src="https://z3.ax1x.com/2021/09/14/4k3M9K.png" alt=""></p>
+<p>为此我们就需要采用归一化，把有量纲的表达式改成无量纲的表达式，将数据的所有特征都映射到一个统一的尺度下。（对于其它算法如线性回归则不会影响分类或预测结果）</p>
+<p>而且归一化后可以加速训练，左侧因为进行了归一化，因此等高线几乎是正圆，等高线上的法线指向圆心，因此能快速收敛到最小值，而右图没有进行归一化则需进行多次迭代。</p>
+<p>没有进行归一化，学习率也得按照特征取值范围最小的那个维度来取，不然很容易出现nan。</p>
+<p><img src="https://z3.ax1x.com/2021/09/14/4kxFRU.png" alt=""></p>
+<p>（1） 均值方差归一化（standardization）</p>
+<script type="math/tex; mode=display">
+X_{scale} = \frac{X - X_{mean}}{X_{std}}</script><p>经过该标准化处理的数据，均值为0，方差为1，符合正态分布。</p>
+<p>适用于数据分布没有明显的边界，有可能存在极端的数据值。</p>
+<p>（2）最值归一化（Normalization）</p>
+<script type="math/tex; mode=display">
+X_{scale} = \frac{X - X_{min}}{X_{max} - X_{min}}</script><p>经过该标准化处理的数据，数据分布在(0, 1)。</p>
+<p>适用于分布有明显边界的情况，受 outliner影响较大。</p>
+<p>例如像素范围（0 ~ 255），学生成绩（0 ~ 100）。</p>
+<p><br></p>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>（1） 最值归一化</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MinMaxScaler</span>:</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fit</span>(<span class="params">self, X</span>):</span></span><br><span class="line">        self.X = X</span><br><span class="line">        self.<span class="built_in">max</span> = np.<span class="built_in">max</span>(X, axis = <span class="number">0</span>)</span><br><span class="line">        self.<span class="built_in">min</span> = np.<span class="built_in">min</span>(X, axis = <span class="number">0</span>)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">transform</span>(<span class="params">self, X</span>):</span></span><br><span class="line">        <span class="keyword">return</span> (X - self.<span class="built_in">min</span>) / (self.<span class="built_in">max</span> - self.<span class="built_in">min</span>)</span><br></pre></td></tr></tbody></table></figure>
+<p>原始数据均值为46.995，标准差为27.97007284581147。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">X = np.random.randint(<span class="number">0</span>, <span class="number">100</span>, (<span class="number">100</span>, <span class="number">2</span>))</span><br><span class="line"><span class="built_in">print</span>(np.mean(X))			<span class="comment"># 46.995</span></span><br><span class="line"><span class="built_in">print</span>(np.std(X))			<span class="comment"># 27.97007284581147</span></span><br><span class="line"></span><br><span class="line">plt.scatter(X[:, <span class="number">0</span>], X[:, <span class="number">1</span>])</span><br><span class="line">plt.show()</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="https://z3.ax1x.com/2021/09/14/4kODbt.png" alt=""></p>
+<p>经过最值归一化后，均值为0.4721085858585859，标准差为0.2863025514861211。</p>
+<p>所有值都被映射到（0， 1）之间</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">minMaxScaler = MinMaxScaler()</span><br><span class="line">minMaxScaler.fit(X)</span><br><span class="line">X1 = minMaxScaler.transform(X)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(np.mean(X1))</span><br><span class="line"><span class="built_in">print</span>(np.std(X1))</span><br><span class="line"></span><br><span class="line">plt.scatter(X1[:, <span class="number">0</span>], X1[:, <span class="number">1</span>])</span><br><span class="line">plt.show()</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="https://z3.ax1x.com/2021/09/14/4kXqTP.png" alt=""></p>
+<p>（2） 均值方差归一化</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StandardScaler</span>:</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fit</span>(<span class="params">self, X</span>):</span></span><br><span class="line">        self.X = X</span><br><span class="line">        self.mean = np.mean(X, axis = <span class="number">0</span>)</span><br><span class="line">        self.std = np.std(X, axis = <span class="number">0</span>)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">transform</span>(<span class="params">self, X</span>):</span></span><br><span class="line">        <span class="keyword">return</span> (X - self.mean) / self.std</span><br></pre></td></tr></tbody></table></figure>
+<p>经过均值方差归一化后，均值几乎为0，标准差也几乎为1，但数据范围不一定在（0， 1）中。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">standardScaler = StandardScaler()</span><br><span class="line">standardScaler.fit(X)</span><br><span class="line">X1 = standardScaler.transform(X)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(np.mean(X1))				<span class="comment"># -2.7755575615628914e-17</span></span><br><span class="line"><span class="built_in">print</span>(np.std(X1))				<span class="comment"># 0.9999999999999998</span></span><br><span class="line"></span><br><span class="line">plt.scatter(X1[:, <span class="number">0</span>], X1[:, <span class="number">1</span>])</span><br><span class="line">plt.show()</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="https://z3.ax1x.com/2021/09/14/4kXEMd.png" alt=""></p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>先介绍一下train test split，正如它的字面意思。将一份数据集分成训练数据集和测试数据集，这样在使用score函数时，使用的都是训练时没有见过的数据集，得出来的准确率也就更可靠。</p>
+<p>首先数据集需要打乱，因为有些数据集是根据类别来分类的，例如前k个都是类别1，后k个都是类别2，这样train和test中的类别分布差距很大，会导致泛化效果不好。</p>
+<p>np.random.seed(seed)使用同一个种子为了能更好的比较使用归一化和不使用归一化的区别。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train_test_split</span>(<span class="params">X, y, split_rate, seed</span>):</span></span><br><span class="line">    np.random.seed(seed)</span><br><span class="line">    length = <span class="built_in">int</span>(<span class="built_in">len</span>(X) * split_rate)</span><br><span class="line">    p = np.random.permutation(<span class="built_in">len</span>(X))</span><br><span class="line">    <span class="keyword">return</span> X[p[length:]], X[p[:length]], y[p[length:]], y[p[:length]]</span><br></pre></td></tr></tbody></table></figure>
+<p><br></p>
+<p>（1） 不使用归一化进行学习</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">boston=datasets.load_boston()</span><br><span class="line">X=boston.data			<span class="comment"># (506, 13)</span></span><br><span class="line">y=boston.target			<span class="comment"># (506, )</span></span><br><span class="line"></span><br><span class="line">split_rate = <span class="number">0.2</span></span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, split_rate)</span><br><span class="line"></span><br><span class="line">lr = LinearRegression()</span><br><span class="line">lr.fit(X_train, y_train, eta = <span class="number">1e-6</span>, n_iters = <span class="number">1e6</span>)</span><br><span class="line">lr.score(X_test, y_test)</span><br></pre></td></tr></tbody></table></figure>
+<p>eta = 1e-6</p>
+<p>score = 31.348463775149956</p>
+<p>（2） 使用最值归一化</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">boston=datasets.load_boston()</span><br><span class="line">X=boston.data</span><br><span class="line">y=boston.target</span><br><span class="line"></span><br><span class="line">minMaxScaler = MinMaxScaler()</span><br><span class="line">minMaxScaler.fit(X)</span><br><span class="line">X = minMaxScaler.transform(X)</span><br><span class="line"></span><br><span class="line">split_rate = <span class="number">0.2</span></span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, split_rate)</span><br><span class="line"></span><br><span class="line">lr = LinearRegression()</span><br><span class="line">lr.fit(X_train, y_train, eta = <span class="number">1e-2</span>, n_iters = <span class="number">1e6</span>)</span><br><span class="line">lr.score(X_test, y_test)</span><br></pre></td></tr></tbody></table></figure>
+<p>eta = 1e-2</p>
+<p>score = 25.209485526542817</p>
+<p>（3） 使用均值方差归一化</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">boston=datasets.load_boston()</span><br><span class="line">X=boston.data</span><br><span class="line">y=boston.target</span><br><span class="line"></span><br><span class="line">standardScaler = StandardScaler()</span><br><span class="line">standardScaler.fit(X)</span><br><span class="line">X = standardScaler.transform(X)</span><br><span class="line"></span><br><span class="line">split_rate = <span class="number">0.2</span></span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, split_rate)</span><br><span class="line"></span><br><span class="line">lr = LinearRegression()</span><br><span class="line">lr.fit(X_train, y_train, eta = <span class="number">1e-2</span>, n_iters = <span class="number">1e6</span>)</span><br><span class="line">lr.score(X_test, y_test)</span><br></pre></td></tr></tbody></table></figure>
+<p>eta = 1e-2</p>
+<p>score = 18.92473923096906</p>
+<p>经过对比，使用同样的训练次数，经过了归一化的预测率明显比没有经过归一化的预测率更高，而且eta取1e-2就行，不用多次尝试。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/09/14/LeetCodeP0023%E2%80%94%E2%80%94%E5%90%88%E5%B9%B6K%E4%B8%AA%E5%8D%87%E5%BA%8F%E5%88%97%E8%A1%A8/" rel="prev" title="LeetCodeP0023——合并K个升序列表">
+      <i class="fa fa-chevron-left"></i> LeetCodeP0023——合并K个升序列表
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/09/15/LeetCodeP0031%E2%80%94%E2%80%94%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%8E%92%E5%88%97/" rel="next" title="LeetCodeP0031——下一个排列">
+      LeetCodeP0031——下一个排列 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3"><span class="nav-number">1.</span> <span class="nav-text">算法思想</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B"><span class="nav-number">2.</span> <span class="nav-text">实例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95"><span class="nav-number">3.</span> <span class="nav-text">测试</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="紫梦沁香"
+      src="/uploads/images/head-icon.jpg">
+  <p class="site-author-name" itemprop="name">紫梦沁香</p>
+  <div class="site-description" itemprop="description">如果说我看得比别人更远些，那是因为我站在巨人的肩膀上</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:1149911598@qq.com" title="E-Mail → mailto:1149911598@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">紫梦沁香</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'xxQvJd4TcJMGK327OtwyS41T-gzGzoHsz',
+      appKey     : 'GJqvYfNtvELk0Vvow1MAQo5i',
+      placeholder: "",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
