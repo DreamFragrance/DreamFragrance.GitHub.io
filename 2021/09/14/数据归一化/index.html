@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://z3.ax1x.com/2021/09/14/4kXqTP.png">
 <meta property="og:image" content="https://z3.ax1x.com/2021/09/14/4kXEMd.png">
 <meta property="article:published_time" content="2021-09-14T06:32:32.000Z">
-<meta property="article:modified_time" content="2021-09-14T08:46:03.253Z">
+<meta property="article:modified_time" content="2021-09-28T08:43:28.898Z">
 <meta property="article:author" content="紫梦沁香">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://z3.ax1x.com/2021/09/14/4k3M9K.png">
@@ -205,17 +205,23 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-09-14 14:32:32 / 修改时间：16:46:03" itemprop="dateCreated datePublished" datetime="2021-09-14T14:32:32+08:00">2021-09-14</time>
+              <time title="创建时间：2021-09-14 14:32:32" itemprop="dateCreated datePublished" datetime="2021-09-14T14:32:32+08:00">2021-09-14</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-09-28 16:43:28" itemprop="dateModified" datetime="2021-09-28T16:43:28+08:00">2021-09-28</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
                 </span>
             </span>
 
@@ -253,9 +259,10 @@
       
         <h2 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h2><p>观察下图，可以发现每个特征之间的量纲不同，没有办法放在一起比较，学习出来的模型可解释性比较差。而且对于KNN算法来说，样本之间的距离极大部分会由发现时间（天）来引导，肿瘤大小（厘米）几乎可以忽略不计。</p>
 <p><img src="https://z3.ax1x.com/2021/09/14/4k3M9K.png" alt=""></p>
-<p>为此我们就需要采用归一化，把有量纲的表达式改成无量纲的表达式，将数据的所有特征都映射到一个统一的尺度下。（对于其它算法如线性回归则不会影响分类或预测结果）</p>
+<p>为此我们就需要采用归一化，把有量纲的表达式改成<code>无量纲</code>的表达式，将数据的所有特征都映射到一个统一的尺度下。（对于其它算法如线性回归则不会影响分类或预测结果）</p>
 <p>而且归一化后可以加速训练，左侧因为进行了归一化，因此等高线几乎是正圆，等高线上的法线指向圆心，因此能快速收敛到最小值，而右图没有进行归一化则需进行多次迭代。</p>
 <p>没有进行归一化，学习率也得按照特征取值范围最小的那个维度来取，不然很容易出现nan。</p>
+<p>注：由于进行了归一化，我们的模型都是按照归一化的数据进行训练的，因此测试数据也要进行归一化，否则没有意义了。</p>
 <p><img src="https://z3.ax1x.com/2021/09/14/4kxFRU.png" alt=""></p>
 <p>（1） 均值方差归一化（standardization）</p>
 <script type="math/tex; mode=display">
@@ -274,16 +281,16 @@ X_{scale} = \frac{X - X_{min}}{X_{max} - X_{min}}</script><p>经过该标准化�
 <p><img src="https://z3.ax1x.com/2021/09/14/4kODbt.png" alt=""></p>
 <p>经过最值归一化后，均值为0.4721085858585859，标准差为0.2863025514861211。</p>
 <p>所有值都被映射到（0， 1）之间</p>
-<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">minMaxScaler = MinMaxScaler()</span><br><span class="line">minMaxScaler.fit(X)</span><br><span class="line">X1 = minMaxScaler.transform(X)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(np.mean(X1))</span><br><span class="line"><span class="built_in">print</span>(np.std(X1))</span><br><span class="line"></span><br><span class="line">plt.scatter(X1[:, <span class="number">0</span>], X1[:, <span class="number">1</span>])</span><br><span class="line">plt.show()</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">minMaxScaler = MinMaxScaler()</span><br><span class="line">minMaxScaler.fit(X)</span><br><span class="line">X1 = minMaxScaler.transform(X)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(np.mean(X1))			<span class="comment"># 0.4721085858585859</span></span><br><span class="line"><span class="built_in">print</span>(np.std(X1))			<span class="comment"># 0.2863025514861211</span></span><br><span class="line"></span><br><span class="line">plt.scatter(X1[:, <span class="number">0</span>], X1[:, <span class="number">1</span>])</span><br><span class="line">plt.show()</span><br></pre></td></tr></tbody></table></figure>
 <p><img src="https://z3.ax1x.com/2021/09/14/4kXqTP.png" alt=""></p>
 <p>（2） 均值方差归一化</p>
 <figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StandardScaler</span>:</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fit</span>(<span class="params">self, X</span>):</span></span><br><span class="line">        self.X = X</span><br><span class="line">        self.mean = np.mean(X, axis = <span class="number">0</span>)</span><br><span class="line">        self.std = np.std(X, axis = <span class="number">0</span>)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">transform</span>(<span class="params">self, X</span>):</span></span><br><span class="line">        <span class="keyword">return</span> (X - self.mean) / self.std</span><br></pre></td></tr></tbody></table></figure>
 <p>经过均值方差归一化后，均值几乎为0，标准差也几乎为1，但数据范围不一定在（0， 1）中。</p>
 <figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">standardScaler = StandardScaler()</span><br><span class="line">standardScaler.fit(X)</span><br><span class="line">X1 = standardScaler.transform(X)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(np.mean(X1))				<span class="comment"># -2.7755575615628914e-17</span></span><br><span class="line"><span class="built_in">print</span>(np.std(X1))				<span class="comment"># 0.9999999999999998</span></span><br><span class="line"></span><br><span class="line">plt.scatter(X1[:, <span class="number">0</span>], X1[:, <span class="number">1</span>])</span><br><span class="line">plt.show()</span><br></pre></td></tr></tbody></table></figure>
 <p><img src="https://z3.ax1x.com/2021/09/14/4kXEMd.png" alt=""></p>
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>先介绍一下train test split，正如它的字面意思。将一份数据集分成训练数据集和测试数据集，这样在使用score函数时，使用的都是训练时没有见过的数据集，得出来的准确率也就更可靠。</p>
-<p>首先数据集需要打乱，因为有些数据集是根据类别来分类的，例如前k个都是类别1，后k个都是类别2，这样train和test中的类别分布差距很大，会导致泛化效果不好。</p>
-<p>np.random.seed(seed)使用同一个种子为了能更好的比较使用归一化和不使用归一化的区别。</p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>先介绍一下 <code>train test split</code>，正如它的字面意思。将一份数据集分成训练数据集和测试数据集，这样在使用 score 函数时，使用的都是训练时没有见过的数据集，得出来的准确率也就更可靠。</p>
+<p>首先数据集需要打乱，因为有些数据集是根据类别来分类的，例如前 k 个都是类别1，后 k 个都是类别2，这样 train 和test中的类别分布差距很大，会导致泛化效果不好。</p>
+<p>np.random.seed(seed) 使用同一个种子为了能更好的比较使用归一化和不使用归一化的区别。</p>
 <figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train_test_split</span>(<span class="params">X, y, split_rate, seed</span>):</span></span><br><span class="line">    np.random.seed(seed)</span><br><span class="line">    length = <span class="built_in">int</span>(<span class="built_in">len</span>(X) * split_rate)</span><br><span class="line">    p = np.random.permutation(<span class="built_in">len</span>(X))</span><br><span class="line">    <span class="keyword">return</span> X[p[length:]], X[p[:length]], y[p[length:]], y[p[:length]]</span><br></pre></td></tr></tbody></table></figure>
 <p><br></p>
 <p>（1） 不使用归一化进行学习</p>
@@ -396,14 +403,14 @@ X_{scale} = \frac{X - X_{min}}{X_{max} - X_{min}}</script><p>经过该标准化�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-count">34</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
