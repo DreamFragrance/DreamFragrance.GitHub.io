@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="在训练模型的过程中，过拟合几乎是不可避免的。因此可以这么说，深度学习就是训练一个庞大的模型，在此基础上我们来降低过拟合的程度。相较之下，如果模型欠拟合了，貌似除了扩大模型就没有任何方法了。 下面介绍几个常用的降低过拟合的方法。 一、正则化1. 什么是正则化？正则化的思想，即通过限制参数值的选择范围来控制模型容量。而正则化又分为岭回归（权重衰退）、LASSO 回归和弹性网络等。下面我着重说明的是岭回">
+<meta property="og:type" content="article">
+<meta property="og:title" content="降低过拟合">
+<meta property="og:url" content="http://example.com/2021/10/17/%E9%99%8D%E4%BD%8E%E8%BF%87%E6%8B%9F%E5%90%88/index.html">
+<meta property="og:site_name" content="紫梦沁香">
+<meta property="og:description" content="在训练模型的过程中，过拟合几乎是不可避免的。因此可以这么说，深度学习就是训练一个庞大的模型，在此基础上我们来降低过拟合的程度。相较之下，如果模型欠拟合了，貌似除了扩大模型就没有任何方法了。 下面介绍几个常用的降低过拟合的方法。 一、正则化1. 什么是正则化？正则化的思想，即通过限制参数值的选择范围来控制模型容量。而正则化又分为岭回归（权重衰退）、LASSO 回归和弹性网络等。下面我着重说明的是岭回">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://z3.ax1x.com/2021/10/17/5tSi5t.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/10/17/5tFpqS.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/10/18/5UMrqJ.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/10/18/5UQeL4.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/10/18/5UQJyD.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/10/18/5UQhYq.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/10/17/5t4RR1.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/10/17/5tIZ9A.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/10/17/5tIKnf.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/10/17/5tIJ9s.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/10/18/5UlPne.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/10/18/5UlEtI.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/10/18/5Ulm1f.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/10/18/5UlMng.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/10/18/5UlxEj.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/10/18/5U3pee.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/10/18/5admbq.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/10/18/5awNlQ.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/10/18/5a0N4K.png">
+<meta property="article:published_time" content="2021-10-17T07:32:10.000Z">
+<meta property="article:modified_time" content="2021-10-18T14:46:58.191Z">
+<meta property="article:author" content="紫梦沁香">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://z3.ax1x.com/2021/10/17/5tSi5t.png">
+
+<link rel="canonical" href="http://example.com/2021/10/17/%E9%99%8D%E4%BD%8E%E8%BF%87%E6%8B%9F%E5%90%88/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>降低过拟合 | 紫梦沁香</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6bc20780b9c032635241d71c52b76953";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<script type="text/javascript" src="/js/game/modernizr.custom.js"></script>
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">紫梦沁香</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-game">
+
+    <a href="/game/" rel="section"><i class="fa fa-gamepad fa-fw"></i>游戏</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/17/%E9%99%8D%E4%BD%8E%E8%BF%87%E6%8B%9F%E5%90%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/images/head-icon.jpg">
+      <meta itemprop="name" content="紫梦沁香">
+      <meta itemprop="description" content="如果说我看得比别人更远些，那是因为我站在巨人的肩膀上">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="紫梦沁香">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          降低过拟合
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-17 15:32:10" itemprop="dateCreated datePublished" datetime="2021-10-17T15:32:10+08:00">2021-10-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-10-18 22:46:58" itemprop="dateModified" datetime="2021-10-18T22:46:58+08:00">2021-10-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-Learning/" itemprop="url" rel="index"><span itemprop="name">Deep Learning</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-Learning/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/10/17/%E9%99%8D%E4%BD%8E%E8%BF%87%E6%8B%9F%E5%90%88/" class="post-meta-item leancloud_visitors" data-flag-title="降低过拟合" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/10/17/%E9%99%8D%E4%BD%8E%E8%BF%87%E6%8B%9F%E5%90%88/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/10/17/%E9%99%8D%E4%BD%8E%E8%BF%87%E6%8B%9F%E5%90%88/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在训练模型的过程中，过拟合几乎是不可避免的。因此可以这么说，深度学习就是训练一个庞大的模型，在此基础上我们来降低过拟合的程度。相较之下，如果模型欠拟合了，貌似除了扩大模型就没有任何方法了。</p>
+<p>下面介绍几个常用的降低过拟合的方法。</p>
+<h2 id="一、正则化"><a href="#一、正则化" class="headerlink" title="一、正则化"></a>一、正则化</h2><h4 id="1-什么是正则化？"><a href="#1-什么是正则化？" class="headerlink" title="1. 什么是正则化？"></a>1. 什么是正则化？</h4><p>正则化的思想，即通过<code>限制</code>参数值的选择范围来控制模型容量。而正则化又分为岭回归（权重衰退）、LASSO 回归和弹性网络等。下面我着重说明的是岭回归。</p>
+<p>首先，先来看一张极度过拟合的图像。</p>
+<p><img src="https://z3.ax1x.com/2021/10/17/5tSi5t.png" alt=""></p>
+<p>这是上述图像的部分权重，无一例外，每个 $W_i$ 都极其的大，这也导致了图像十分的<code>陡峭</code>。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">array([-<span class="number">4.09493627e+11</span>,  <span class="number">5.76349998e+12</span>,  <span class="number">1.71369179e+11</span>, -<span class="number">9.99031499e+12</span>,</span><br><span class="line">        <span class="number">9.23500127e+11</span>,  <span class="number">9.26094018e+12</span>, -<span class="number">1.94635409e+12</span>, -<span class="number">5.40895631e+10</span>,</span><br><span class="line">        <span class="number">7.94601628e+11</span>, -<span class="number">7.85418293e+12</span>,  <span class="number">1.63904594e+12</span>,  <span class="number">1.67984971e+12</span>,</span><br><span class="line">       -<span class="number">9.87156668e+11</span>,  <span class="number">6.88721582e+12</span>, -<span class="number">1.64914180e+12</span>,  <span class="number">3.50775793e+11</span>,</span><br><span class="line">        <span class="number">2.60751888e+11</span>, -<span class="number">5.87372086e+12</span>,  <span class="number">1.66748622e+12</span>, -<span class="number">3.77434047e+12</span>,</span><br><span class="line">        <span class="number">1.00605169e+12</span>,  <span class="number">2.34190394e+12</span>, -<span class="number">8.57867266e+11</span>,  <span class="number">5.39077331e+12</span>,</span><br><span class="line">       -<span class="number">1.60621032e+12</span>,  <span class="number">2.95930952e+12</span>, -<span class="number">9.52432067e+11</span>, -<span class="number">1.74889800e+12</span>])</span><br></pre></td></tr></tbody></table></figure>
+<p>因此很自然而然地就能想到，那我限制 $W_i$ 的选择范围就行了嘛。从模型的角度来说，参数数量不变，但参数的选择范围小了，那模型自然也变小了。</p>
+<p>于是就有了使用均方范数作为<code>硬性</code>限制，小的 θ 意味着更强的正则项。</p>
+<p>需要注意的是，偏置 <strong>b</strong> 并没有加入到正则化中来，毕竟我们的目标是让曲线更加的<code>平缓</code>，跟偏置 <strong>b</strong> 没有什么关系。</p>
+<p>$min l(w,b) \quad subject\ to \quad ||W||^2 \le θ,\quad\quad ||W||^2 = \sum W^2$</p>
+<p>但硬性限制优化求导比较麻烦，结果也会比较<code>硬</code>，一般使用均方范数作为<code>柔性</code>限制。</p>
+<p>$loss = l(w, b) + \frac{λ}{2}||W||^2$</p>
+<p>其中超参数 λ 控制了正则项的重要程度</p>
+<ul>
+<li>λ = 0，即无正则化，和普通的损失函数没有区别。</li>
+<li>λ → $\infty$，此时 W → <strong>0</strong></li>
+</ul>
+<h4 id="2-如何影响损失函数？"><a href="#2-如何影响损失函数？" class="headerlink" title="2. 如何影响损失函数？"></a>2. 如何影响损失函数？</h4><p>可以看到，原先的极值点 $\widetilde{W}^*$ 在绿色椭圆的圆心，但在加入正则化项之后，极值点在两者之间做了一个权衡，取在了切点。</p>
+<p><img src="https://z3.ax1x.com/2021/10/17/5tFpqS.png" alt=""></p>
+<h4 id="3-参数更新法则"><a href="#3-参数更新法则" class="headerlink" title="3. 参数更新法则"></a>3. 参数更新法则</h4><ul>
+<li><p>计算梯度</p>
+<p>$\frac{\partial}{\partial W}(l(W, b) + \frac{λ}{2}||W||^2) = \frac{\partial l(W, b)}{\partial W} + λW$</p>
+</li>
+<li><p>更新参数</p>
+<p>$W’ = W - η(\frac{\partial l(W, b)}{\partial W} + λW) = (1 - ηλ)W - η\frac{\partial l(W, b)}{\partial W}$</p>
+</li>
+</ul>
+<p>通常 ηλ &lt; 1，因此每次在参数更新时，都会对 W 进行<code>缩小</code>，也就是权重衰退这个名字的由来。</p>
+<h4 id="4-岭回归"><a href="#4-岭回归" class="headerlink" title="4. 岭回归"></a>4. 岭回归</h4><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">RidgeRegression</span>(<span class="params">degree,alpha</span>):</span></span><br><span class="line">    pipeline = Pipeline([</span><br><span class="line">        (<span class="string">"poly"</span>,PolynomialFeatures(degree = degree)),</span><br><span class="line">        (<span class="string">"std_scaler"</span>,StandardScaler()),</span><br><span class="line">        (<span class="string">"ridge_reg"</span>,Ridge(alpha=alpha))</span><br><span class="line">    ])</span><br><span class="line">    <span class="keyword">return</span> pipeline</span><br></pre></td></tr></tbody></table></figure>
+<p>alpha = 0，即普通多项式回归。</p>
+<p><img src="https://z3.ax1x.com/2021/10/18/5UMrqJ.png" alt=""></p>
+<p>alpha = 1e-4，曲线一下子就柔和了。</p>
+<p><img src="https://z3.ax1x.com/2021/10/18/5UQeL4.png" alt=""></p>
+<p>alpha = 100，有点像二次曲线了。</p>
+<p><img src="https://z3.ax1x.com/2021/10/18/5UQJyD.png" alt=""></p>
+<p>alpha → $\infty$，为了控制损失函数，只能将权重设为0。</p>
+<p><img src="https://z3.ax1x.com/2021/10/18/5UQhYq.png" alt=""></p>
+<h4 id="5-Tensorflow-岭回归实现"><a href="#5-Tensorflow-岭回归实现" class="headerlink" title="5. Tensorflow 岭回归实现"></a>5. Tensorflow 岭回归实现</h4><p>为了能够过拟合，只设置了20个训练样本，每个样本有 200 个特征。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">n_train = <span class="number">20</span></span><br><span class="line">n_test = <span class="number">100</span></span><br><span class="line">num_inputs = <span class="number">200</span></span><br><span class="line">batch_size = <span class="number">5</span></span><br><span class="line">num_outputs = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">true_w, true_b = tf.ones([num_inputs, <span class="number">1</span>]) * <span class="number">0.01</span>, <span class="number">0.05</span></span><br><span class="line">train_data = d2l.synthetic_data(true_w, true_b, n_train)</span><br><span class="line">test_data = d2l.synthetic_data(true_w, true_b, n_test)</span><br><span class="line">train_iter = d2l.load_array(train_data, batch_size)</span><br><span class="line">test_iter = d2l.load_array(test_data, batch_size, is_train=<span class="literal">False</span>)</span><br></pre></td></tr></tbody></table></figure>
+<p>参数初始化，线性模型没那么多讲究，初始化为0也行。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">init_params</span>(<span class="params">num_inputs, num_outputs</span>):</span></span><br><span class="line">    W = tf.Variable(tf.random.normal(mean=<span class="number">1</span>, shape=(num_inputs, <span class="number">1</span>)))</span><br><span class="line">    b = tf.Variable(tf.zeros(num_outputs))</span><br><span class="line">    <span class="keyword">return</span> [W, b]</span><br><span class="line"></span><br><span class="line">W, b = init_params(num_inputs, num_outputs)</span><br></pre></td></tr></tbody></table></figure>
+<p>网络模型</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 线性模型</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">net</span>(<span class="params">X</span>):</span></span><br><span class="line">    <span class="keyword">return</span> X @ W + b</span><br><span class="line"></span><br><span class="line"><span class="comment"># L2正则化</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">l2_penalty</span>(<span class="params">W</span>):</span></span><br><span class="line">    <span class="keyword">return</span> tf.reduce_sum(tf.<span class="built_in">pow</span>(W, <span class="number">2</span>)) / <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># MSE损失函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">loss</span>(<span class="params">y, y_hat</span>):</span></span><br><span class="line">    <span class="keyword">return</span> tf.reduce_mean(tf.square(y - y_hat))</span><br></pre></td></tr></tbody></table></figure>
+<p>训练函数</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train</span>(<span class="params">lambd, epochs = <span class="number">100</span>, lr = <span class="number">0.003</span></span>):</span></span><br><span class="line">    animator = d2l.Animator(xlabel=<span class="string">'epochs'</span>, ylabel=<span class="string">'loss'</span>, yscale=<span class="string">'log'</span>,</span><br><span class="line">                            xlim=[<span class="number">5</span>, epochs], legend=[<span class="string">'train'</span>, <span class="string">'test'</span>])</span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(epochs):</span><br><span class="line">        <span class="keyword">for</span> X, y <span class="keyword">in</span> train_iter:</span><br><span class="line">            <span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">                <span class="comment"># 最终损失函数添加正则化项</span></span><br><span class="line">                l = loss(y, net(X)) + lambd * l2_penalty(W)</span><br><span class="line">            grads = tape.gradient(l, [W, b])</span><br><span class="line">            <span class="keyword">for</span> param, grad <span class="keyword">in</span> <span class="built_in">zip</span>([W, b], grads):</span><br><span class="line">                param.assign_sub(grad * lr)</span><br><span class="line">        <span class="keyword">if</span> (epoch + <span class="number">1</span>) % <span class="number">5</span> == <span class="number">0</span>:</span><br><span class="line">            animator.add(epoch +<span class="number">1</span>, (d2l.evaluate_loss(net, train_iter, loss),</span><br><span class="line">                                   (d2l.evaluate_loss(net, test_iter, loss))))</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"W的L2范数是"</span>, tf.norm(W).numpy())</span><br></pre></td></tr></tbody></table></figure>
+<p>train(lambd = 0)</p>
+<p>模型没有泛化，光是训练误差减小，典型的过拟合。</p>
+<p><img src="https://z3.ax1x.com/2021/10/17/5t4RR1.png" alt=""></p>
+<p>train(lambd = 3)</p>
+<p>训练和测试误差都在同步降低，且两者差距较上述过拟合之下减小了不少。</p>
+<p><img src="https://z3.ax1x.com/2021/10/17/5tIZ9A.png" alt=""></p>
+<p>train(lambd = 20)</p>
+<p>同上，效果更好了。</p>
+<p><img src="https://z3.ax1x.com/2021/10/17/5tIKnf.png" alt=""></p>
+<p>train(lambd = 100)</p>
+<p>虽然图形十分曲折，但总体趋势是在下降且损失更低了。</p>
+<p><img src="https://z3.ax1x.com/2021/10/17/5tIJ9s.png" alt=""></p>
+<h4 id="6-LASSO-回归"><a href="#6-LASSO-回归" class="headerlink" title="6. LASSO 回归"></a>6. LASSO 回归</h4><p>和岭回归类似，但正则项使用的是 L1 范数。但绝对值就意味着不可导，不好优化。</p>
+<p>$loss = l(w, b) + λ||W||,\quad\quad ||W|| = \sum |W|$</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> Lasso</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">LassoRegression</span>(<span class="params">degree,alpha</span>):</span></span><br><span class="line">    pipeline = Pipeline([</span><br><span class="line">        (<span class="string">"poly"</span>,PolynomialFeatures(degree = degree)),</span><br><span class="line">        (<span class="string">"std_scaler"</span>,StandardScaler()),</span><br><span class="line">        (<span class="string">"lasso_reg"</span>,Lasso(alpha=alpha))</span><br><span class="line">    ])</span><br><span class="line">    <span class="keyword">return</span> pipeline</span><br></pre></td></tr></tbody></table></figure>
+<p>alpha = 0</p>
+<p><img src="https://z3.ax1x.com/2021/10/18/5UlPne.png" alt=""></p>
+<p>alpha = 0.1</p>
+<p><img src="https://z3.ax1x.com/2021/10/18/5UlEtI.png" alt=""></p>
+<p>alpha = 1</p>
+<p><img src="https://z3.ax1x.com/2021/10/18/5Ulm1f.png" alt=""></p>
+<p>alpha = 10</p>
+<p><img src="https://z3.ax1x.com/2021/10/18/5UlMng.png" alt=""></p>
+<p>通过对比，可以发现一个比较有意思的事情。Ridge 回归在增大 alpha 时，曲线还是<code>弯曲的</code>，但没那么陡峭，因为权重都比较小。而 LASSO 回归在增大 alpha 时，并没有那么多弯曲的地方，因此它的权重大部分都是0。</p>
+<p>至于为什么会这样呢？这也和他们正则化项的式子有关。</p>
+<h4 id="7-Ridge-和-LASSO-区别"><a href="#7-Ridge-和-LASSO-区别" class="headerlink" title="7. Ridge 和 LASSO 区别"></a>7. Ridge 和 LASSO 区别</h4><p><strong>Ridge 回归</strong> 的梯度是会随着离极值点越近而渐渐<code>变小</code>的，因此所有的参数是同步在更新，从图像上来看就是沿着梯度慢慢想极值点靠拢，因此不会有很多权重被设为0。</p>
+<p><img src="https://z3.ax1x.com/2021/10/18/5UlxEj.png" alt=""></p>
+<p><strong>LASSO 回归</strong> 的梯度是一个定值，只能由 η 来控制大小，这样就会造成部分权重会早早停在零点，这可以起到一定的特征筛选的作用，虽然也有可能将有用的特征也筛选掉。</p>
+<p><img src="https://z3.ax1x.com/2021/10/18/5U3pee.png" alt=""></p>
+<h4 id="8-弹性网络"><a href="#8-弹性网络" class="headerlink" title="8. 弹性网络"></a>8. 弹性网络</h4><p>顾名思义，是个弹性(折中)的网络，它结合岭回归和 LASSO 回归的思想。</p>
+<p>$loss = l(w, b) + γλ||W|| + \frac{(1-γ)}{2}λ||W||^2,\quad\quad γ∈[0,1]$</p>
+<p>γ 代表一种比率，取值为 0% ~ 100%，当γ = 0时，该弹性网络为岭回归；当γ = 1时，该弹性网络为 LASSO 回归。</p>
+<h2 id="二、丢弃法"><a href="#二、丢弃法" class="headerlink" title="二、丢弃法"></a>二、丢弃法</h2><p>丢弃法，又称 <strong>DropOut</strong>，具体做法是在每一层输出后，随机将一定量的输出置为0。那么这么做的目的是为什么呢？</p>
+<p>一个好的模型需要对输入数据的扰动<strong>鲁棒</strong>。</p>
+<ul>
+<li>使用有噪音的数据等价于正则化。</li>
+<li>丢弃法则是在层之间加入噪音，同时也降低了模型的容量。</li>
+</ul>
+<p><img src="https://z3.ax1x.com/2021/10/18/5admbq.png" alt=""></p>
+<p>诶，那么这时有人要问了，你这随机置为0，对x的期望都变掉了。为了防止这样的情况，我们不单单是对数据置0，对另一部分的数据也要改动，保证期望不变。</p>
+<p>注：p 是一个概率值，将神经元置为0的比率，$p∈[0,1]$。</p>
+<p><img src="https://z3.ax1x.com/2021/10/18/5awNlQ.png" alt=""></p>
+<script type="math/tex; mode=display">
+Ex_i' = p * X_i * 0 + (1-p) \frac{x_i}{1-p} = x_i</script><p>左边没有 Dropout，右边有 Dropout。</p>
+<p><img src="https://z3.ax1x.com/2021/10/18/5a0N4K.png" alt=""></p>
+<p><strong>总结</strong></p>
+<ul>
+<li>丢弃法将一些输出项随机置0来控制模型复杂度。</li>
+<li>常作用在多层感知机的隐藏层输出上。</li>
+<li>丢弃概率是控制模型复杂度的超参数。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/10/16/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%9D%83%E9%87%8D%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96/" rel="prev" title="神经网络权重的初始化">
+      <i class="fa fa-chevron-left"></i> 神经网络权重的初始化
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/10/18/Mybatis/" rel="next" title="Mybatis">
+      Mybatis <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%AD%A3%E5%88%99%E5%8C%96"><span class="nav-number">1.</span> <span class="nav-text">一、正则化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E6%AD%A3%E5%88%99%E5%8C%96%EF%BC%9F"><span class="nav-number">1.0.1.</span> <span class="nav-text">1. 什么是正则化？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%A6%82%E4%BD%95%E5%BD%B1%E5%93%8D%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%EF%BC%9F"><span class="nav-number">1.0.2.</span> <span class="nav-text">2. 如何影响损失函数？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%8F%82%E6%95%B0%E6%9B%B4%E6%96%B0%E6%B3%95%E5%88%99"><span class="nav-number">1.0.3.</span> <span class="nav-text">3. 参数更新法则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E5%B2%AD%E5%9B%9E%E5%BD%92"><span class="nav-number">1.0.4.</span> <span class="nav-text">4. 岭回归</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-Tensorflow-%E5%B2%AD%E5%9B%9E%E5%BD%92%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.0.5.</span> <span class="nav-text">5. Tensorflow 岭回归实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-LASSO-%E5%9B%9E%E5%BD%92"><span class="nav-number">1.0.6.</span> <span class="nav-text">6. LASSO 回归</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-Ridge-%E5%92%8C-LASSO-%E5%8C%BA%E5%88%AB"><span class="nav-number">1.0.7.</span> <span class="nav-text">7. Ridge 和 LASSO 区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-%E5%BC%B9%E6%80%A7%E7%BD%91%E7%BB%9C"><span class="nav-number">1.0.8.</span> <span class="nav-text">8. 弹性网络</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E4%B8%A2%E5%BC%83%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">二、丢弃法</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="紫梦沁香"
+      src="/uploads/images/head-icon.jpg">
+  <p class="site-author-name" itemprop="name">紫梦沁香</p>
+  <div class="site-description" itemprop="description">如果说我看得比别人更远些，那是因为我站在巨人的肩膀上</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">39</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:1149911598@qq.com" title="E-Mail → mailto:1149911598@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">紫梦沁香</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'xxQvJd4TcJMGK327OtwyS41T-gzGzoHsz',
+      appKey     : 'GJqvYfNtvELk0Vvow1MAQo5i',
+      placeholder: "",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

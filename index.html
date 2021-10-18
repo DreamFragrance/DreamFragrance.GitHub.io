@@ -174,6 +174,636 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/18/Mybatis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/images/head-icon.jpg">
+      <meta itemprop="name" content="紫梦沁香">
+      <meta itemprop="description" content="如果说我看得比别人更远些，那是因为我站在巨人的肩膀上">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="紫梦沁香">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/10/18/Mybatis/" class="post-title-link" itemprop="url">Mybatis</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-10-18 16:44:08 / 修改时间：21:53:10" itemprop="dateCreated datePublished" datetime="2021-10-18T16:44:08+08:00">2021-10-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SSM/" itemprop="url" rel="index"><span itemprop="name">SSM</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/10/18/Mybatis/" class="post-meta-item leancloud_visitors" data-flag-title="Mybatis" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/10/18/Mybatis/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/10/18/Mybatis/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="1、简介"><a href="#1、简介" class="headerlink" title="1、简介"></a>1、简介</h2><h4 id="1-1、什么是Mybatis"><a href="#1-1、什么是Mybatis" class="headerlink" title="1.1、什么是Mybatis"></a>1.1、什么是Mybatis</h4><ul>
+<li>MyBatis 是一款优秀的持久层框架。</li>
+<li>它支持自定义 SQL、存储过程以及高级映射。</li>
+<li>MyBatis 免除了几乎所有的 JDBC 代码以及设置参数和获取结果集的工作。</li>
+<li>MyBatis 可以通过简单的 XML 或注解来配置和映射原始类型、接口和 Java POJO（Plain Old Java Objects，普通老式 Java 对象）为数据库中的记录。</li>
+<li>MyBatis 本是apache的一个开源项目 iBatis。</li>
+<li>2010年这个项目由 apache software foundation 迁移到了 google code，并且改名为MyBatis。</li>
+<li>2013年11月迁移到 Github。</li>
+</ul>
+<p>如何获取 Mybatis？</p>
+<ul>
+<li><p>maven 仓库：</p>
+<figure class="highlight xml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- https://mvnrepository.com/artifact/org.mybatis/mybatis --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mybatis<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.5.7<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>Github：<a target="_blank" rel="noopener" href="https://github.com/search?q=Mybatis">https://github.com/search?q=Mybatis</a></p>
+</li>
+<li><p>中文文档：<a target="_blank" rel="noopener" href="https://mybatis.net.cn/">https://mybatis.net.cn/</a></p>
+</li>
+</ul>
+<h4 id="1-2、持久化"><a href="#1-2、持久化" class="headerlink" title="1.2、持久化"></a>1.2、持久化</h4><p>数据持久化</p>
+<ul>
+<li>持久化就是将程序的数据在持久状态和瞬时状态转化的过程。</li>
+<li>内存<strong>断电即失</strong></li>
+</ul>
+<p>为什么需要持久化？</p>
+<ul>
+<li>有一些对象不能让他丢掉。</li>
+<li>内存太贵了。</li>
+</ul>
+<h4 id="1-3、持久层"><a href="#1-3、持久层" class="headerlink" title="1.3、持久层"></a>1.3、持久层</h4><p>Dao 层、Service 层、Controller 层……</p>
+<ul>
+<li>完成持久化工作的代码块</li>
+<li>层界限十分明显。</li>
+</ul>
+<h4 id="1-4、为什么需要Mybatis？"><a href="#1-4、为什么需要Mybatis？" class="headerlink" title="1.4、为什么需要Mybatis？"></a>1.4、为什么需要Mybatis？</h4><ul>
+<li>传统 JDBC 代码过于复杂冗余，而Mybatis 简洁了很多。</li>
+<li>方便简洁自动化，框架在背后帮我们做了很多事情。</li>
+</ul>
+<h2 id="2、第一个-Mybatis-程序"><a href="#2、第一个-Mybatis-程序" class="headerlink" title="2、第一个 Mybatis 程序"></a>2、第一个 Mybatis 程序</h2><p>添加 maven 依赖</p>
+<figure class="highlight xml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--mybatis--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mybatis<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.5.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--test--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.12<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--mysql--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.1.47<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+<p>mybatis 配置文件</p>
+<figure class="highlight xml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">configuration</span></span></span><br><span class="line"><span class="meta">        <span class="meta-keyword">PUBLIC</span> <span class="meta-string">"-//mybatis.org//DTD Config 3.0//EN"</span></span></span><br><span class="line"><span class="meta">        <span class="meta-string">"http://mybatis.org/dtd/mybatis-3-config.dtd"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">environments</span> <span class="attr">default</span>=<span class="string">"development"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">environment</span> <span class="attr">id</span>=<span class="string">"development"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">transactionManager</span> <span class="attr">type</span>=<span class="string">"JDBC"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">dataSource</span> <span class="attr">type</span>=<span class="string">"POOLED"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"driver"</span> <span class="attr">value</span>=<span class="string">"com.mysql.jdbc.Driver"</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"url"</span> <span class="attr">value</span>=<span class="string">"jdbc:mysql://localhost:3306/mybatis?useSSL=true<span class="symbol">&amp;amp;</span>useUnicode=true<span class="symbol">&amp;amp;</span>characterEncoding=UTF-8"</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"username"</span> <span class="attr">value</span>=<span class="string">"root"</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"password"</span> <span class="attr">value</span>=<span class="string">"123456"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">dataSource</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">environment</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">environments</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--注册mapper文件--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mappers</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">mapper</span> <span class="attr">resource</span>=<span class="string">"com/yqx/mapper/UserMapper.xml"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">mappers</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+<p>pojo 实体类</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yqx.pojo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>{</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getId</span><span class="params">()</span> </span>{</span><br><span class="line">        <span class="keyword">return</span> id;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setId</span><span class="params">(<span class="keyword">int</span> id)</span> </span>{</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>{</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>{</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAge</span><span class="params">()</span> </span>{</span><br><span class="line">        <span class="keyword">return</span> age;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span> </span>{</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"User{"</span> +</span><br><span class="line">                <span class="string">"id="</span> + id +</span><br><span class="line">                <span class="string">", name='"</span> + name + <span class="string">'\''</span> +</span><br><span class="line">                <span class="string">", age="</span> + age +</span><br><span class="line">                <span class="string">'}'</span>;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">User</span><span class="params">()</span> </span>{</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">User</span><span class="params">(<span class="keyword">int</span> id, String name, <span class="keyword">int</span> age)</span> </span>{</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>mapper.xml</p>
+<figure class="highlight xml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">mapper</span></span></span><br><span class="line"><span class="meta">        <span class="meta-keyword">PUBLIC</span> <span class="meta-string">"-//mybatis.org//DTD Mapper 3.0//EN"</span></span></span><br><span class="line"><span class="meta">        <span class="meta-string">"http://mybatis.org/dtd/mybatis-3-mapper.dtd"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">"com.yqx.mapper.UserMapper"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findUserById"</span> <span class="attr">resultType</span>=<span class="string">"com.yqx.pojo.User"</span>&gt;</span></span><br><span class="line">        select * from mybatis.user where id = #{id}</span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+<p>mapper.xml 放在 java 类中。不会被 maven 读取，需要在 pom.xml 中显式定义路径。</p>
+<figure class="highlight xml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">resource</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">directory</span>&gt;</span>src/main/resources<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">includes</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.properties<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.xml<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">includes</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">filtering</span>&gt;</span>true<span class="tag">&lt;/<span class="name">filtering</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">resource</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">directory</span>&gt;</span>src/main/java<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">includes</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.properties<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.xml<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">includes</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">filtering</span>&gt;</span>true<span class="tag">&lt;/<span class="name">filtering</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+<p>mapper 类</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yqx.mapper;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.yqx.pojo.User;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserMapper</span> </span>{</span><br><span class="line">     <span class="function">User <span class="title">findUserById</span><span class="params">(<span class="keyword">int</span> id)</span></span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>SqlSession 工具类</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yqx.utils;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.io.Resources;</span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.session.SqlSession;</span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.session.SqlSessionFactory;</span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.session.SqlSessionFactoryBuilder;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.InputStream;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyBatisUtil</span> </span>{</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> SqlSessionFactory sqlSessionFactory;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> {</span><br><span class="line">        String resource = <span class="string">"mybatis-config.xml"</span>;</span><br><span class="line">        InputStream inputStream = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> {</span><br><span class="line">            inputStream = Resources.getResourceAsStream(resource);</span><br><span class="line">        } <span class="keyword">catch</span> (IOException e) {</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        }</span><br><span class="line">        sqlSessionFactory = <span class="keyword">new</span> SqlSessionFactoryBuilder().build(inputStream);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SqlSession <span class="title">getSession</span><span class="params">()</span></span>{</span><br><span class="line">        <span class="keyword">return</span> sqlSessionFactory.openSession();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>Test 测试类</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yqx.mapper;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.yqx.utils.MyBatisUtil;</span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.session.SqlSession;</span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MapperTest</span> </span>{</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span>{</span><br><span class="line">        SqlSession sqlSession = MyBatisUtil.getSession();</span><br><span class="line">        UserMapper mapper = sqlSession.getMapper(UserMapper.class);</span><br><span class="line">        System.out.println(mapper.findUserById(<span class="number">5</span>));</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/17/%E9%99%8D%E4%BD%8E%E8%BF%87%E6%8B%9F%E5%90%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/images/head-icon.jpg">
+      <meta itemprop="name" content="紫梦沁香">
+      <meta itemprop="description" content="如果说我看得比别人更远些，那是因为我站在巨人的肩膀上">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="紫梦沁香">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/10/17/%E9%99%8D%E4%BD%8E%E8%BF%87%E6%8B%9F%E5%90%88/" class="post-title-link" itemprop="url">降低过拟合</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-17 15:32:10" itemprop="dateCreated datePublished" datetime="2021-10-17T15:32:10+08:00">2021-10-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-10-18 22:46:58" itemprop="dateModified" datetime="2021-10-18T22:46:58+08:00">2021-10-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-Learning/" itemprop="url" rel="index"><span itemprop="name">Deep Learning</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-Learning/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/10/17/%E9%99%8D%E4%BD%8E%E8%BF%87%E6%8B%9F%E5%90%88/" class="post-meta-item leancloud_visitors" data-flag-title="降低过拟合" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/10/17/%E9%99%8D%E4%BD%8E%E8%BF%87%E6%8B%9F%E5%90%88/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/10/17/%E9%99%8D%E4%BD%8E%E8%BF%87%E6%8B%9F%E5%90%88/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在训练模型的过程中，过拟合几乎是不可避免的。因此可以这么说，深度学习就是训练一个庞大的模型，在此基础上我们来降低过拟合的程度。相较之下，如果模型欠拟合了，貌似除了扩大模型就没有任何方法了。</p>
+<p>下面介绍几个常用的降低过拟合的方法。</p>
+<h2 id="一、正则化"><a href="#一、正则化" class="headerlink" title="一、正则化"></a>一、正则化</h2><h4 id="1-什么是正则化？"><a href="#1-什么是正则化？" class="headerlink" title="1. 什么是正则化？"></a>1. 什么是正则化？</h4><p>正则化的思想，即通过<code>限制</code>参数值的选择范围来控制模型容量。而正则化又分为岭回归（权重衰退）、LASSO 回归和弹性网络等。下面我着重说明的是岭回归。</p>
+<p>首先，先来看一张极度过拟合的图像。</p>
+<p><img src="https://z3.ax1x.com/2021/10/17/5tSi5t.png" alt=""></p>
+<p>这是上述图像的部分权重，无一例外，每个 $W_i$ 都极其的大，这也导致了图像十分的<code>陡峭</code>。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">array([-<span class="number">4.09493627e+11</span>,  <span class="number">5.76349998e+12</span>,  <span class="number">1.71369179e+11</span>, -<span class="number">9.99031499e+12</span>,</span><br><span class="line">        <span class="number">9.23500127e+11</span>,  <span class="number">9.26094018e+12</span>, -<span class="number">1.94635409e+12</span>, -<span class="number">5.40895631e+10</span>,</span><br><span class="line">        <span class="number">7.94601628e+11</span>, -<span class="number">7.85418293e+12</span>,  <span class="number">1.63904594e+12</span>,  <span class="number">1.67984971e+12</span>,</span><br><span class="line">       -<span class="number">9.87156668e+11</span>,  <span class="number">6.88721582e+12</span>, -<span class="number">1.64914180e+12</span>,  <span class="number">3.50775793e+11</span>,</span><br><span class="line">        <span class="number">2.60751888e+11</span>, -<span class="number">5.87372086e+12</span>,  <span class="number">1.66748622e+12</span>, -<span class="number">3.77434047e+12</span>,</span><br><span class="line">        <span class="number">1.00605169e+12</span>,  <span class="number">2.34190394e+12</span>, -<span class="number">8.57867266e+11</span>,  <span class="number">5.39077331e+12</span>,</span><br><span class="line">       -<span class="number">1.60621032e+12</span>,  <span class="number">2.95930952e+12</span>, -<span class="number">9.52432067e+11</span>, -<span class="number">1.74889800e+12</span>])</span><br></pre></td></tr></tbody></table></figure>
+<p>因此很自然而然地就能想到，那我限制 $W_i$ 的选择范围就行了嘛。从模型的角度来说，参数数量不变，但参数的选择范围小了，那模型自然也变小了。</p>
+<p>于是就有了使用均方范数作为<code>硬性</code>限制，小的 θ 意味着更强的正则项。</p>
+<p>需要注意的是，偏置 <strong>b</strong> 并没有加入到正则化中来，毕竟我们的目标是让曲线更加的<code>平缓</code>，跟偏置 <strong>b</strong> 没有什么关系。</p>
+<p>$min l(w,b) \quad subject\ to \quad ||W||^2 \le θ,\quad\quad ||W||^2 = \sum W^2$</p>
+<p>但硬性限制优化求导比较麻烦，结果也会比较<code>硬</code>，一般使用均方范数作为<code>柔性</code>限制。</p>
+<p>$loss = l(w, b) + \frac{λ}{2}||W||^2$</p>
+<p>其中超参数 λ 控制了正则项的重要程度</p>
+<ul>
+<li>λ = 0，即无正则化，和普通的损失函数没有区别。</li>
+<li>λ → $\infty$，此时 W → <strong>0</strong></li>
+</ul>
+<h4 id="2-如何影响损失函数？"><a href="#2-如何影响损失函数？" class="headerlink" title="2. 如何影响损失函数？"></a>2. 如何影响损失函数？</h4><p>可以看到，原先的极值点 $\widetilde{W}^*$ 在绿色椭圆的圆心，但在加入正则化项之后，极值点在两者之间做了一个权衡，取在了切点。</p>
+<p><img src="https://z3.ax1x.com/2021/10/17/5tFpqS.png" alt=""></p>
+<h4 id="3-参数更新法则"><a href="#3-参数更新法则" class="headerlink" title="3. 参数更新法则"></a>3. 参数更新法则</h4><ul>
+<li><p>计算梯度</p>
+<p>$\frac{\partial}{\partial W}(l(W, b) + \frac{λ}{2}||W||^2) = \frac{\partial l(W, b)}{\partial W} + λW$</p>
+</li>
+<li><p>更新参数</p>
+<p>$W’ = W - η(\frac{\partial l(W, b)}{\partial W} + λW) = (1 - ηλ)W - η\frac{\partial l(W, b)}{\partial W}$</p>
+</li>
+</ul>
+<p>通常 ηλ &lt; 1，因此每次在参数更新时，都会对 W 进行<code>缩小</code>，也就是权重衰退这个名字的由来。</p>
+<h4 id="4-岭回归"><a href="#4-岭回归" class="headerlink" title="4. 岭回归"></a>4. 岭回归</h4><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">RidgeRegression</span>(<span class="params">degree,alpha</span>):</span></span><br><span class="line">    pipeline = Pipeline([</span><br><span class="line">        (<span class="string">"poly"</span>,PolynomialFeatures(degree = degree)),</span><br><span class="line">        (<span class="string">"std_scaler"</span>,StandardScaler()),</span><br><span class="line">        (<span class="string">"ridge_reg"</span>,Ridge(alpha=alpha))</span><br><span class="line">    ])</span><br><span class="line">    <span class="keyword">return</span> pipeline</span><br></pre></td></tr></tbody></table></figure>
+<p>alpha = 0，即普通多项式回归。</p>
+<p><img src="https://z3.ax1x.com/2021/10/18/5UMrqJ.png" alt=""></p>
+<p>alpha = 1e-4，曲线一下子就柔和了。</p>
+<p><img src="https://z3.ax1x.com/2021/10/18/5UQeL4.png" alt=""></p>
+<p>alpha = 100，有点像二次曲线了。</p>
+<p><img src="https://z3.ax1x.com/2021/10/18/5UQJyD.png" alt=""></p>
+<p>alpha → $\infty$，为了控制损失函数，只能将权重设为0。</p>
+<p><img src="https://z3.ax1x.com/2021/10/18/5UQhYq.png" alt=""></p>
+<h4 id="5-Tensorflow-岭回归实现"><a href="#5-Tensorflow-岭回归实现" class="headerlink" title="5. Tensorflow 岭回归实现"></a>5. Tensorflow 岭回归实现</h4><p>为了能够过拟合，只设置了20个训练样本，每个样本有 200 个特征。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">n_train = <span class="number">20</span></span><br><span class="line">n_test = <span class="number">100</span></span><br><span class="line">num_inputs = <span class="number">200</span></span><br><span class="line">batch_size = <span class="number">5</span></span><br><span class="line">num_outputs = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">true_w, true_b = tf.ones([num_inputs, <span class="number">1</span>]) * <span class="number">0.01</span>, <span class="number">0.05</span></span><br><span class="line">train_data = d2l.synthetic_data(true_w, true_b, n_train)</span><br><span class="line">test_data = d2l.synthetic_data(true_w, true_b, n_test)</span><br><span class="line">train_iter = d2l.load_array(train_data, batch_size)</span><br><span class="line">test_iter = d2l.load_array(test_data, batch_size, is_train=<span class="literal">False</span>)</span><br></pre></td></tr></tbody></table></figure>
+<p>参数初始化，线性模型没那么多讲究，初始化为0也行。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">init_params</span>(<span class="params">num_inputs, num_outputs</span>):</span></span><br><span class="line">    W = tf.Variable(tf.random.normal(mean=<span class="number">1</span>, shape=(num_inputs, <span class="number">1</span>)))</span><br><span class="line">    b = tf.Variable(tf.zeros(num_outputs))</span><br><span class="line">    <span class="keyword">return</span> [W, b]</span><br><span class="line"></span><br><span class="line">W, b = init_params(num_inputs, num_outputs)</span><br></pre></td></tr></tbody></table></figure>
+<p>网络模型</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 线性模型</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">net</span>(<span class="params">X</span>):</span></span><br><span class="line">    <span class="keyword">return</span> X @ W + b</span><br><span class="line"></span><br><span class="line"><span class="comment"># L2正则化</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">l2_penalty</span>(<span class="params">W</span>):</span></span><br><span class="line">    <span class="keyword">return</span> tf.reduce_sum(tf.<span class="built_in">pow</span>(W, <span class="number">2</span>)) / <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># MSE损失函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">loss</span>(<span class="params">y, y_hat</span>):</span></span><br><span class="line">    <span class="keyword">return</span> tf.reduce_mean(tf.square(y - y_hat))</span><br></pre></td></tr></tbody></table></figure>
+<p>训练函数</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train</span>(<span class="params">lambd, epochs = <span class="number">100</span>, lr = <span class="number">0.003</span></span>):</span></span><br><span class="line">    animator = d2l.Animator(xlabel=<span class="string">'epochs'</span>, ylabel=<span class="string">'loss'</span>, yscale=<span class="string">'log'</span>,</span><br><span class="line">                            xlim=[<span class="number">5</span>, epochs], legend=[<span class="string">'train'</span>, <span class="string">'test'</span>])</span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(epochs):</span><br><span class="line">        <span class="keyword">for</span> X, y <span class="keyword">in</span> train_iter:</span><br><span class="line">            <span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">                <span class="comment"># 最终损失函数添加正则化项</span></span><br><span class="line">                l = loss(y, net(X)) + lambd * l2_penalty(W)</span><br><span class="line">            grads = tape.gradient(l, [W, b])</span><br><span class="line">            <span class="keyword">for</span> param, grad <span class="keyword">in</span> <span class="built_in">zip</span>([W, b], grads):</span><br><span class="line">                param.assign_sub(grad * lr)</span><br><span class="line">        <span class="keyword">if</span> (epoch + <span class="number">1</span>) % <span class="number">5</span> == <span class="number">0</span>:</span><br><span class="line">            animator.add(epoch +<span class="number">1</span>, (d2l.evaluate_loss(net, train_iter, loss),</span><br><span class="line">                                   (d2l.evaluate_loss(net, test_iter, loss))))</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"W的L2范数是"</span>, tf.norm(W).numpy())</span><br></pre></td></tr></tbody></table></figure>
+<p>train(lambd = 0)</p>
+<p>模型没有泛化，光是训练误差减小，典型的过拟合。</p>
+<p><img src="https://z3.ax1x.com/2021/10/17/5t4RR1.png" alt=""></p>
+<p>train(lambd = 3)</p>
+<p>训练和测试误差都在同步降低，且两者差距较上述过拟合之下减小了不少。</p>
+<p><img src="https://z3.ax1x.com/2021/10/17/5tIZ9A.png" alt=""></p>
+<p>train(lambd = 20)</p>
+<p>同上，效果更好了。</p>
+<p><img src="https://z3.ax1x.com/2021/10/17/5tIKnf.png" alt=""></p>
+<p>train(lambd = 100)</p>
+<p>虽然图形十分曲折，但总体趋势是在下降且损失更低了。</p>
+<p><img src="https://z3.ax1x.com/2021/10/17/5tIJ9s.png" alt=""></p>
+<h4 id="6-LASSO-回归"><a href="#6-LASSO-回归" class="headerlink" title="6. LASSO 回归"></a>6. LASSO 回归</h4><p>和岭回归类似，但正则项使用的是 L1 范数。但绝对值就意味着不可导，不好优化。</p>
+<p>$loss = l(w, b) + λ||W||,\quad\quad ||W|| = \sum |W|$</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> Lasso</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">LassoRegression</span>(<span class="params">degree,alpha</span>):</span></span><br><span class="line">    pipeline = Pipeline([</span><br><span class="line">        (<span class="string">"poly"</span>,PolynomialFeatures(degree = degree)),</span><br><span class="line">        (<span class="string">"std_scaler"</span>,StandardScaler()),</span><br><span class="line">        (<span class="string">"lasso_reg"</span>,Lasso(alpha=alpha))</span><br><span class="line">    ])</span><br><span class="line">    <span class="keyword">return</span> pipeline</span><br></pre></td></tr></tbody></table></figure>
+<p>alpha = 0</p>
+<p><img src="https://z3.ax1x.com/2021/10/18/5UlPne.png" alt=""></p>
+<p>alpha = 0.1</p>
+<p><img src="https://z3.ax1x.com/2021/10/18/5UlEtI.png" alt=""></p>
+<p>alpha = 1</p>
+<p><img src="https://z3.ax1x.com/2021/10/18/5Ulm1f.png" alt=""></p>
+<p>alpha = 10</p>
+<p><img src="https://z3.ax1x.com/2021/10/18/5UlMng.png" alt=""></p>
+<p>通过对比，可以发现一个比较有意思的事情。Ridge 回归在增大 alpha 时，曲线还是<code>弯曲的</code>，但没那么陡峭，因为权重都比较小。而 LASSO 回归在增大 alpha 时，并没有那么多弯曲的地方，因此它的权重大部分都是0。</p>
+<p>至于为什么会这样呢？这也和他们正则化项的式子有关。</p>
+<h4 id="7-Ridge-和-LASSO-区别"><a href="#7-Ridge-和-LASSO-区别" class="headerlink" title="7. Ridge 和 LASSO 区别"></a>7. Ridge 和 LASSO 区别</h4><p><strong>Ridge 回归</strong> 的梯度是会随着离极值点越近而渐渐<code>变小</code>的，因此所有的参数是同步在更新，从图像上来看就是沿着梯度慢慢想极值点靠拢，因此不会有很多权重被设为0。</p>
+<p><img src="https://z3.ax1x.com/2021/10/18/5UlxEj.png" alt=""></p>
+<p><strong>LASSO 回归</strong> 的梯度是一个定值，只能由 η 来控制大小，这样就会造成部分权重会早早停在零点，这可以起到一定的特征筛选的作用，虽然也有可能将有用的特征也筛选掉。</p>
+<p><img src="https://z3.ax1x.com/2021/10/18/5U3pee.png" alt=""></p>
+<h4 id="8-弹性网络"><a href="#8-弹性网络" class="headerlink" title="8. 弹性网络"></a>8. 弹性网络</h4><p>顾名思义，是个弹性(折中)的网络，它结合岭回归和 LASSO 回归的思想。</p>
+<p>$loss = l(w, b) + γλ||W|| + \frac{(1-γ)}{2}λ||W||^2,\quad\quad γ∈[0,1]$</p>
+<p>γ 代表一种比率，取值为 0% ~ 100%，当γ = 0时，该弹性网络为岭回归；当γ = 1时，该弹性网络为 LASSO 回归。</p>
+<h2 id="二、丢弃法"><a href="#二、丢弃法" class="headerlink" title="二、丢弃法"></a>二、丢弃法</h2><p>丢弃法，又称 <strong>DropOut</strong>，具体做法是在每一层输出后，随机将一定量的输出置为0。那么这么做的目的是为什么呢？</p>
+<p>一个好的模型需要对输入数据的扰动<strong>鲁棒</strong>。</p>
+<ul>
+<li>使用有噪音的数据等价于正则化。</li>
+<li>丢弃法则是在层之间加入噪音，同时也降低了模型的容量。</li>
+</ul>
+<p><img src="https://z3.ax1x.com/2021/10/18/5admbq.png" alt=""></p>
+<p>诶，那么这时有人要问了，你这随机置为0，对x的期望都变掉了。为了防止这样的情况，我们不单单是对数据置0，对另一部分的数据也要改动，保证期望不变。</p>
+<p>注：p 是一个概率值，将神经元置为0的比率，$p∈[0,1]$。</p>
+<p><img src="https://z3.ax1x.com/2021/10/18/5awNlQ.png" alt=""></p>
+<script type="math/tex; mode=display">
+Ex_i' = p * X_i * 0 + (1-p) \frac{x_i}{1-p} = x_i</script><p>左边没有 Dropout，右边有 Dropout。</p>
+<p><img src="https://z3.ax1x.com/2021/10/18/5a0N4K.png" alt=""></p>
+<p><strong>总结</strong></p>
+<ul>
+<li>丢弃法将一些输出项随机置0来控制模型复杂度。</li>
+<li>常作用在多层感知机的隐藏层输出上。</li>
+<li>丢弃概率是控制模型复杂度的超参数。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/16/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%9D%83%E9%87%8D%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/images/head-icon.jpg">
+      <meta itemprop="name" content="紫梦沁香">
+      <meta itemprop="description" content="如果说我看得比别人更远些，那是因为我站在巨人的肩膀上">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="紫梦沁香">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/10/16/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%9D%83%E9%87%8D%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96/" class="post-title-link" itemprop="url">神经网络权重的初始化</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-10-16 16:10:01 / 修改时间：19:57:58" itemprop="dateCreated datePublished" datetime="2021-10-16T16:10:01+08:00">2021-10-16</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-Learning/" itemprop="url" rel="index"><span itemprop="name">Deep Learning</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/10/16/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%9D%83%E9%87%8D%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96/" class="post-meta-item leancloud_visitors" data-flag-title="神经网络权重的初始化" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/10/16/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%9D%83%E9%87%8D%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/10/16/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%9D%83%E9%87%8D%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>当我们在训练一个神经网络的时候，参数的随机初始化是非常重要的，对于逻辑回归来说，可以将权重初始化为0。而对于神经网络而言，这样做将会导致梯度下降算法无法起作用。</p>
+<h2 id="1-为什么使用于逻辑回归？"><a href="#1-为什么使用于逻辑回归？" class="headerlink" title="1. 为什么使用于逻辑回归？"></a>1. 为什么使用于逻辑回归？</h2><p>如下图所示，其中$X_1$ 和 $X_2$ 是特征值。</p>
+<p><img src="https://z3.ax1x.com/2021/10/16/5JSZ2F.png" alt=""></p>
+<p><strong>前向传播</strong>：</p>
+<p>$a_1 = sigmoid(X_1 <em> W_1 + X_2 </em> W_2 + b)$</p>
+<p>$loss = -ylog(a_1) - (1 - y)log(1 - a_1)$</p>
+<p><strong>反向传播</strong>：</p>
+<p>$da_1 = -\frac{y}{a_1} + \frac{1 - y}{1 - a_1}$</p>
+<p>$dw_1 = da_1 <em> a’_1 </em> X_1 = (a_1 - y) * X_1$</p>
+<p>$dw_2 = da_1 <em> a’_1 </em> X_2 = (a_1 - y) * X_2$</p>
+<p>$db = da_1 <em> a’_1 </em> 1 = a_1 - y$</p>
+<p><strong>参数更新</strong>：</p>
+<p>$W_1 = w_1 - η * dw_1$</p>
+<p>$W_2 = w_2 - η * dw_2$</p>
+<p>$b = b - η * db$</p>
+<p>可以看到， $W_1$ 和 $W_2$  并不影响 $dw_1$ 和 $dw_2$ 的值，而是根据 $X_1$ 和 $X_2$ 的不同而改变，且不为0，模型的权重能够得到更新。因此即使我们将 $W_1$ 和 $W_2$ 初始化为0也无所谓。参数 同理。</p>
+<h2 id="2-为什么不适用于神经网络"><a href="#2-为什么不适用于神经网络" class="headerlink" title="2. 为什么不适用于神经网络?"></a>2. 为什么不适用于神经网络?</h2><p>神经网络结构图如下。</p>
+<p><img src="https://z3.ax1x.com/2021/10/16/5J9qER.png" alt=""></p>
+<p><strong>前向传播</strong>：</p>
+<p>$a_1 = f(X_1 <em> W_{11} + X_2 </em> W_{21} + b_1)$</p>
+<p>$a_2 = f(X_1 <em> W_{12} + X_2 </em> W_{22} + b_2)$</p>
+<p>$a_3 = sigmoid(a_1 <em> W_{13} + a_2 </em> W_{23} + b_3)$</p>
+<p>$loss = -ylog(a_3) - (1 - y)log(1 - a_3)$</p>
+<p><strong>反向传播</strong>：</p>
+<p>$da_3 = -\frac{y}{a_3} + \frac{1 - y}{1 - a_3}$</p>
+<p>$dw_{13} = da_3 <em> a’_3 </em> a_1 = (a_3 - y) * a_1$</p>
+<p>$dw_{23} = da_3 <em> a’_3 </em> a_2 = (a_3 - y) * a_2$</p>
+<p>$db_{3} = da_3 <em> a’_3 </em> 1 = a_3 - y$</p>
+<p>$da_1 = da_3 <em> a’_3 </em> W_{13} = (a_3 - y) * W_{13}$</p>
+<p>$da_2 = da_3 <em> a’_3 </em> W_{23} = (a_3 - y) * W_{23}$</p>
+<p>$dw_{12} = da_2 <em> a’_2 </em> X_1$</p>
+<p>$dw_{22} = da_2 <em> a’_2 </em> X_2$</p>
+<p>$db_{2} = da_2 * a’_2$</p>
+<p>$dw_{11} = da_1 <em> a’_1 </em> X_1$</p>
+<p>$dw_{21} = da_1 <em> a’_1 </em> X_2$</p>
+<p>$db_{1} = da_1 * a’_1$</p>
+<p><strong>参数更新</strong>：</p>
+<p>$W_1 = w_1 - η * dw_1$</p>
+<p>$W_2 = w_2 - η * dw_2$</p>
+<p>$b = b - η * db$</p>
+<p>根据上述的详细公式，我们分析一下3种情况：</p>
+<ul>
+<li>模型所有权重 W 初始化为0，所有偏置 b 初始化为0</li>
+<li>模型所有权重 W 初始化为0，所有偏置 b 随机初始化</li>
+<li>模型所有的权重 W 随机初始化，所有偏置 b 初始化为0</li>
+</ul>
+<h4 id="2-1-模型所有权重-W-初始化为0，所有偏置-b-初始化为0"><a href="#2-1-模型所有权重-W-初始化为0，所有偏置-b-初始化为0" class="headerlink" title="2.1 模型所有权重 W 初始化为0，所有偏置 b 初始化为0"></a>2.1 模型所有权重 W 初始化为0，所有偏置 b 初始化为0</h4><p>在此情况下， 第一个 batch 的前向传播过程时，$a_1 = f(0), a_2 = f(0), a_3 = sigmoid(0)$。在反向传播进行参数更新的时候，会发现 $a_1 = a_2 = f(0) \ \  =&gt;\ \  dw_{13} = dw_{23}$，$W_{13} = W_{23} = 0 \ \  =&gt; \ \ da_1 = da_2 = 0$。也就是说，在第一个 batch 中，只有 $W_{13}$ 和 ${W_{23}}$ 进行了更新并且<code>相等</code>，而其它参数均没有更新。</p>
+<p>而当第二个 batch 传给神经网络时，$W_{13} = W_{23} \neq 0 \ \  =&gt;\ \  da_1 = da_2 \ \ =&gt; dw_{21} = dw_{22},\ dw_{11} = dw_{12}$。</p>
+<p>以此类推，无论训练多少次，无论隐藏层神经元有多少个，由于权重的<code>对称性</code>，隐藏层神经单元的输出始终不变(权重相等)。我们希望不同的神经元能够有不同的输出，这样的神经网络才有意义。</p>
+<p><strong>总结：将权重 W 初始化为0，会导致同一隐藏层的所有神经元输出都一致。对于后期不同的 batch，每一隐藏层的权重都能得到更新，但是每一隐藏层神经元的权重都是一致的，多个隐藏神经元的作用就如同1个神经元。</strong></p>
+<h4 id="2-2-模型所有权重-W-初始化为0，所有偏置-b-随机初始化"><a href="#2-2-模型所有权重-W-初始化为0，所有偏置-b-随机初始化" class="headerlink" title="2.2 模型所有权重 W 初始化为0，所有偏置 b 随机初始化"></a>2.2 模型所有权重 W 初始化为0，所有偏置 b 随机初始化</h4><p>在此情况下，第一个 batch 的前向传播过程时，$a_1 = f(b_1), a_2 = f(b_2), a_3 = sigmoid(b_3)$，在反向传播过程时，$da_1 = da_2 = 0 \ \ =&gt; \ \ dw_{11} = dw_{12} = dw_{21} = dw_{22} = 0$，因此第一个 batch 中只有 $W_{13}, W_{23}$ 和 $B_{3}$ 能得到更新。</p>
+<p>同理，在第二个 batch 反向传播的过程中，由于 $W_{13}$ 和 $W_{23}$ 不为0，因此所有的参数都能得到更新。<strong>这种方式存在更新较慢、梯度消失、梯度爆炸等问题，在实践中，通常不会选择该方法。</strong></p>
+<h4 id="2-3-模型所有的权重-W-随机初始化，所有偏置-b-初始化为0"><a href="#2-3-模型所有的权重-W-随机初始化，所有偏置-b-初始化为0" class="headerlink" title="2.3 模型所有的权重 W 随机初始化，所有偏置 b 初始化为0"></a>2.3 模型所有的权重 W 随机初始化，所有偏置 b 初始化为0</h4><p>在此情况下，第一个 batch 的前向传播过程时，由于 $W_{13}$ 和 $W_{23}$ 不为0，因此所有的参数可以直接得到更新。</p>
+<h2 id="结论：在训练神经网络的时候，权重初始化要谨慎，不能初始化为0！"><a href="#结论：在训练神经网络的时候，权重初始化要谨慎，不能初始化为0！" class="headerlink" title="结论：在训练神经网络的时候，权重初始化要谨慎，不能初始化为0！"></a><strong>结论：在训练神经网络的时候，权重初始化要谨慎，不能初始化为0！</strong></h2>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/14/%E6%B3%A8%E8%A7%A3%E5%92%8C%E5%8F%8D%E5%B0%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/images/head-icon.jpg">
+      <meta itemprop="name" content="紫梦沁香">
+      <meta itemprop="description" content="如果说我看得比别人更远些，那是因为我站在巨人的肩膀上">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="紫梦沁香">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/10/14/%E6%B3%A8%E8%A7%A3%E5%92%8C%E5%8F%8D%E5%B0%84/" class="post-title-link" itemprop="url">注解和反射</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-10-14 08:52:09 / 修改时间：13:32:45" itemprop="dateCreated datePublished" datetime="2021-10-14T08:52:09+08:00">2021-10-14</time>
+            </span>
+
+          
+            <span id="/2021/10/14/%E6%B3%A8%E8%A7%A3%E5%92%8C%E5%8F%8D%E5%B0%84/" class="post-meta-item leancloud_visitors" data-flag-title="注解和反射" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/10/14/%E6%B3%A8%E8%A7%A3%E5%92%8C%E5%8F%8D%E5%B0%84/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/10/14/%E6%B3%A8%E8%A7%A3%E5%92%8C%E5%8F%8D%E5%B0%84/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="1、注解"><a href="#1、注解" class="headerlink" title="1、注解"></a>1、注解</h2><h4 id="1-1、-内置注解"><a href="#1-1、-内置注解" class="headerlink" title="1.1、 内置注解"></a>1.1、 内置注解</h4><ul>
+<li><p>@Deprecated</p>
+<p>被注解的元素是不鼓励使用的程序元素，通常是因为它是<code>危险</code>的，或者因为存在更好的替代方法。</p>
+</li>
+<li><p>@Override</p>
+<p>表示重写父类方法。</p>
+</li>
+<li><p>@SuppressWarning</p>
+<p>抑制警告。</p>
+</li>
+<li><p>@FunctionaInterface</p>
+<p>指定接口必须为函数式接口。</p>
+</li>
+</ul>
+<h4 id="1-2、元注解"><a href="#1-2、元注解" class="headerlink" title="1.2、元注解"></a>1.2、元注解</h4><p>元注解的作用就是负责<code>注解</code>其它注解。</p>
+<ul>
+<li><p>@Target</p>
+<p>用于描述注解的使用范围。</p>
+</li>
+<li><p>@Retention</p>
+<p>表示需要在什么级别保存该注释信息，用于描述注解的生命周期。</p>
+<ul>
+<li>SOURCE &lt; CLASS &lt; RUNTIME</li>
+</ul>
+</li>
+<li><p>@Document</p>
+<p>说明该注解将被包含在 javadoc 中。</p>
+</li>
+<li><p>@Inherited</p>
+<p>说明子类可以<code>继承</code>父类中的该注释。</p>
+</li>
+</ul>
+<h2 id="1-3、自定义注解"><a href="#1-3、自定义注解" class="headerlink" title="1.3、自定义注解"></a>1.3、自定义注解</h2><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.annotation.*;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Target(ElementType.FIELD)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Inherited</span></span><br><span class="line"><span class="meta">@interface</span> MyAnnotation1{</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">age</span><span class="params">()</span></span>;</span><br><span class="line">    String[] hobby() <span class="keyword">default</span> {<span class="string">"dance"</span>, <span class="string">"sing"</span>};</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="meta">@Target(ElementType.FIELD)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@interface</span> MyAnnotation2{</span><br><span class="line">    <span class="function">String <span class="title">value</span><span class="params">()</span></span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>注解中的参数一定要加<code>()</code>！</p>
+<p>当注解只有一个参数时，参数名可以定义为 <code>value</code>，在调用的时候直接赋值就行。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyAnnotationTest</span> </span>{</span><br><span class="line">    <span class="meta">@MyAnnotation1(age = 12)</span></span><br><span class="line">    <span class="meta">@MyAnnotation2("value")</span></span><br><span class="line">    String name;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="2、反射"><a href="#2、反射" class="headerlink" title="2、反射"></a>2、反射</h2><p>Java 反射就是在<code>运行</code>状态中，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意方法和属性，并且能改变它的属性。</p>
+<h4 id="2-1、获取-Class-类的实例"><a href="#2-1、获取-Class-类的实例" class="headerlink" title="2.1、获取 Class 类的实例"></a>2.1、获取 Class 类的实例</h4><ul>
+<li><p>通过类的 class 属性获取，安全可靠，性能最高。</p>
+<p><code>Class clz = Person.class;</code></p>
+</li>
+<li><p>调用实例的 getClass() 方法。</p>
+<p><code>Class clz = person.getClass();</code></p>
+</li>
+<li><p>通过 Class.forName() 获取。</p>
+<p><code>Class clz = Class.forName("com.yqx.Person");</code></p>
+</li>
+</ul>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test1</span><span class="params">()</span> <span class="keyword">throws</span> ClassNotFoundException </span>{</span><br><span class="line">    Class clz1 = Person.class;</span><br><span class="line">    Class clz2 = <span class="keyword">new</span> Person().getClass();</span><br><span class="line">    Class clz3 = Class.forName(<span class="string">"Person"</span>);</span><br><span class="line">    System.out.println(clz1 == clz2);	<span class="comment">// true</span></span><br><span class="line">    System.out.println(clz2 == clz3);	<span class="comment">// true</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="2-2、拥有-Class-对象的类型"><a href="#2-2、拥有-Class-对象的类型" class="headerlink" title="2.2、拥有 Class 对象的类型"></a>2.2、拥有 Class 对象的类型</h4><ul>
+<li>class：外部类，成员，局部内部类，匿名内部类。</li>
+<li>interface：接口</li>
+<li>[]：数组</li>
+<li>enum：枚举</li>
+<li>annotation：注解 @interface</li>
+<li>primitive type：基本数据类型</li>
+<li>void</li>
+</ul>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test2</span><span class="params">()</span></span>{</span><br><span class="line">    Class clz1 = Object.class;</span><br><span class="line">    Class clz2 = Comparable.class;</span><br><span class="line">    Class clz3 = String[].class;</span><br><span class="line">    Class clz4 = String[][].class;</span><br><span class="line">    Class clz5 = Override.class;</span><br><span class="line">    Class clz6 = ElementType.class;</span><br><span class="line">    Class clz7 = Integer.class;</span><br><span class="line">    Class clz8 = <span class="keyword">void</span>.class;</span><br><span class="line">    Class clz9 = Class.class;</span><br><span class="line"></span><br><span class="line">    System.out.println(clz1);</span><br><span class="line">    System.out.println(clz2);</span><br><span class="line">    System.out.println(clz3);</span><br><span class="line">    System.out.println(clz4);</span><br><span class="line">    System.out.println(clz5);</span><br><span class="line">    System.out.println(clz6);</span><br><span class="line">    System.out.println(clz7);</span><br><span class="line">    System.out.println(clz8);</span><br><span class="line">    System.out.println(clz9);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span>[] a = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>];</span><br><span class="line">    <span class="keyword">int</span>[] b = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">100</span>];</span><br><span class="line">    System.out.println(a.getClass() == b.getClass());</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>打印输出 (数组即使长度不同，其 Class 类也都是相同的)</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">java</span>.<span class="title">lang</span>.<span class="title">Object</span></span></span><br><span class="line"><span class="class"><span class="title">interface</span> <span class="title">java</span>.<span class="title">lang</span>.<span class="title">Comparable</span></span></span><br><span class="line"><span class="class"><span class="title">class</span> [<span class="title">Ljava</span>.<span class="title">lang</span>.<span class="title">String</span></span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> [[<span class="title">Ljava</span>.<span class="title">lang</span>.<span class="title">String</span></span>;</span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">java</span>.<span class="title">lang</span>.<span class="title">Override</span></span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">java</span>.<span class="title">lang</span>.<span class="title">annotation</span>.<span class="title">ElementType</span></span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">java</span>.<span class="title">lang</span>.<span class="title">Integer</span></span></span><br><span class="line"><span class="class"><span class="title">void</span></span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">java</span>.<span class="title">lang</span>.<span class="title">Class</span></span></span><br><span class="line"><span class="class"><span class="title">true</span></span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"><span class="title">Process</span> <span class="title">finished</span> <span class="title">with</span> <span class="title">exit</span> <span class="title">code</span> 0</span></span><br></pre></td></tr></tbody></table></figure>
+<h4 id="2-3、类的加载"><a href="#2-3、类的加载" class="headerlink" title="2.3、类的加载"></a>2.3、类的加载</h4><p><img src="https://z3.ax1x.com/2021/10/14/5QnMng.png" alt=""></p>
+<p><img src="https://z3.ax1x.com/2021/10/14/5QnIUA.png" alt=""></p>
+<h4 id="2-4、获取类的属性及方法"><a href="#2-4、获取类的属性及方法" class="headerlink" title="2.4、获取类的属性及方法"></a>2.4、获取类的属性及方法</h4><p>反射机制允许程序在运行时取得任何一个已知名称的 class 的内部信息，包括包括其modifiers (修饰符)，fields (属性)，methods (方法)等，并可于运行时改变 fields 内容或调用 methods。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test3</span><span class="params">()</span> <span class="keyword">throws</span> ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException, NoSuchFieldException </span>{</span><br><span class="line">        <span class="comment">// 获取 Class 对象</span></span><br><span class="line">        Class c1 = Class.forName(<span class="string">"Person"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 创建对象(无参)</span></span><br><span class="line">        Person person1 = (Person) c1.newInstance();</span><br><span class="line">        System.out.println(person1);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 通过构造器创建对象</span></span><br><span class="line">        Constructor constructor = c1.getDeclaredConstructor(String.class, <span class="keyword">int</span>.class);</span><br><span class="line">        Person person2 = (Person) constructor.newInstance(<span class="string">"yqx"</span>, <span class="number">20</span>);</span><br><span class="line">        System.out.println(person2);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 反射调用方法</span></span><br><span class="line">        Method method1 = c1.getDeclaredMethod(<span class="string">"getName"</span>);</span><br><span class="line">        Method method2 = c1.getDeclaredMethod(<span class="string">"setName"</span>, String.class);</span><br><span class="line">        String name1 = (String) method1.invoke(person1);</span><br><span class="line">        method2.invoke(person1, <span class="string">"deflory"</span>);</span><br><span class="line">        String name2 = (String) method1.invoke(person1);</span><br><span class="line">        System.out.println(<span class="string">"Before: "</span> + name1);</span><br><span class="line">        System.out.println(<span class="string">"After: "</span> + name2);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 反射操作属性</span></span><br><span class="line">        Field field = c1.getDeclaredField(<span class="string">"age"</span>);</span><br><span class="line">        field.setAccessible(<span class="keyword">true</span>);  <span class="comment">// 设置可访问的</span></span><br><span class="line">        field.set(person1, <span class="number">18</span>);</span><br><span class="line">        System.out.println(person1.getAge());</span><br><span class="line">    }</span><br></pre></td></tr></tbody></table></figure>
+<p>打印内容</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Person{name=<span class="string">'null'</span>, age=<span class="number">0</span>}</span><br><span class="line">Person{name=<span class="string">'yqx'</span>, age=<span class="number">20</span>}</span><br><span class="line">Before: <span class="keyword">null</span></span><br><span class="line">After: deflory</span><br><span class="line"><span class="number">18</span></span><br><span class="line"></span><br><span class="line">Process finished with exit code <span class="number">0</span></span><br></pre></td></tr></tbody></table></figure>
+<h4 id="2-5、性能测试"><a href="#2-5、性能测试" class="headerlink" title="2.5、性能测试"></a>2.5、性能测试</h4><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test4</span><span class="params">()</span> <span class="keyword">throws</span> NoSuchMethodException, InvocationTargetException, IllegalAccessException </span>{</span><br><span class="line">    <span class="comment">// 普通方法</span></span><br><span class="line">    Person person = <span class="keyword">new</span> Person();</span><br><span class="line">    <span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">1e9</span>;i++){</span><br><span class="line">        person.getAge();</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">long</span> end = System.currentTimeMillis();</span><br><span class="line">    System.out.println(<span class="string">"普通方法用时："</span> + (end - start) + <span class="string">"ms"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 反射(检测开启)</span></span><br><span class="line">    Method method = Person.class.getDeclaredMethod(<span class="string">"getAge"</span>);</span><br><span class="line">    start = System.currentTimeMillis();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">1e9</span>;i++){</span><br><span class="line">        method.invoke(person);</span><br><span class="line">    }</span><br><span class="line">    end = System.currentTimeMillis();</span><br><span class="line">    System.out.println(<span class="string">"反射(检测开启)用时："</span> + (end - start) + <span class="string">"ms"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 反射(检测关闭)</span></span><br><span class="line">    method.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    start = System.currentTimeMillis();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">1e9</span>;i++){</span><br><span class="line">        method.invoke(person);</span><br><span class="line">    }</span><br><span class="line">    end = System.currentTimeMillis();</span><br><span class="line">    System.out.println(<span class="string">"反射(检测关闭)用时："</span> + (end - start) + <span class="string">"ms"</span>);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>打印内容</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">普通方法用时：1379ms</span><br><span class="line">反射(检测开启)用时：1863ms</span><br><span class="line">反射(检测关闭)用时：1591ms</span><br><span class="line"></span><br><span class="line">Process finished with exit code <span class="number">0</span></span><br></pre></td></tr></tbody></table></figure>
+<h4 id="2-6、反射操作泛型"><a href="#2-6、反射操作泛型" class="headerlink" title="2.6、反射操作泛型"></a>2.6、反射操作泛型</h4><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test5</span><span class="params">()</span> <span class="keyword">throws</span> NoSuchMethodException </span>{</span><br><span class="line">    Method test01 = Person.class.getDeclaredMethod(<span class="string">"test01"</span>, Map.class, List.class);</span><br><span class="line">    Method test02 = Person.class.getDeclaredMethod(<span class="string">"test02"</span>);</span><br><span class="line"></span><br><span class="line">    System.out.println(<span class="string">"test01(参数泛型)"</span>);</span><br><span class="line">    Type[] genericParameterTypes = test01.getGenericParameterTypes();</span><br><span class="line">    <span class="keyword">for</span>(Type genericParameterType : genericParameterTypes){</span><br><span class="line">        System.out.println(genericParameterType);</span><br><span class="line">        <span class="keyword">if</span> (genericParameterType <span class="keyword">instanceof</span> ParameterizedType){</span><br><span class="line">            Type[] actualTypeArguments = ((ParameterizedType) genericParameterType).getActualTypeArguments();</span><br><span class="line">            <span class="keyword">for</span>(Type actualTypeArgument : actualTypeArguments){</span><br><span class="line">                System.out.println(actualTypeArgument);</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    System.out.println(<span class="string">"\ntest02(返回值泛型)"</span>);</span><br><span class="line">    Type getGenericReturnType = test02.getGenericReturnType();</span><br><span class="line">    System.out.println(getGenericReturnType);</span><br><span class="line">    <span class="keyword">if</span> (getGenericReturnType <span class="keyword">instanceof</span> ParameterizedType){</span><br><span class="line">        Type[] actualTypeArguments = ((ParameterizedType) getGenericReturnType).getActualTypeArguments();</span><br><span class="line">        <span class="keyword">for</span>(Type actualTypeArgument : actualTypeArguments){</span><br><span class="line">            System.out.println(actualTypeArgument);</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>打印内容</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">test01(参数泛型)</span><br><span class="line">java.util.Map&lt;java.lang.String, java.lang.Integer&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">java</span>.<span class="title">lang</span>.<span class="title">String</span></span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">java</span>.<span class="title">lang</span>.<span class="title">Integer</span></span></span><br><span class="line"><span class="class"><span class="title">java</span>.<span class="title">util</span>.<span class="title">List</span>&lt;<span class="title">java</span>.<span class="title">lang</span>.<span class="title">Character</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">java</span>.<span class="title">lang</span>.<span class="title">Character</span></span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"><span class="title">test02</span>(返回值泛型)</span></span><br><span class="line"><span class="class"><span class="title">java</span>.<span class="title">util</span>.<span class="title">Map</span>&lt;<span class="title">java</span>.<span class="title">lang</span>.<span class="title">String</span>, <span class="title">java</span>.<span class="title">lang</span>.<span class="title">Integer</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">java</span>.<span class="title">lang</span>.<span class="title">String</span></span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">java</span>.<span class="title">lang</span>.<span class="title">Integer</span></span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"><span class="title">Process</span> <span class="title">finished</span> <span class="title">with</span> <span class="title">exit</span> <span class="title">code</span> </span></span><br></pre></td></tr></tbody></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/08/%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%AE%AD%E7%BB%83/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -323,8 +953,17 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-10-12 17:26:50" itemprop="dateModified" datetime="2021-10-12T17:26:50+08:00">2021-10-12</time>
+                <time title="修改时间：2021-10-18 16:44:28" itemprop="dateModified" datetime="2021-10-18T16:44:28+08:00">2021-10-18</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SSM/" itemprop="url" rel="index"><span itemprop="name">SSM</span></a>
+                </span>
+            </span>
 
           
             <span id="/2021/10/08/Spring/" class="post-meta-item leancloud_visitors" data-flag-title="Spring" title="阅读次数">
@@ -560,7 +1199,7 @@
 <p>prototype 原型模式</p>
 <figure class="highlight xml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"user"</span> <span class="attr">class</span>=<span class="string">"User"</span> <span class="attr">scope</span>=<span class="string">"prototype"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">name</span>=<span class="string">"name"</span> <span class="attr">value</span>=<span class="string">"deflory"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">name</span>=<span class="string">"age"</span> <span class="attr">value</span>=<span class="string">"20"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
 <figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span>{</span><br><span class="line">    ApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"beans.xml"</span>);</span><br><span class="line">    User user1 = context.getBean(<span class="string">"user"</span>, User.class);</span><br><span class="line">    User user2 = context.getBean(<span class="string">"user"</span>, User.class);</span><br><span class="line">    System.out.println(user1 == user2);		<span class="comment">// false</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<h2 id="7、Bean-的自动装配"><a href="#7、Bean-的自动装配" class="headerlink" title="7、Bean 的自动装配"></a>7、Bean 的自动装配</h2><h4 id="7-1、ByName自动装配"><a href="#7-1、ByName自动装配" class="headerlink" title="7.1、ByName自动装配"></a>7.1、ByName自动装配</h4><p>会自动寻找与属性<code>类名</code>相同的 bean_id (小写)。</p>
+<h2 id="7、Bean-的自动装配"><a href="#7、Bean-的自动装配" class="headerlink" title="7、Bean 的自动装配"></a>7、Bean 的自动装配</h2><h4 id="7-1、ByName自动装配"><a href="#7-1、ByName自动装配" class="headerlink" title="7.1、ByName自动装配"></a>7.1、ByName自动装配</h4><p>会自动寻找与属性<code>类名</code>相同的 bean_id (首字母小写)。</p>
 <figure class="highlight xml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"cat"</span> <span class="attr">class</span>=<span class="string">"Cat"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"dog"</span> <span class="attr">class</span>=<span class="string">"Dog"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"person"</span> <span class="attr">class</span>=<span class="string">"Person"</span> <span class="attr">autowire</span>=<span class="string">"byName"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
 <h4 id="7-2、ByName自动装配"><a href="#7-2、ByName自动装配" class="headerlink" title="7.2、ByName自动装配"></a>7.2、ByName自动装配</h4><p>会自动寻找与<code>属性</code>相同类型的 bean (该类型必须唯一)。</p>
 <figure class="highlight xml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"Cat"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"Dog"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"person"</span> <span class="attr">class</span>=<span class="string">"Person"</span> <span class="attr">autowire</span>=<span class="string">"byType"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
@@ -628,6 +1267,121 @@
 <figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@Import(ConfigA.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConfigB</span> </span>{</span><br><span class="line">   <span class="meta">@Bean</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> B <span class="title">b</span><span class="params">()</span> </span>{</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> B(); </span><br><span class="line">   }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 <p>测试类</p>
 <figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>{</span><br><span class="line">   ApplicationContext context = </span><br><span class="line">   <span class="keyword">new</span> AnnotationConfigApplicationContext(ConfigB.class);</span><br><span class="line">   A a = context.getBean(A.class);</span><br><span class="line">   B b = context.getBean(B.class);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="10、代理模式"><a href="#10、代理模式" class="headerlink" title="10、代理模式"></a>10、代理模式</h2><p>代理模式的分类：</p>
+<ul>
+<li>静态代理</li>
+<li>动态代理</li>
+</ul>
+<p><img src="https://z3.ax1x.com/2021/10/16/5JbxhQ.png" alt=""></p>
+<h4 id="10-1、-静态代理"><a href="#10-1、-静态代理" class="headerlink" title="10.1、 静态代理"></a>10.1、 静态代理</h4><p>角色分析：</p>
+<ul>
+<li>抽象角色：一般会使用接口或者抽象类来解决。</li>
+<li>真实角色：被代理的角色。</li>
+<li>代理角色：代理真实角色，添加额外操作。</li>
+<li>客户：访问代理对象的人。</li>
+</ul>
+<p>代码：</p>
+<ol>
+<li><p>接口</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> demo01;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Rent</span> </span>{</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">rent</span><span class="params">()</span></span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>真实角色</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> demo01;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Landlord</span> <span class="keyword">implements</span> <span class="title">Rent</span></span>{</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">rent</span><span class="params">()</span> </span>{</span><br><span class="line">        System.out.println(<span class="string">"房东要出租房子"</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>代理角色</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> demo01;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Agent</span> <span class="keyword">implements</span> <span class="title">Rent</span></span>{</span><br><span class="line">    Rent landlord;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Agent</span><span class="params">(Rent landlord)</span> </span>{</span><br><span class="line">        <span class="keyword">this</span>.landlord = landlord;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">rent</span><span class="params">()</span> </span>{</span><br><span class="line">        findRenter();</span><br><span class="line">        landlord.rent();</span><br><span class="line">        negotiation();</span><br><span class="line">        fee();</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fee</span><span class="params">()</span></span>{</span><br><span class="line">        System.out.println(<span class="string">"中介收取中介费"</span>);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">findRenter</span><span class="params">()</span></span>{</span><br><span class="line">        System.out.println(<span class="string">"中介寻找租客"</span>);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">negotiation</span><span class="params">()</span></span>{</span><br><span class="line">        System.out.println(<span class="string">"中介签订合同"</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>客户端访问代理角色</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> demo01;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyTest01</span> </span>{</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>{</span><br><span class="line">        Rent agent = <span class="keyword">new</span> Agent(<span class="keyword">new</span> Landlord());</span><br><span class="line">        agent.rent();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ol>
+<p>代理模式的好处：</p>
+<ul>
+<li>可以使真实角色的操作更加纯粹！不用去关注一些公共的业务。</li>
+<li>公共业务交代代理角色，实现了业务的分工。</li>
+<li>公共业务发生拓展的时候，方便集中管理。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>一个真实角色就会产生一个代理角色，代码量会翻倍，开发效率会变低。</li>
+</ul>
+<h4 id="10-2、动态代理"><a href="#10-2、动态代理" class="headerlink" title="10.2、动态代理"></a>10.2、动态代理</h4><ul>
+<li>动态代理和静态代理角色一样</li>
+<li>动态代理的代理类是动态生成的，而非程序员手写的！</li>
+<li>动态代理分为两大类：基于接口的动态代理，基于类的动态代理。<ul>
+<li>基于接口：JDK 动态代理 【下述使用】</li>
+<li>基于类：cglib</li>
+<li>java 字节码实现：javasist</li>
+</ul>
+</li>
+</ul>
+<p>需要了解两个类：</p>
+<ul>
+<li>Proxy：代理</li>
+<li>InvocationHandler：调用处理程序</li>
+</ul>
+<p>优点：</p>
+<ul>
+<li>包含静态代理的优点。</li>
+<li>一个动态代理类代理的是一个接口，对应一类业务。</li>
+</ul>
+<h2 id="11、AOP"><a href="#11、AOP" class="headerlink" title="11、AOP"></a>11、AOP</h2><p>Spring 框架的一个关键组件是<strong>面向切面的编程</strong>(AOP)框架。面向切面的编程需要把程序逻辑分解成不同的部分称为所谓的关注点。跨一个应用程序的多个点的功能被称为<strong>横切关注点</strong>，这些横切关注点在概念上独立于应用程序的业务逻辑。</p>
+<h4 id="11-1、通知类型"><a href="#11-1、通知类型" class="headerlink" title="11.1、通知类型"></a>11.1、通知类型</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">通知</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">前置通知</td>
+<td style="text-align:left">在一个方法执行之前，执行通知。</td>
+</tr>
+<tr>
+<td style="text-align:left">后置通知</td>
+<td style="text-align:left">在一个方法执行之后，不考虑其结果，执行通知。</td>
+</tr>
+<tr>
+<td style="text-align:left">返回后通知</td>
+<td style="text-align:left">在一个方法执行之后，只有在方法成功完成时，才能执行通知。</td>
+</tr>
+<tr>
+<td style="text-align:left">抛出异常后通知</td>
+<td style="text-align:left">在一个方法执行之后，只有在方法退出抛出异常时，才能执行通知。</td>
+</tr>
+<tr>
+<td style="text-align:left">环绕通知</td>
+<td style="text-align:left">在建议方法调用之前和之后，执行通知。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="11-2、在-Spring-中使用-Aop"><a href="#11-2、在-Spring-中使用-Aop" class="headerlink" title="11.2、在 Spring 中使用 Aop"></a>11.2、在 Spring 中使用 Aop</h4><p>导入依赖包</p>
+<figure class="highlight xml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.aspectj<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>aspectjweaver<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.9.4<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+<p>添加约束</p>
+<figure class="highlight xml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:aop</span>=<span class="string">"http://www.springframework.org/schema/aop"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.springframework.org/schema/beans</span></span></span><br><span class="line"><span class="string"><span class="tag">        https://www.springframework.org/schema/beans/spring-beans.xsd</span></span></span><br><span class="line"><span class="string"><span class="tag">        http://www.springframework.org/schema/aop</span></span></span><br><span class="line"><span class="string"><span class="tag">        https://www.springframework.org/schema/aop/spring-aop.xsd"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+<p><strong>(1) 原生 Spring Api 接口</strong></p>
+<p>xml 配置</p>
+<figure class="highlight xml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"userService"</span> <span class="attr">class</span>=<span class="string">"com.yqx.service.UserServiceImpl"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"log"</span> <span class="attr">class</span>=<span class="string">"com.yqx.log.Log"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--方式一：使用原生的Spring API接口--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--配置aop--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">aop:config</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--切入点--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:pointcut</span> <span class="attr">id</span>=<span class="string">"pointcut"</span> <span class="attr">expression</span>=<span class="string">"execution(* com.yqx.service.UserServiceImpl.*(..))"</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--执行环绕增加--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:advisor</span> <span class="attr">advice-ref</span>=<span class="string">"log"</span> <span class="attr">pointcut-ref</span>=<span class="string">"pointcut"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+<p>日志类，这里采用了多实现。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yqx.log;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.aop.AfterReturningAdvice;</span><br><span class="line"><span class="keyword">import</span> org.springframework.aop.MethodBeforeAdvice;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Log</span> <span class="keyword">implements</span> <span class="title">MethodBeforeAdvice</span>, <span class="title">AfterReturningAdvice</span> </span>{</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterReturning</span><span class="params">(Object returnValue, Method method, Object[] args, Object target)</span> <span class="keyword">throws</span> Throwable </span>{</span><br><span class="line">        System.out.println(method.getName() + <span class="string">"方法执行完毕，返回值为："</span> + returnValue);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">before</span><span class="params">(Method method, Object[] args, Object target)</span> <span class="keyword">throws</span> Throwable </span>{</span><br><span class="line">        System.out.println(target.getClass().getName() + <span class="string">"中的"</span> + method.getName() + <span class="string">"方法被调用了！"</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>Test 测试类</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.yqx.service.UserService;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyTest</span> </span>{</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>{</span><br><span class="line">        ClassPathXmlApplicationContext context = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"applicationContext.xml"</span>);</span><br><span class="line">        <span class="comment">// 动态代理代理的是接口，因此只能转为接口类型</span></span><br><span class="line">        UserService userService = (UserService) context.getBean(<span class="string">"userService"</span>);</span><br><span class="line">        userService.add();</span><br><span class="line">        userService.query();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p><strong>(2) 自定义类</strong></p>
+<p>日志类</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yqx.log;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyLog</span> </span>{</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">before</span><span class="params">()</span></span>{</span><br><span class="line">        System.out.println(<span class="string">"前置通知"</span>);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">after</span><span class="params">()</span></span>{</span><br><span class="line">        System.out.println(<span class="string">"后置通知"</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>xml</p>
+<figure class="highlight xml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"userService"</span> <span class="attr">class</span>=<span class="string">"com.yqx.service.UserServiceImpl"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"myLog"</span> <span class="attr">class</span>=<span class="string">"com.yqx.log.MyLog"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">aop:config</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--自定义切面--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">ref</span>=<span class="string">"myLog"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--切入点--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:pointcut</span> <span class="attr">id</span>=<span class="string">"pointout"</span> <span class="attr">expression</span>=<span class="string">"execution(* com.yqx.service.UserServiceImpl.*(..))"</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--通知--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:before</span> <span class="attr">method</span>=<span class="string">"before"</span> <span class="attr">pointcut-ref</span>=<span class="string">"pointout"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:after</span> <span class="attr">method</span>=<span class="string">"after"</span> <span class="attr">pointcut-ref</span>=<span class="string">"pointout"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+<p>虽然方便，但无法获取类与方法的信息，功能不够强大。</p>
+<p><strong>(3) 注解</strong></p>
+<p>日志类</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yqx.log;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.aspectj.lang.ProceedingJoinPoint;</span><br><span class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.After;</span><br><span class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Around;</span><br><span class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Aspect;</span><br><span class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Before;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AnnotationLog</span> </span>{</span><br><span class="line">    <span class="meta">@Before("execution(* com.yqx.service.UserServiceImpl.*(..))")</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">before</span><span class="params">()</span></span>{</span><br><span class="line">        System.out.println(<span class="string">"前置通知"</span>);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@After("execution(* com.yqx.service.UserServiceImpl.*(..))")</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">after</span><span class="params">()</span></span>{</span><br><span class="line">        System.out.println(<span class="string">"后置通知"</span>);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Around("execution(* com.yqx.service.UserServiceImpl.*(..))")</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">around</span><span class="params">(ProceedingJoinPoint joinPoint)</span> <span class="keyword">throws</span> Throwable </span>{</span><br><span class="line">        System.out.println(<span class="string">"环绕前"</span>);</span><br><span class="line">        System.out.println(joinPoint.getSignature());</span><br><span class="line">        System.out.println(joinPoint.getArgs());</span><br><span class="line">        joinPoint.proceed();</span><br><span class="line">        System.out.println(<span class="string">"环绕后"</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>xml</p>
+<figure class="highlight xml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:aop</span>=<span class="string">"http://www.springframework.org/schema/aop"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:context</span>=<span class="string">"http://www.springframework.org/schema/context"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.springframework.org/schema/beans</span></span></span><br><span class="line"><span class="string"><span class="tag">        https://www.springframework.org/schema/beans/spring-beans.xsd</span></span></span><br><span class="line"><span class="string"><span class="tag">        http://www.springframework.org/schema/aop</span></span></span><br><span class="line"><span class="string"><span class="tag">        https://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"userService"</span> <span class="attr">class</span>=<span class="string">"com.yqx.service.UserServiceImpl"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:aspectj-autoproxy</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">"com.yqx.log"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+<p>打印内容</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">环绕前</span><br><span class="line"><span class="keyword">void</span> com.yqx.service.UserService.add()</span><br><span class="line">[Ljava.lang.Object;@6c6cb480</span><br><span class="line">前置通知</span><br><span class="line">添加了一条数据</span><br><span class="line">后置通知</span><br><span class="line">环绕后</span><br><span class="line">环绕前</span><br><span class="line"><span class="keyword">void</span> com.yqx.service.UserService.query()</span><br><span class="line">[Ljava.lang.Object;@3c46e67a</span><br><span class="line">前置通知</span><br><span class="line">查询了一条数据</span><br><span class="line">后置通知</span><br><span class="line">环绕后</span><br><span class="line"></span><br><span class="line">Process finished with exit code <span class="number">0</span></span><br></pre></td></tr></tbody></table></figure>
 
       
     </div>
@@ -670,10 +1424,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-09-28 15:51:43 / 修改时间：17:15:58" itemprop="dateCreated datePublished" datetime="2021-09-28T15:51:43+08:00">2021-09-28</time>
+              <time title="创建时间：2021-09-28 15:51:43" itemprop="dateCreated datePublished" datetime="2021-09-28T15:51:43+08:00">2021-09-28</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-10-13 09:10:48" itemprop="dateModified" datetime="2021-10-13T09:10:48+08:00">2021-10-13</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -716,7 +1476,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h2><p>继之前的<a href="/2021/09/27/多项式回归/">多项式回归</a>，如果 <code>degree</code> 设置过大或者过小会出现什么样的问题呢？</p>
+          <h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><p>继之前的<a href="/2021/09/27/多项式回归/">多项式回归</a>，如果 <code>degree</code> 设置过大或者过小会出现什么样的问题呢？</p>
 <p>在此之前，先来说明一下 <a href="/2021/09/14/数据归一化/">归一化</a> 的必要性。多项式回归采用了特征组合的方式，当 <code>degree</code> 为100时，最高次就是100次，而最低次只是常数级，各个维度数值之间的跨度非常大，这就导致 <code>eta</code> 必须设置得非常小，否则稍大一点，就会无法拟合，变成 <code>nan</code> 。</p>
 <p>当 degree 为10时， eta就必须设置成$10^{-19}$，很不利于我们训练模型，所以在数据与距离阶段除了要多项式化还得归一化！</p>
 <p><img src="https://z3.ax1x.com/2021/09/28/4feNrT.png" alt=""></p>
@@ -726,7 +1486,7 @@
 <p><code>Pipeline</code> 具体运作机制就是逐行运行，上一行的输出就是下一行的输入，因此我们先进行多项式化，再归一化，最后放入线性回归中训练模型。</p>
 <figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.pipeline <span class="keyword">import</span> Pipeline</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> PolynomialFeatures</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">PolynomialRegression</span>(<span class="params">X,y,degree</span>):</span></span><br><span class="line">    pipeline = Pipeline([</span><br><span class="line">        (<span class="string">"poly"</span>,PolynomialFeatures(degree = degree)),</span><br><span class="line">        (<span class="string">"std_scaler"</span>,StandardScaler()),</span><br><span class="line">        (<span class="string">"lin_reg"</span>,LinearRegression())</span><br><span class="line">    ])</span><br><span class="line">    pipeline.fit(X,y)</span><br><span class="line">    <span class="keyword">return</span> pipeline.predict(X)</span><br></pre></td></tr></tbody></table></figure>
 <p><br></p>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>先写一个绘制拟合曲线的函数便于我们观测结果。</p>
+<h2 id="数据拟合"><a href="#数据拟合" class="headerlink" title="数据拟合"></a>数据拟合</h2><p>先写一个绘制拟合曲线的函数便于我们观测结果。</p>
 <figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">plot_matching_curve</span>(<span class="params">X, y, degree, eta = <span class="number">1e-6</span>, n_iters = <span class="number">1e5</span></span>):</span></span><br><span class="line">    poly_reg = PolynomialRegression(degree)</span><br><span class="line">    poly_reg.fit(X, y, eta, n_iters)</span><br><span class="line">    theta = poly_reg.theta</span><br><span class="line">    pred_y = poly_reg.X.dot(theta)</span><br><span class="line">    plt.scatter(X[:, <span class="number">0</span>], y)</span><br><span class="line">    plt.plot(X[:, <span class="number">0</span>], pred_y, color = <span class="string">"r"</span>)</span><br><span class="line">    plt.show()</span><br><span class="line">    <span class="keyword">return</span> poly_reg</span><br></pre></td></tr></tbody></table></figure>
 <p>当 degree 为0时，也就是最高次为0次，拟合曲线成一条直线，这就是欠拟合。</p>
 <p>毕竟函数只有一个常数嘛，合理。</p>
@@ -746,6 +1506,22 @@
 <p>之前也说过了，多项式化是阶乘式地增长，一旦 <code>degree</code> 过大，直接就会导致栈溢出。</p>
 <p><img src="https://z3.ax1x.com/2021/09/28/4f3nsA.png" alt=""></p>
 <p><br></p>
+<h2 id="学习曲线"><a href="#学习曲线" class="headerlink" title="学习曲线"></a>学习曲线</h2><p>通过观察学习曲线，也可以帮助我们判断出模型是否有过拟合或欠拟合的情况。它是绘制模型在训练集和测试集上的性能函数。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn.pipeline <span class="keyword">import</span> Pipeline</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler, PolynomialFeatures</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_poly_reg</span>(<span class="params">degree</span>):</span></span><br><span class="line">    <span class="keyword">return</span> Pipeline([</span><br><span class="line">        (<span class="string">"poly"</span>, PolynomialFeatures(degree = degree)),</span><br><span class="line">        (<span class="string">"std"</span>, StandardScaler()),</span><br><span class="line">        (<span class="string">"reg"</span>, LinearRegression())</span><br><span class="line">    ])</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">plot_learning_curve</span>(<span class="params">X, y, degree</span>):</span></span><br><span class="line">    train_mse = []</span><br><span class="line">    test_mse = []</span><br><span class="line">    X_train, X_test, y_train, y_test = train_test_split(X, y)</span><br><span class="line">    poly_reg = get_poly_reg(degree)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, <span class="built_in">len</span>(X) + <span class="number">1</span>):</span><br><span class="line">        poly_reg.fit(X_train[:i], y_train[:i])</span><br><span class="line">        train_pred = poly_reg.predict(X_train[:i])</span><br><span class="line">        test_pred = poly_reg.predict(X_test)</span><br><span class="line">        train_mse.append(np.mean(np.square(train_pred - y_train[:i])))</span><br><span class="line">        test_mse.append(np.mean(np.square(test_pred - y_test)))</span><br><span class="line">        </span><br><span class="line">    plt.plot(np.arange(<span class="number">2</span>, <span class="built_in">len</span>(X)+<span class="number">1</span>), train_mse, label=<span class="string">"train"</span>)</span><br><span class="line">    plt.plot(np.arange(<span class="number">2</span>, <span class="built_in">len</span>(X)+<span class="number">1</span>), test_mse, label=<span class="string">"test"</span>)</span><br><span class="line">    plt.legend()</span><br><span class="line">    plt.axis([<span class="number">0</span>,<span class="number">100</span>,<span class="number">0</span>,<span class="number">5</span>])</span><br><span class="line">    plt.show()</span><br></pre></td></tr></tbody></table></figure>
+<p>这次我们把目标函数换成二次函数。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">X = np.random.uniform(-<span class="number">3</span>,<span class="number">3</span>,size=<span class="number">100</span>).reshape(-<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line">y = <span class="number">0.5</span> * X**<span class="number">2</span> + X + <span class="number">4</span> + np.random.normal(<span class="number">0</span>,<span class="number">1</span>,size = <span class="number">100</span>).reshape(-<span class="number">1</span>,<span class="number">1</span>)</span><br></pre></td></tr></tbody></table></figure>
+<p>degree = 1</p>
+<p>随着样本数量的增加 test 的误差在减小，train 的误差在增加，而当样本到了一定程度后，两者也没有保持在一个较小的程度上。这时说明模型欠拟合。</p>
+<p><img src="https://z3.ax1x.com/2021/10/13/5u1WSP.png" alt=""></p>
+<p>degree = 2</p>
+<p><img src="https://z3.ax1x.com/2021/10/13/5uQx3V.png" alt=""></p>
+<p>随着样本数量的增加 test 的误差在减小，train 的误差在增加，而当样本到了一定程度后，两者基本<code>持平</code>，保持在一个较小的程度上。这时模型已经拟合。</p>
+<p>degree = 10</p>
+<p><img src="https://z3.ax1x.com/2021/10/13/5ul2KU.png" alt=""></p>
+<p>随着样本的增加 test 的误差在减小，train 的误差在增加，但当样本到了一定程度后，在 train 上的误差要比在 test 上的误差小得多，这时就要注意是不是过拟合了。</p>
+<p>degree = 100</p>
+<p><img src="https://z3.ax1x.com/2021/10/13/5ulxIA.png" alt=""></p>
+<p>此时 test 上的误差已经飙到天上去了，妥妥的过拟合。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在训练数据集上表现良好，却在测试数据集上表现差劲的就是<code>过拟合</code>，这时候要降低参数数量。</p>
 <p>而在训练数据集上表现就不尽人意的有可能是<code>欠拟合</code>（也有可能是模型压根不对等问题），这时候可以试试增大模型，增加参数数量。</p>
 
@@ -1088,499 +1864,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/24/ViewModelSavedState%EF%BC%88%E5%8D%B3%E4%BD%BF%E8%BF%9B%E7%A8%8B%E5%9C%A8%E5%90%8E%E5%8F%B0%E8%A2%AB%E7%B3%BB%E7%BB%9F%E6%9D%80%E6%AD%BB%E6%95%B0%E6%8D%AE%E4%B9%9F%E8%83%BD%E4%BF%9D%E5%AD%98%E4%B8%8B%E6%9D%A5%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/images/head-icon.jpg">
-      <meta itemprop="name" content="紫梦沁香">
-      <meta itemprop="description" content="如果说我看得比别人更远些，那是因为我站在巨人的肩膀上">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="紫梦沁香">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/24/ViewModelSavedState%EF%BC%88%E5%8D%B3%E4%BD%BF%E8%BF%9B%E7%A8%8B%E5%9C%A8%E5%90%8E%E5%8F%B0%E8%A2%AB%E7%B3%BB%E7%BB%9F%E6%9D%80%E6%AD%BB%E6%95%B0%E6%8D%AE%E4%B9%9F%E8%83%BD%E4%BF%9D%E5%AD%98%E4%B8%8B%E6%9D%A5%EF%BC%89/" class="post-title-link" itemprop="url">ViewModelSavedState（即使进程在后台被系统杀死数据也能保存下来）</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-09-24 22:08:12 / 修改时间：22:43:31" itemprop="dateCreated datePublished" datetime="2021-09-24T22:08:12+08:00">2021-09-24</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2021/09/24/ViewModelSavedState%EF%BC%88%E5%8D%B3%E4%BD%BF%E8%BF%9B%E7%A8%8B%E5%9C%A8%E5%90%8E%E5%8F%B0%E8%A2%AB%E7%B3%BB%E7%BB%9F%E6%9D%80%E6%AD%BB%E6%95%B0%E6%8D%AE%E4%B9%9F%E8%83%BD%E4%BF%9D%E5%AD%98%E4%B8%8B%E6%9D%A5%EF%BC%89/" class="post-meta-item leancloud_visitors" data-flag-title="ViewModelSavedState（即使进程在后台被系统杀死数据也能保存下来）" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2021/09/24/ViewModelSavedState%EF%BC%88%E5%8D%B3%E4%BD%BF%E8%BF%9B%E7%A8%8B%E5%9C%A8%E5%90%8E%E5%8F%B0%E8%A2%AB%E7%B3%BB%E7%BB%9F%E6%9D%80%E6%AD%BB%E6%95%B0%E6%8D%AE%E4%B9%9F%E8%83%BD%E4%BF%9D%E5%AD%98%E4%B8%8B%E6%9D%A5%EF%BC%89/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/09/24/ViewModelSavedState%EF%BC%88%E5%8D%B3%E4%BD%BF%E8%BF%9B%E7%A8%8B%E5%9C%A8%E5%90%8E%E5%8F%B0%E8%A2%AB%E7%B3%BB%E7%BB%9F%E6%9D%80%E6%AD%BB%E6%95%B0%E6%8D%AE%E4%B9%9F%E8%83%BD%E4%BF%9D%E5%AD%98%E4%B8%8B%E6%9D%A5%EF%BC%89/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><p>正常情况下，如果一个进程被移到后台，且当前系统内存不足时，会有一定概率会将该进程杀死来释放内存资源，而被系统杀死时，ViewModel也会被删除，UI的数据就会遭到丢失。</p>
-<p><img src="https://z3.ax1x.com/2021/09/24/4DxeOJ.png" alt=""></p>
-<p>如下图所示，一旦切出后台进程被系统杀死数据就会丢失。</p>
-<p>不过好在系统杀死进程时，会调用 onSaveInstanceState() 方法，顾名思义就是保存实例状态的，我们重写这个方法来保存我们的数据。</p>
-<div style="display: flex;justify-content: center;">
-    <img src="https://z3.ax1x.com/2021/09/24/4Dzc8K.png" height="400px" width="230px" style="margin: 50px;">
-    <img src="https://z3.ax1x.com/2021/09/24/4Dz6C6.png" height="400px" width="230px" style="margin: 50px;">
-</div>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/09/24/ViewModelSavedState%EF%BC%88%E5%8D%B3%E4%BD%BF%E8%BF%9B%E7%A8%8B%E5%9C%A8%E5%90%8E%E5%8F%B0%E8%A2%AB%E7%B3%BB%E7%BB%9F%E6%9D%80%E6%AD%BB%E6%95%B0%E6%8D%AE%E4%B9%9F%E8%83%BD%E4%BF%9D%E5%AD%98%E4%B8%8B%E6%9D%A5%EF%BC%89/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/24/LeetCodeP0042%E2%80%94%E2%80%94%E6%8E%A5%E9%9B%A8%E6%B0%B4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/images/head-icon.jpg">
-      <meta itemprop="name" content="紫梦沁香">
-      <meta itemprop="description" content="如果说我看得比别人更远些，那是因为我站在巨人的肩膀上">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="紫梦沁香">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/24/LeetCodeP0042%E2%80%94%E2%80%94%E6%8E%A5%E9%9B%A8%E6%B0%B4/" class="post-title-link" itemprop="url">LeetCodeP0042——接雨水</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-09-24 17:27:06 / 修改时间：21:22:56" itemprop="dateCreated datePublished" datetime="2021-09-24T17:27:06+08:00">2021-09-24</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2021/09/24/LeetCodeP0042%E2%80%94%E2%80%94%E6%8E%A5%E9%9B%A8%E6%B0%B4/" class="post-meta-item leancloud_visitors" data-flag-title="LeetCodeP0042——接雨水" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2021/09/24/LeetCodeP0042%E2%80%94%E2%80%94%E6%8E%A5%E9%9B%A8%E6%B0%B4/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/09/24/LeetCodeP0042%E2%80%94%E2%80%94%E6%8E%A5%E9%9B%A8%E6%B0%B4/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>给定 <em>n</em> 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。</p>
-<h3 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h3><p><img src="https://z3.ax1x.com/2021/09/24/4DZ8TU.png" alt=""></p>
-<figure class="highlight markdown"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：height = [0,1,0,2,1,0,1,3,2,1,2,1]</span><br><span class="line">输出：6</span><br><span class="line">解释：上面是由数组 [0,1,0,2,1,0,1,3,2,1,2,1] 表示的高度图，在这种情况下，可以接 6 个单位的雨水（蓝色部分表示雨水）。</span><br></pre></td></tr></tbody></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/09/24/LeetCodeP0042%E2%80%94%E2%80%94%E6%8E%A5%E9%9B%A8%E6%B0%B4/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/23/Android%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/images/head-icon.jpg">
-      <meta itemprop="name" content="紫梦沁香">
-      <meta itemprop="description" content="如果说我看得比别人更远些，那是因为我站在巨人的肩膀上">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="紫梦沁香">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/23/Android%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" class="post-title-link" itemprop="url">Activity生命周期</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-09-23 21:57:00" itemprop="dateCreated datePublished" datetime="2021-09-23T21:57:00+08:00">2021-09-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-09-24 22:39:20" itemprop="dateModified" datetime="2021-09-24T22:39:20+08:00">2021-09-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2021/09/23/Android%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" class="post-meta-item leancloud_visitors" data-flag-title="Activity生命周期" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2021/09/23/Android%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/09/23/Android%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="Activity状态"><a href="#Activity状态" class="headerlink" title="Activity状态"></a>Activity状态</h2><p>Activity 生命周期是指 Activity 从<code>创建</code>到<code>销毁</code>的过程，在这一过程中，Activity 一般处于4种状态，即Active/Running、Paused、Stop、Killed。</p>
-<ol>
-<li>Active/Running。此时 Activity 一定处于屏幕的最顶端，可以被看到，并且可以与用户进行交互。对于 Activity 栈来说，它处于<code>栈顶</code>。</li>
-<li>Paused。此时 Activity 在屏幕上仍然<code>可见</code>，但它已经失去了焦点，用户不能与之交互。处于暂停的 Activity 仍然是存活的，它仍然维持着其内部的状态的信息，但是系统可能会在内存不足时杀死该 Activity。</li>
-<li>Stop。此时 Activity 在屏幕上不能被用户所见，即该 Activity 被其它 Activity 所<code>遮盖</code>。同 Paused 状态类似，处于停止状态的 Activity 仍然保留着其内部的状态和成员信息，但是会由于手机系统内存被征用而被系统杀死回收。</li>
-<li>Killed。Activity 被系统杀死<code>回收</code>或未启动。</li>
-</ol>
-<p><br></p>
-<h2 id="生命周期的事件回调函数"><a href="#生命周期的事件回调函数" class="headerlink" title="生命周期的事件回调函数"></a>生命周期的事件回调函数</h2><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">函数</th>
-<th style="text-align:center">描述</th>
-<th style="text-align:center">可被杀死</th>
-<th style="text-align:center">下一个</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">onCreate()</td>
-<td style="text-align:center">当 Activity 第一次被创建时调用</td>
-<td style="text-align:center">否</td>
-<td style="text-align:center">onStart()</td>
-</tr>
-<tr>
-<td style="text-align:center">onRestart()</td>
-<td style="text-align:center">当 Activity 停止后，再次启动前调用</td>
-<td style="text-align:center">否</td>
-<td style="text-align:center">onStart()</td>
-</tr>
-<tr>
-<td style="text-align:center">onStart()</td>
-<td style="text-align:center">当 Activity 正要变得为用户所见时被调用<br>当 Activity 转向前台时继以 onResume()<br>当 Activity 变为隐藏时继以 onStop()</td>
-<td style="text-align:center">否</td>
-<td style="text-align:center">onResume() <br>onStop()</td>
-</tr>
-<tr>
-<td style="text-align:center">onResume()</td>
-<td style="text-align:center">当 Activity 开始与用户进行交互前被调用<br>此时 Activity 位于堆栈顶部，用户可见。继以 onPause()</td>
-<td style="text-align:center">否</td>
-<td style="text-align:center">onPause()</td>
-</tr>
-<tr>
-<td style="text-align:center">onPause()</td>
-<td style="text-align:center">当系统将要启动另一个 Activity 或者弹出对话框时调用<br>此方法会将所有持久性数据写入存储中，下一个 Activity 必须待其完成才能继续<br>当 Activity 重新回到前台时继以 onResume()<br>当 Activity 变为用户不可见时继以 onStop()</td>
-<td style="text-align:center">是</td>
-<td style="text-align:center">onResume()<br>onStop()</td>
-</tr>
-<tr>
-<td style="text-align:center">onStop()</td>
-<td style="text-align:center">当 Activity 不再为用户可见时调用<br>这可能发生在它被销毁或者另一个 Activity （可能是现存或新建的）回到运行状态并覆盖它时<br>如果 Activity 再次回到前台跟用户交互则继以 onRestart()<br>如果关闭 Activity 则继以 onDestory()</td>
-<td style="text-align:center">是</td>
-<td style="text-align:center">onRestart()<br>onDestory()</td>
-</tr>
-<tr>
-<td style="text-align:center">onDestroy()</td>
-<td style="text-align:center">在 Activity 销毁前调用<br>这可能发生在 Activity 结束（调用它的 finish() 方法）或者因为系统需要临时空间而销毁该 Activity 实例时<br>可以用 isFinishing() 来区分这两种情况</td>
-<td style="text-align:center">是</td>
-<td style="text-align:center">无</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>注：表格中“可被杀死”一列是指在该方法被调用后，系统是否可以杀死包含此 Activity 的进程。</p>
-<p><br></p>
-<p>为了获取 Activity 被杀死前的状态，可以在 Activity 被销毁前使用 onSaveInstanceState() 方法。</p>
-<p>它会将一个<code>键值对</code>方式记录的 Activity 动态状态的 Bundle 对象传递给该方法。</p>
-<p>而当 Activity 再次启动时，这个 Bundle 会传递给 onCreate() 方法或随着 onStart() 方法调用的 onRestoreInstanceState()，所以它们两个都能恢复之前保存的状态。</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">方法</th>
-<th style="text-align:center">描述</th>
-<th style="text-align:center">是否可终止</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">onSaveInstanceState()</td>
-<td style="text-align:center">Android 系统因资源不足而终止 Activity 前被调用，用以保存 Activity 的状态信息<br>供 onCreate() 和 onRestoreInstanceState()方法恢复使用</td>
-<td style="text-align:center">否</td>
-</tr>
-<tr>
-<td style="text-align:center">onRestoreInstanceState()</td>
-<td style="text-align:center">恢复 onSaveInstanceState() 保存的 Activity 状态信息<br>在 onStart() 和 onResume() 方法之间使用</td>
-<td style="text-align:center">否</td>
-</tr>
-</tbody>
-</table>
-</div>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/09/23/Android%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/22/LeetCodeP0033%E2%80%94%E2%80%94%E6%90%9C%E7%B4%A2%E6%97%8B%E8%BD%AC%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/images/head-icon.jpg">
-      <meta itemprop="name" content="紫梦沁香">
-      <meta itemprop="description" content="如果说我看得比别人更远些，那是因为我站在巨人的肩膀上">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="紫梦沁香">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/22/LeetCodeP0033%E2%80%94%E2%80%94%E6%90%9C%E7%B4%A2%E6%97%8B%E8%BD%AC%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84/" class="post-title-link" itemprop="url">LeetCodeP0033——搜索旋转排序数组</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-09-22 22:15:58 / 修改时间：22:21:47" itemprop="dateCreated datePublished" datetime="2021-09-22T22:15:58+08:00">2021-09-22</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2021/09/22/LeetCodeP0033%E2%80%94%E2%80%94%E6%90%9C%E7%B4%A2%E6%97%8B%E8%BD%AC%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84/" class="post-meta-item leancloud_visitors" data-flag-title="LeetCodeP0033——搜索旋转排序数组" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2021/09/22/LeetCodeP0033%E2%80%94%E2%80%94%E6%90%9C%E7%B4%A2%E6%97%8B%E8%BD%AC%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/09/22/LeetCodeP0033%E2%80%94%E2%80%94%E6%90%9C%E7%B4%A2%E6%97%8B%E8%BD%AC%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>整数数组 <code>nums</code> 按升序排列，数组中的值 <strong>互不相同</strong> 。</p>
-<p>在传递给函数之前，<code>nums</code> 在预先未知的某个下标 <code>k</code>（<code>0 &lt;= k &lt; nums.length</code>）上进行了 <strong>旋转</strong>，使数组变为 <code>[nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]]</code>（下标 <strong>从 0 开始</strong> 计数）。例如， <code>[0,1,2,4,5,6,7]</code> 在下标 <code>3</code> 处经旋转后可能变为 <code>[4,5,6,7,0,1,2]</code> 。</p>
-<p>给你 <strong>旋转后</strong> 的数组 <code>nums</code> 和一个整数 <code>target</code> ，如果 <code>nums</code> 中存在这个目标值 <code>target</code> ，则返回它的下标，否则返回 <code>-1</code> 。</p>
-<h3 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h3><figure class="highlight markdown"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [4,5,6,7,0,1,2], target = 0</span><br><span class="line">输出：4</span><br></pre></td></tr></tbody></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/09/22/LeetCodeP0033%E2%80%94%E2%80%94%E6%90%9C%E7%B4%A2%E6%97%8B%E8%BD%AC%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1652,14 +1935,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-count">39</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">

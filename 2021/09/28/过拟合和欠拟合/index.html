@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="算法思想继之前的多项式回归，如果 degree 设置过大或者过小会出现什么样的问题呢？ 在此之前，先来说明一下 归一化 的必要性。多项式回归采用了特征组合的方式，当 degree 为100时，最高次就是100次，而最低次只是常数级，各个维度数值之间的跨度非常大，这就导致 eta 必须设置得非常小，否则稍大一点，就会无法拟合，变成 nan 。 当 degree 为10时， eta就必须设置成$10^">
+  <meta name="description" content="引入继之前的多项式回归，如果 degree 设置过大或者过小会出现什么样的问题呢？ 在此之前，先来说明一下 归一化 的必要性。多项式回归采用了特征组合的方式，当 degree 为100时，最高次就是100次，而最低次只是常数级，各个维度数值之间的跨度非常大，这就导致 eta 必须设置得非常小，否则稍大一点，就会无法拟合，变成 nan 。 当 degree 为10时， eta就必须设置成$10^{-">
 <meta property="og:type" content="article">
 <meta property="og:title" content="过拟合和欠拟合">
 <meta property="og:url" content="http://example.com/2021/09/28/%E8%BF%87%E6%8B%9F%E5%90%88%E5%92%8C%E6%AC%A0%E6%8B%9F%E5%90%88/index.html">
 <meta property="og:site_name" content="紫梦沁香">
-<meta property="og:description" content="算法思想继之前的多项式回归，如果 degree 设置过大或者过小会出现什么样的问题呢？ 在此之前，先来说明一下 归一化 的必要性。多项式回归采用了特征组合的方式，当 degree 为100时，最高次就是100次，而最低次只是常数级，各个维度数值之间的跨度非常大，这就导致 eta 必须设置得非常小，否则稍大一点，就会无法拟合，变成 nan 。 当 degree 为10时， eta就必须设置成$10^">
+<meta property="og:description" content="引入继之前的多项式回归，如果 degree 设置过大或者过小会出现什么样的问题呢？ 在此之前，先来说明一下 归一化 的必要性。多项式回归采用了特征组合的方式，当 degree 为100时，最高次就是100次，而最低次只是常数级，各个维度数值之间的跨度非常大，这就导致 eta 必须设置得非常小，否则稍大一点，就会无法拟合，变成 nan 。 当 degree 为10时， eta就必须设置成$10^{-">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://z3.ax1x.com/2021/09/28/4feNrT.png">
 <meta property="og:image" content="https://z3.ax1x.com/2021/09/28/4fEsRP.png">
@@ -36,8 +36,12 @@
 <meta property="og:image" content="https://z3.ax1x.com/2021/09/28/4f39q1.png">
 <meta property="og:image" content="https://z3.ax1x.com/2021/09/28/4f3ia6.png">
 <meta property="og:image" content="https://z3.ax1x.com/2021/09/28/4f3nsA.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/10/13/5u1WSP.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/10/13/5uQx3V.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/10/13/5ul2KU.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/10/13/5ulxIA.png">
 <meta property="article:published_time" content="2021-09-28T07:51:43.000Z">
-<meta property="article:modified_time" content="2021-09-28T09:15:58.798Z">
+<meta property="article:modified_time" content="2021-10-13T01:10:48.874Z">
 <meta property="article:author" content="紫梦沁香">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://z3.ax1x.com/2021/09/28/4feNrT.png">
@@ -209,10 +213,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-09-28 15:51:43 / 修改时间：17:15:58" itemprop="dateCreated datePublished" datetime="2021-09-28T15:51:43+08:00">2021-09-28</time>
+              <time title="创建时间：2021-09-28 15:51:43" itemprop="dateCreated datePublished" datetime="2021-09-28T15:51:43+08:00">2021-09-28</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-10-13 09:10:48" itemprop="dateModified" datetime="2021-10-13T09:10:48+08:00">2021-10-13</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -255,7 +265,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h2><p>继之前的<a href="/2021/09/27/多项式回归/">多项式回归</a>，如果 <code>degree</code> 设置过大或者过小会出现什么样的问题呢？</p>
+        <h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><p>继之前的<a href="/2021/09/27/多项式回归/">多项式回归</a>，如果 <code>degree</code> 设置过大或者过小会出现什么样的问题呢？</p>
 <p>在此之前，先来说明一下 <a href="/2021/09/14/数据归一化/">归一化</a> 的必要性。多项式回归采用了特征组合的方式，当 <code>degree</code> 为100时，最高次就是100次，而最低次只是常数级，各个维度数值之间的跨度非常大，这就导致 <code>eta</code> 必须设置得非常小，否则稍大一点，就会无法拟合，变成 <code>nan</code> 。</p>
 <p>当 degree 为10时， eta就必须设置成$10^{-19}$，很不利于我们训练模型，所以在数据与距离阶段除了要多项式化还得归一化！</p>
 <p><img src="https://z3.ax1x.com/2021/09/28/4feNrT.png" alt=""></p>
@@ -265,7 +275,7 @@
 <p><code>Pipeline</code> 具体运作机制就是逐行运行，上一行的输出就是下一行的输入，因此我们先进行多项式化，再归一化，最后放入线性回归中训练模型。</p>
 <figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.pipeline <span class="keyword">import</span> Pipeline</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> PolynomialFeatures</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">PolynomialRegression</span>(<span class="params">X,y,degree</span>):</span></span><br><span class="line">    pipeline = Pipeline([</span><br><span class="line">        (<span class="string">"poly"</span>,PolynomialFeatures(degree = degree)),</span><br><span class="line">        (<span class="string">"std_scaler"</span>,StandardScaler()),</span><br><span class="line">        (<span class="string">"lin_reg"</span>,LinearRegression())</span><br><span class="line">    ])</span><br><span class="line">    pipeline.fit(X,y)</span><br><span class="line">    <span class="keyword">return</span> pipeline.predict(X)</span><br></pre></td></tr></tbody></table></figure>
 <p><br></p>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>先写一个绘制拟合曲线的函数便于我们观测结果。</p>
+<h2 id="数据拟合"><a href="#数据拟合" class="headerlink" title="数据拟合"></a>数据拟合</h2><p>先写一个绘制拟合曲线的函数便于我们观测结果。</p>
 <figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">plot_matching_curve</span>(<span class="params">X, y, degree, eta = <span class="number">1e-6</span>, n_iters = <span class="number">1e5</span></span>):</span></span><br><span class="line">    poly_reg = PolynomialRegression(degree)</span><br><span class="line">    poly_reg.fit(X, y, eta, n_iters)</span><br><span class="line">    theta = poly_reg.theta</span><br><span class="line">    pred_y = poly_reg.X.dot(theta)</span><br><span class="line">    plt.scatter(X[:, <span class="number">0</span>], y)</span><br><span class="line">    plt.plot(X[:, <span class="number">0</span>], pred_y, color = <span class="string">"r"</span>)</span><br><span class="line">    plt.show()</span><br><span class="line">    <span class="keyword">return</span> poly_reg</span><br></pre></td></tr></tbody></table></figure>
 <p>当 degree 为0时，也就是最高次为0次，拟合曲线成一条直线，这就是欠拟合。</p>
 <p>毕竟函数只有一个常数嘛，合理。</p>
@@ -285,6 +295,22 @@
 <p>之前也说过了，多项式化是阶乘式地增长，一旦 <code>degree</code> 过大，直接就会导致栈溢出。</p>
 <p><img src="https://z3.ax1x.com/2021/09/28/4f3nsA.png" alt=""></p>
 <p><br></p>
+<h2 id="学习曲线"><a href="#学习曲线" class="headerlink" title="学习曲线"></a>学习曲线</h2><p>通过观察学习曲线，也可以帮助我们判断出模型是否有过拟合或欠拟合的情况。它是绘制模型在训练集和测试集上的性能函数。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn.pipeline <span class="keyword">import</span> Pipeline</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler, PolynomialFeatures</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_poly_reg</span>(<span class="params">degree</span>):</span></span><br><span class="line">    <span class="keyword">return</span> Pipeline([</span><br><span class="line">        (<span class="string">"poly"</span>, PolynomialFeatures(degree = degree)),</span><br><span class="line">        (<span class="string">"std"</span>, StandardScaler()),</span><br><span class="line">        (<span class="string">"reg"</span>, LinearRegression())</span><br><span class="line">    ])</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">plot_learning_curve</span>(<span class="params">X, y, degree</span>):</span></span><br><span class="line">    train_mse = []</span><br><span class="line">    test_mse = []</span><br><span class="line">    X_train, X_test, y_train, y_test = train_test_split(X, y)</span><br><span class="line">    poly_reg = get_poly_reg(degree)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, <span class="built_in">len</span>(X) + <span class="number">1</span>):</span><br><span class="line">        poly_reg.fit(X_train[:i], y_train[:i])</span><br><span class="line">        train_pred = poly_reg.predict(X_train[:i])</span><br><span class="line">        test_pred = poly_reg.predict(X_test)</span><br><span class="line">        train_mse.append(np.mean(np.square(train_pred - y_train[:i])))</span><br><span class="line">        test_mse.append(np.mean(np.square(test_pred - y_test)))</span><br><span class="line">        </span><br><span class="line">    plt.plot(np.arange(<span class="number">2</span>, <span class="built_in">len</span>(X)+<span class="number">1</span>), train_mse, label=<span class="string">"train"</span>)</span><br><span class="line">    plt.plot(np.arange(<span class="number">2</span>, <span class="built_in">len</span>(X)+<span class="number">1</span>), test_mse, label=<span class="string">"test"</span>)</span><br><span class="line">    plt.legend()</span><br><span class="line">    plt.axis([<span class="number">0</span>,<span class="number">100</span>,<span class="number">0</span>,<span class="number">5</span>])</span><br><span class="line">    plt.show()</span><br></pre></td></tr></tbody></table></figure>
+<p>这次我们把目标函数换成二次函数。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">X = np.random.uniform(-<span class="number">3</span>,<span class="number">3</span>,size=<span class="number">100</span>).reshape(-<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line">y = <span class="number">0.5</span> * X**<span class="number">2</span> + X + <span class="number">4</span> + np.random.normal(<span class="number">0</span>,<span class="number">1</span>,size = <span class="number">100</span>).reshape(-<span class="number">1</span>,<span class="number">1</span>)</span><br></pre></td></tr></tbody></table></figure>
+<p>degree = 1</p>
+<p>随着样本数量的增加 test 的误差在减小，train 的误差在增加，而当样本到了一定程度后，两者也没有保持在一个较小的程度上。这时说明模型欠拟合。</p>
+<p><img src="https://z3.ax1x.com/2021/10/13/5u1WSP.png" alt=""></p>
+<p>degree = 2</p>
+<p><img src="https://z3.ax1x.com/2021/10/13/5uQx3V.png" alt=""></p>
+<p>随着样本数量的增加 test 的误差在减小，train 的误差在增加，而当样本到了一定程度后，两者基本<code>持平</code>，保持在一个较小的程度上。这时模型已经拟合。</p>
+<p>degree = 10</p>
+<p><img src="https://z3.ax1x.com/2021/10/13/5ul2KU.png" alt=""></p>
+<p>随着样本的增加 test 的误差在减小，train 的误差在增加，但当样本到了一定程度后，在 train 上的误差要比在 test 上的误差小得多，这时就要注意是不是过拟合了。</p>
+<p>degree = 100</p>
+<p><img src="https://z3.ax1x.com/2021/10/13/5ulxIA.png" alt=""></p>
+<p>此时 test 上的误差已经飙到天上去了，妥妥的过拟合。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在训练数据集上表现良好，却在测试数据集上表现差劲的就是<code>过拟合</code>，这时候要降低参数数量。</p>
 <p>而在训练数据集上表现就不尽人意的有可能是<code>欠拟合</code>（也有可能是模型压根不对等问题），这时候可以试试增大模型，增加参数数量。</p>
 
@@ -368,7 +394,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3"><span class="nav-number">1.</span> <span class="nav-text">算法思想</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B"><span class="nav-number">2.</span> <span class="nav-text">实例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E5%85%A5"><span class="nav-number">1.</span> <span class="nav-text">引入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%8B%9F%E5%90%88"><span class="nav-number">2.</span> <span class="nav-text">数据拟合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E6%9B%B2%E7%BA%BF"><span class="nav-number">3.</span> <span class="nav-text">学习曲线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -384,14 +410,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-count">39</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
