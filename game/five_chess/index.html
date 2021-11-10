@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<style>
+	body{
+		width: 700px;
+		height: 700px;
+		margin: 50px auto;
+		position: relative;
+	}
+	canvas{
+		position: absolute;
+		display: block;
+		box-shadow: -3px -3px 3px #F3F2F2, 6px 6px 6px #6F6767;
+	}
+	.egg{
+		position: absolute;
+		font-size: 64px;
+		color: #299ea0;
+		top: 200px;
+		display: none;
+	}
+	
+	.egg1{
+		left: 95px;
+	}
+	.egg2{
+		left: 225px;
+	}
+	.egg3{
+		left: 350px;
+	}
+</style>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body onload="init()">
+		<canvas id="mycanvas" width="640px" height="640px" onclick="down_pieces(event)"></canvas>
+		<div>
+			<p class="egg egg1">小王</p>
+			<p class="egg egg2">同学</p>
+			<p class="egg egg3">是笨蛋</p>
+		</div>
+	</body>
+</html>
+
+<script src="five_in_a_row.js"></script>
