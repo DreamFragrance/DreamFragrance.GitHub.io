@@ -6093,7 +6093,7 @@ Ex_i' = p * X_i * 0 + (1-p) \frac{x_i}{1-p} = x_i</script><p>左边没有 Dropou
           </div>
 <p>执行复制的双方——主服务器和从服务器分别维护着一个对应的复制偏移量。</p>
 <ul>
-<li>主服务器每次向从服务器传播 N 个字节的数据时，就将自己对应从服务器的复制偏移量的值加上 N。</li>
+<li>主服务器每次向从服务器传播 N 个字节的数据时，就将自己的复制偏移量的值加上 N。</li>
 <li>从服务器每次收到主服务器传来的 N 个字节的数据时，也将自己的复制偏移量的值加上 N。</li>
 </ul>
 <p>通过对比主从服务器的复制偏移量，程序很容易就能知道主从服务器是否处于同一个状态。</p>
@@ -6101,13 +6101,21 @@ Ex_i' = p * X_i * 0 + (1-p) \frac{x_i}{1-p} = x_i</script><p>左边没有 Dropou
 <li>如果主从服务器处于一致的状态，那么他们的复制偏移量总是相同的。</li>
 <li>相反，如果主从服务器的复制偏移量不相同，那么他们就并未处于一致的状态</li>
 </ul>
+<p><img src="https://z3.ax1x.com/2021/11/28/ouNngg.png" alt="image"></p>
 <div class="note success">
             <p><strong>复制积压缓冲区</strong></p>
           </div>
 <p>复制积压缓冲区是由主服务器维护的一个固定长度（fixed-size）先进先出的队列，默认大小为1MB。固定长度的先入先出队列不能随着元素的增加和减少而动态的调整长度，固定长度先进先出队列的长度是固定的，<strong>当入队元素的数量大于队列长度时，最先入队的元素会被弹出，而新元素会被放入队列</strong>。</p>
 <p>当主服务器进行命令传播时，它不仅会将写命令发送给所有从服务器，还会降所有写命令入队到复制积压缓冲区里面，如图所示：</p>
-<p><img src="https://z3.ax1x.com/2021/11/28/ouuEN9.png" alt=""></p>
-<p>因此，主服务器的复制积压缓冲区会存放近期传播过的写命令，并且复制积压缓冲区会为队列中的每个字节记录响应的复制偏移量。</p>
+<p><img src="https://z3.ax1x.com/2021/11/28/ouNUv4.png" alt="image"></p>
+<p><strong>重连同步流程：</strong></p>
+<ol>
+<li>当从服务器A(上图为例)断线重连后，向主服务器发送PSYNC命令，报告自己的偏移量为10086。</li>
+<li>主服务器收到命令后，检查偏移量10086之后的数据是否存在于复制积压缓冲区里。存在，向服务器发送+CONTINUE回复，表示数据同步将以部分重同步模式进行。（不存在，主服务器将对从服务器执行完整重同步操作）。</li>
+<li>主服务器将复制积压缓冲区10086之后的所有数据发送给从服务器。</li>
+<li>从服务器接收缺失数据，回到与主服务器一致的状态。</li>
+</ol>
+<p>因此，主服务器的复制积压缓冲区会存放近期传播过的写命令，并且<strong>复制积压缓冲区会为队列中的每个字节记录响应的复制偏移量</strong>。</p>
 <p>当从服务器重新连接上主服务器时，从服务器会通过 PSYNC 命令将自己的复制偏移量 offset 发送给主服务器，主服务器会根据从服务器的复制偏移量来决定对从服务器执行何种同步操作。</p>
 <ul>
 <li>如果偏移量 offset 之后的数据仍然处于复制积压缓冲区里，那么主服务器将会对从服务器执行部分同步操作（增量复制）。</li>
@@ -6129,8 +6137,237 @@ Ex_i' = p * X_i * 0 + (1-p) \frac{x_i}{1-p} = x_i</script><p>左边没有 Dropou
 <div class="note success">
             <p><strong>PSYNC 命令的实现</strong></p>
           </div>
+<p>PSYNC 命令的调用方式有两种：</p>
+<ul>
+<li>如果从服务器之前从来没有复制过任何主服务器，或者之前没有执行过 <code>slaveof no one</code> 命令，那么从服务器则会向主服务器发送 PSYNC? -1命令，主动请求服务器进行完整重同步</li>
+<li>相反的，如果从服务器已经复制过某个主服务器，那么从服务器在开始一次新的复制时，将向主服务器发送 PSYNC runid offset 命令：其中 runid 是上一次复制的主服务器的运行 ID，而 offset 则是从服务器当前的复制偏移量，接收到这个命令的主服务器会根据这两个参数来判断对该从服务器执行哪儿中同步操作。<ul>
+<li>如果主服务器返回 <code>+FULLRESYNC &lt;runid&gt; &lt;offset&gt;</code>，那么则表示主服务器将与从服务器进行完整重同步： 其中 runid 是当前主服务器的运行 ID，从服务器需将这个 ID 保存起来，再下一次发送 PASYNC 时使用；而 offset 则是当前主服务器的复制偏移量，而从服务器则会将这个值作为自己的初始化复制偏移量。</li>
+<li>如果主服务器返回 <code>+Continue</code>，那么表示主服务器将与从服务器进行部分重同步操作，从服务器只要等着主服务器将自己缺少的那部分数据发送过来即可！</li>
+<li>如果主服务器返回 <code>-ERR</code>，表示当前的主服务器版本低于2.8，它识别不了 PSYNC 命令，从服务器将向主服务器发送 SYNC 命令，并且与主服务器执行完全重同步操作。</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://z3.ax1x.com/2021/11/28/ouNIat.png" alt=""></p>
+<div class="note success">
+            <p><strong>心跳检测</strong></p>
+          </div>
+<p>在命令传播阶段，从服务器默认会以每秒一次的频率。像主服务器发送命令：<code>REPLCONF ACK &lt;offset&gt;</code>，其中 <code>offset</code> 是从服务器当前的复制偏移量。</p>
+<p>作用：</p>
+<ul>
+<li><p>检测 主从服务器的网络连接状态</p>
+</li>
+<li><p>辅助实现 <strong>min-slaves</strong> 选项，min-slaves-to-write 和 min-slaves-max-lag 都是为了防止主服务器在不安全的情况下执行写命令。</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="code"><pre><span class="line">min-slaves-to-write 3</span><br><span class="line">min-slaves-max-lag 10</span><br></pre></td></tr></tbody></table></figure>
+<p>在从服务器数量小于3个，或者三个从服务器的延迟值（最后一次心跳检测距离现在过了多少秒）都大于等于十秒时，主服务器将拒绝执行写命令。</p>
+</li>
+<li><p>检测命令丢失。偏移量不一致时，会进行补发缺失数据的操作。</p>
+</li>
+</ul>
 <p><br></p>
-<h4 id="11-7、哨兵模式"><a href="#11-7、哨兵模式" class="headerlink" title="11.7、哨兵模式"></a>11.7、哨兵模式</h4>]]></content>
+<h4 id="11-7、哨兵模式（Sentinel）【推荐】"><a href="#11-7、哨兵模式（Sentinel）【推荐】" class="headerlink" title="11.7、哨兵模式（Sentinel）【推荐】"></a>11.7、哨兵模式（Sentinel）【推荐】</h4><p>上述主从切换技术的方法，主要是通过在主服务器宕机的时候，人工手动地将某台从服务器切换成主服务器，再将其余的从服务器都配置成它的 slaver。<strong>这整一个过程需要人工干预，费时又费力，还会造成一段时间内的服务不可用</strong>。不推荐！</p>
+<p>因此就有了<strong>哨兵模式</strong>。</p>
+<div class="note success">
+            <p><strong>什么是哨兵模式？</strong></p>
+          </div>
+<p>哨兵模式是一种特殊的模式，首先Redis提供了哨兵的命令，哨兵是一个独立的进程，作为进程，它会独立运行。其原理是<strong>哨兵通过发送命令，等待Redis服务器响应，从而监控运行的多个Redis实例。</strong></p>
+<p><img src="https://z3.ax1x.com/2021/11/28/oucAVU.png" alt="image"></p>
+<p>这里哨兵有三个作用：</p>
+<ul>
+<li><strong>监控（Monitoring）</strong>：Sentinel 会不断检查你的主服务器和从服务器是否运作正常。</li>
+<li><strong>提醒（Notification）</strong>：当被监控的某个 Redis 服务器出现问题时，Sentinel 可以通过 API 向管理员或者其他应用程序发送通知。</li>
+<li><strong>自动故障迁移（Automotic failover）</strong>：当一个主服务器不能正常工作时，Sentinel 会开始一次自动故障迁移操作，它会将失效主服务器的其中一个从服务器升级为新的主服务器，并让失效主服务器的其它从服务器也改为新的主服务器的从服务器。而当客户端试图连接失效的主服务器时，集群也会向客户端返回新主服务器的地址，使得集群可以使用新主服务器来代替失效的服务器。</li>
+</ul>
+<p>诶，可是如果这个哨兵进程宕机了，整个系统不就崩盘了吗？</p>
+<p>为此，我们可以使用多个哨兵进行监控。各个哨兵之间也会互相监控，这样就形成了多哨兵模式。</p>
+<p><img src="https://z3.ax1x.com/2021/11/28/ougD61.png" alt="image"></p>
+<p>这里简单用文字描述一下<strong>故障切换（failover）</strong>的过程。</p>
+<p>假设主服务器宕机，哨兵1先检测到这个结果，系统并不会马上进行 failover 过程，仅仅是哨兵1主观地认为主服务器不可用，这个现象被称为<strong>主观下线</strong>。当后面的哨兵也检测到主服务器不可用，并且数量达到一定值时，那么哨兵之间就行进行一次投票，投票的结果由一个哨兵发起，进行 failover 操作。切换成功后，就会通过发布订阅的方式，让各个哨兵把自己监控的从服务器实现切换主机，在个过程成为<strong>客观下线</strong>，这样对于客户端而言，一切都是透明的。</p>
+<div class="note success">
+            <p><strong>每个 Sentinel 都需要定期执行的任务</strong></p>
+          </div>
+<ul>
+<li>每个 Sentinel 以每秒钟一次的频率向它所知的主服务器、从服务器以及其他 Sentinel 实例发送一个 PING 命令。</li>
+<li>如果一个实例（instance）距离最后一次有效回复 PING 命令的时间超过 down-after-milliseconds 选项所指定的值， 那么这个实例会被 Sentinel 标记为主观下线。 一个有效回复可以是： +PONG 、 -LOADING 或者 -MASTERDOWN 。</li>
+<li>如果一个主服务器被标记为主观下线， 那么正在监视这个主服务器的所有 Sentinel 要以每秒一次的频率确认主服务器的确进入了主观下线状态。</li>
+<li>如果一个主服务器被标记为主观下线， 并且有足够数量的 Sentinel （至少要达到配置文件指定的数量）在指定的时间范围内同意这一判断， 那么这个主服务器被标记为客观下线。</li>
+<li>在一般情况下， 每个 Sentinel 会以每 10 秒一次的频率向它已知的所有主服务器和从服务器发送 INFO 命令。 当一个主服务器被 Sentinel 标记为客观下线时， Sentinel 向下线主服务器的所有从服务器发送 INFO 命令的频率会从 10 秒一次改为每秒一次。</li>
+<li>当没有足够数量的 Sentinel 同意主服务器已经下线， 主服务器的客观下线状态就会被移除。 当主服务器重新向 Sentinel 的 PING 命令返回有效回复时， 主服务器的主观下线状态就会被移除。</li>
+</ul>
+<div class="note success">
+            <p><strong>自动发现 Sentinel 和从服务器</strong></p>
+          </div>
+<p>一个 Sentinel 可以与其他多个 Sentinel 进行连接， 各个 Sentinel 之间可以互相检查对方的可用性， 并进行信息交换。</p>
+<p>你无须为运行的每个 Sentinel 分别设置其他 Sentinel 的地址， 因为 Sentinel 可以通过发布与订阅功能来自动发现正在监视相同主服务器的其他 Sentinel ， 这一功能是通过向频道 <strong>sentinel:hello</strong> 发送信息来实现的。</p>
+<p>与此类似， 你也不必手动列出主服务器属下的所有从服务器， 因为 Sentinel 可以通过询问主服务器来获得所有从服务器的信息。</p>
+<ul>
+<li>每个 Sentinel 会以每两秒一次的频率， 通过发布与订阅功能， 向被它监视的所有主服务器和从服务器的 <strong>sentinel:hello</strong> 频道发送一条信息， 信息中包含了 Sentinel 的 IP 地址、端口号和运行 ID （runid）。</li>
+<li>每个 Sentinel 都订阅了被它监视的所有主服务器和从服务器的 <strong>sentinel:hello</strong> 频道， 查找之前未出现过的 sentinel （looking for unknown sentinels）。 当一个 Sentinel 发现一个新的 Sentinel 时， 它会将新的 Sentinel 添加到一个列表中， 这个列表保存了 Sentinel 已知的， 监视同一个主服务器的所有其他 Sentinel 。</li>
+<li>Sentinel 发送的信息中还包括完整的主服务器当前配置（configuration）。 如果一个 Sentinel 包含的主服务器配置比另一个 Sentinel 发送的配置要旧， 那么这个 Sentinel 会立即升级到新配置上。</li>
+<li>在将一个新 Sentinel 添加到监视主服务器的列表上面之前， Sentinel 会先检查列表中是否已经包含了和要添加的 Sentinel 拥有相同运行 ID 或者相同地址（包括 IP 地址和端口号）的 Sentinel ， 如果是的话， Sentinel 会先移除列表中已有的那些拥有相同运行 ID 或者相同地址的 Sentinel ， 然后再添加新 Sentinel 。</li>
+</ul>
+<div class="note success">
+            <p><strong>故障转移</strong></p>
+          </div>
+<p>一次故障转移操作由以下步骤组成：</p>
+<ul>
+<li>发现主服务器已经进入客观下线状态。</li>
+<li>对我们的当前纪元进行自增（详情请参考 Raft leader election ）， 并尝试在这个纪元中当选。</li>
+<li>如果当选失败， 那么在设定的故障迁移超时时间的两倍之后， 重新尝试当选。 如果当选成功， 那么执行以下步骤。</li>
+<li>选出一个从服务器，并将它升级为主服务器。</li>
+<li>向被选中的从服务器发送 <code>SLAVEOF NO ONE</code> 命令，让它转变为主服务器。</li>
+<li>通过发布与订阅功能， 将更新后的配置传播给所有其他 Sentinel ， 其他 Sentinel 对它们自己的配置进行更新。</li>
+<li>向已下线主服务器的从服务器发送 <strong>SLAVEOF</strong> 命令， 让它们去跟随新的主服务器。</li>
+<li>当所有从服务器都已经开始跟随新的主服务器时， 领头 Sentinel 终止这次故障迁移操作。</li>
+</ul>
+<p>每当一个 Redis 实例被重新配置（reconfigured） —— 无论是被设置成主服务器、从服务器、又或者被设置成其他主服务器的从服务器 —— Sentinel 都会向被重新配置的实例发送一个 CONFIG REWRITE 命令， 从而确保这些配置会持久化在硬盘里。</p>
+<p>Sentinel 使用以下规则来选择新的主服务器：</p>
+<ul>
+<li>在失效主服务器属下的从服务器当中， 那些被标记为主观下线、已断线、或者最后一次回复 PING 命令的时间大于五秒钟的从服务器都会被淘汰。</li>
+<li>在失效主服务器属下的从服务器当中， 那些与失效主服务器连接断开的时长超过 down-after 选项指定的时长十倍的从服务器都会被淘汰。</li>
+<li>在经历了以上两轮淘汰之后剩下来的从服务器中， 我们选出复制偏移量（replication offset）最大的那个从服务器作为新的主服务器； 如果复制偏移量不可用， 或者从服务器的复制偏移量相同， 那么带有最小运行 ID 的那个从服务器成为新的主服务器。</li>
+</ul>
+<div class="note success">
+            <p><strong>Sentinel 自动故障迁移的一致性特质</strong></p>
+          </div>
+<p>Sentinel 自动故障迁移使用 Raft 算法来选举领头（leader） Sentinel ， 从而确保在一个给定的纪元（epoch）里， 只有一个领头产生。</p>
+<p>这表示在同一个纪元中， 不会有两个 Sentinel 同时被选中为领头， 并且各个 Sentinel 在同一个纪元中只会对一个领头进行投票。</p>
+<p>更高的配置纪元总是优于较低的纪元， 因此每个 Sentinel 都会主动使用更新的纪元来代替自己的配置。</p>
+<p>简单来说， 我们可以将 Sentinel 配置看作是一个带有版本号的状态。 一个状态会以最后写入者胜出（last-write-wins）的方式（也即是，最新的配置总是胜出）传播至所有其他 Sentinel 。</p>
+<p>举个例子， 当出现网络分割（network partitions）时， 一个 Sentinel 可能会包含了较旧的配置， 而当这个 Sentinel 接到其他 Sentinel 发来的版本更新的配置时， Sentinel 就会对自己的配置进行更新。</p>
+<p>如果要在网络分割出现的情况下仍然保持一致性， 那么应该使用 min-slaves-to-write 选项， 让主服务器在连接的从实例少于给定数量时停止执行写操作， 与此同时， 应该在每个运行 Redis 主服务器或从服务器的机器上运行 Redis Sentinel 进程。</p>
+<div class="note success">
+            <p><strong>Sentinel 状态的持久化</strong></p>
+          </div>
+<p>Sentinel 的状态会被持久化在 Sentinel 配置文件里面。</p>
+<p>每当 Sentinel 接收到一个新的配置， 或者当领头 Sentinel 为主服务器创建一个新的配置时， 这个配置会与配置纪元一起被保存到磁盘里面。</p>
+<p>这意味着停止和重启 Sentinel 进程都是安全的。</p>
+<div class="note success">
+            <p><strong>Sentinel 在非故障迁移的情况下对实例进行重新配置</strong></p>
+          </div>
+<p>即使没有自动故障迁移操作在进行， Sentinel 总会尝试将当前的配置设置到被监视的实例上面。 特别是：</p>
+<ul>
+<li>根据当前的配置， 如果一个从服务器被宣告为主服务器， 那么它会代替原有的主服务器， 成为新的主服务器， 并且成为原有主服务器的所有从服务器的复制对象。 那些连接了错误主服务器的从服务器会被重新配置， 使得这些从服务器会去复制正确的主服务器。</li>
+</ul>
+<p>不过， 在以上这些条件满足之后， Sentinel 在对实例进行重新配置之前仍然会等待一段足够长的时间， 确保可以接收到其他 Sentinel 发来的配置更新， 从而避免自身因为保存了过期的配置而对实例进行了不必要的重新配置。</p>
+<div class="note success">
+            <p><strong>TILT 模式</strong></p>
+          </div>
+<p>Redis Sentinel 严重依赖计算机的时间功能： 比如说， 为了判断一个实例是否可用， Sentinel 会记录这个实例最后一次相应 PING 命令的时间， 并将这个时间和当前时间进行对比， 从而知道这个实例有多长时间没有和 Sentinel 进行任何成功通讯。</p>
+<p>不过， 一旦计算机的时间功能出现故障， 或者计算机非常忙碌， 又或者进程因为某些原因而被阻塞时， Sentinel 可能也会跟着出现故障。</p>
+<p>TILT 模式是一种特殊的保护模式： 当 Sentinel 发现系统有些不对劲时， Sentinel 就会进入 TILT 模式。</p>
+<p>因为 Sentinel 的时间中断器默认每秒执行 10 次， 所以我们预期时间中断器的两次执行之间的间隔为 100 毫秒左右。 Sentinel 的做法是， 记录上一次时间中断器执行时的时间， 并将它和这一次时间中断器执行的时间进行对比：</p>
+<ul>
+<li>如果两次调用时间之间的差距为负值， 或者非常大（超过 2 秒钟）， 那么 Sentinel 进入 TILT 模式。</li>
+<li>如果 Sentinel 已经进入 TILT 模式， 那么 Sentinel 延迟退出 TILT 模式的时间。</li>
+</ul>
+<p>当 Sentinel 进入 TILT 模式时， 它仍然会继续监视所有目标， 但是：</p>
+<ul>
+<li>它不再执行任何操作，比如故障转移。</li>
+<li>当有实例向这个 Sentinel 发送 SENTINEL is-master-down-by-addr 命令时， Sentinel 返回负值： 因为这个 Sentinel 所进行的下线判断已经不再准确。</li>
+</ul>
+<p>如果 TILT 可以正常维持 30 秒钟， 那么 Sentinel 退出 TILT 模式。</p>
+<div class="note success">
+            <p><strong>处理 -BUSY 状态</strong></p>
+          </div>
+<p>当 Lua 脚本的运行时间超过指定时限时， Redis 就会返回 -BUSY 错误。</p>
+<p>当出现这种情况时， Sentinel 在尝试执行故障转移操作之前， 会先向服务器发送一个 SCRIPT KILL 命令， 如果服务器正在执行的是一个只读脚本的话， 那么这个脚本就会被杀死， 服务器就会回到正常状态。</p>
+<h4 id="11-8、哨兵模式实战"><a href="#11-8、哨兵模式实战" class="headerlink" title="11.8、哨兵模式实战"></a>11.8、哨兵模式实战</h4><p>创建配置文件 sentinel.conf</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 哨兵实例运行端口</span></span><br><span class="line">port 26379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 哨兵工作目录</span></span><br><span class="line">/tmp</span><br><span class="line"></span><br><span class="line"><span class="comment"># sentinel monitor &lt;master-name&gt; &lt;ip&gt; &lt;redis-port&gt; &lt;quorum&gt;</span></span><br><span class="line"><span class="comment"># quorum 表示有多少哨兵认为主服务器主观下线时，那么这时主服务器就变成了客观下线</span></span><br><span class="line">sentinel monitor mymaster 127.0.0.1 6379 1</span><br></pre></td></tr></tbody></table></figure>
+<p><strong>哨兵模式配置参数</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>参数类型</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>port</td>
+<td>整数</td>
+<td>启动哨兵进程端口</td>
+</tr>
+<tr>
+<td>dir</td>
+<td>文件夹目录</td>
+<td>哨兵进程服务临时文件夹，默认为/tmp，要保证有可写入的权限</td>
+</tr>
+<tr>
+<td>sentinel down-after-milliseconds</td>
+<td>&lt;服务名称&gt;&lt;毫秒数（整数）&gt;</td>
+<td>指定哨兵在监控Redis服务时，当Redis服务在一个默认毫秒数内都无法回答时，单个哨兵认为的主观下线时间，默认为30000（30秒）</td>
+</tr>
+<tr>
+<td>sentinel parallel-syncs</td>
+<td>&lt;服务名称&gt;&lt;服务器数（整数）&gt;</td>
+<td>指定可以有多少个Redis服务同步新的主机，一般而言，这个数字越小同步时间越长，而越大，则对网络资源要求越高</td>
+</tr>
+<tr>
+<td>sentinel failover-timeout</td>
+<td>&lt;服务名称&gt;&lt;毫秒数（整数）&gt;</td>
+<td>指定故障切换允许的毫秒数，超过这个时间，就认为故障切换失败，默认为3分钟</td>
+</tr>
+<tr>
+<td>sentinel notification-script</td>
+<td>&lt;服务名称&gt;&lt;脚本路径&gt;</td>
+<td>指定sentinel检测到该监控的redis实例指向的实例异常时，调用的报警脚本。该配置项可选，比较常用</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>运行哨兵进程</strong></p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">[root@deflory src]<span class="comment"># ./redis-sentinel ../master-slaver-config/sentinel.conf </span></span><br></pre></td></tr></tbody></table></figure>
+<p><strong>查看哨兵进程</strong></p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">[root@deflory src]<span class="comment"># ps -ef|grep sentinel</span></span><br><span class="line">root     14853     1  0 20:54 ?        00:00:00 ./redis-sentinel *:26379 [sentinel]</span><br><span class="line">root     15149 28363  0 20:54 pts/2    00:00:00 grep --color=auto sentinel</span><br></pre></td></tr></tbody></table></figure>
+<p>接下来配置主从复制，这里我们仍然选择<strong>一主二从</strong>的模式。</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">127.0.0.1:6379&gt; info replication</span><br><span class="line"><span class="comment"># Replication</span></span><br><span class="line">role:master</span><br><span class="line">connected_slaves:2</span><br><span class="line">slave0:ip=127.0.0.1,port=6381,state=online,offset=25982,lag=0</span><br><span class="line">slave1:ip=127.0.0.1,port=6380,state=online,offset=25982,lag=0</span><br><span class="line">master_failover_state:no-failover</span><br><span class="line">master_replid:3c7139ce2e8248ef2ea5d79c00387b3356c16e14</span><br><span class="line">master_replid2:0000000000000000000000000000000000000000</span><br><span class="line">master_repl_offset:25982</span><br><span class="line">second_repl_offset:-1</span><br><span class="line">repl_backlog_active:1</span><br><span class="line">repl_backlog_size:1048576</span><br><span class="line">repl_backlog_first_byte_offset:72</span><br><span class="line">repl_backlog_histlen:25911</span><br></pre></td></tr></tbody></table></figure>
+<p>关闭主服务器（端口6379），哨兵进程就开始工作了，将主服务器的身份移给了从服务器（端口6380）。</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">32507:X 28 Nov 2021 21:06:51.180 <span class="comment"># +failover-end master mymaster 127.0.0.1 6379</span></span><br><span class="line">32507:X 28 Nov 2021 21:06:51.180 <span class="comment"># +switch-master mymaster 127.0.0.1 6379 127.0.0.1 6380</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">127.0.0.1:6380&gt; info replication</span><br><span class="line"><span class="comment"># Replication</span></span><br><span class="line">role:master</span><br><span class="line">connected_slaves:1</span><br><span class="line">slave0:ip=127.0.0.1,port=6381,state=online,offset=37163,lag=1</span><br><span class="line">master_failover_state:no-failover</span><br><span class="line">master_replid:c8d0b6a5529667f15d6322888a45a8f42ca1e5b9</span><br><span class="line">master_replid2:3c7139ce2e8248ef2ea5d79c00387b3356c16e14</span><br><span class="line">master_repl_offset:37296</span><br><span class="line">second_repl_offset:36595</span><br><span class="line">repl_backlog_active:1</span><br><span class="line">repl_backlog_size:1048576</span><br><span class="line">repl_backlog_first_byte_offset:22964</span><br><span class="line">repl_backlog_histlen:14333</span><br></pre></td></tr></tbody></table></figure>
+<p>紧接着我再把当前新的主服务器关闭，现在只剩一台服务器，理所当然就成为了主服务器。</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">32507:X 28 Nov 2021 21:09:07.218 <span class="comment"># +failover-end master mymaster 127.0.0.1 6380</span></span><br><span class="line">32507:X 28 Nov 2021 21:09:07.218 <span class="comment"># +switch-master mymaster 127.0.0.1 6380 127.0.0.1 6381</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">127.0.0.1:6381&gt; info replication</span><br><span class="line">Error: Server closed the connection</span><br><span class="line">127.0.0.1:6381&gt; info replication</span><br><span class="line"><span class="comment"># Replication</span></span><br><span class="line">role:master</span><br><span class="line">connected_slaves:0</span><br><span class="line">master_failover_state:no-failover</span><br><span class="line">master_replid:8203b47d316f6e313b7512a9d78c9ea12ff10d42</span><br><span class="line">master_replid2:c8d0b6a5529667f15d6322888a45a8f42ca1e5b9</span><br><span class="line">master_repl_offset:44095</span><br><span class="line">second_repl_offset:43674</span><br><span class="line">repl_backlog_active:1</span><br><span class="line">repl_backlog_size:1048576</span><br><span class="line">repl_backlog_first_byte_offset:13301</span><br><span class="line">repl_backlog_histlen:30795</span><br></pre></td></tr></tbody></table></figure>
+<p>此时再将原来的主服务器（端口6379）重新连接，直接就变成了现主服务器的从服务器。</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">32507:X 28 Nov 2021 21:11:08.150 * +convert-to-slave slave 127.0.0.1:6379 127.0.0.1 6379 @ mymaster 127.0.0.1 6381</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">127.0.0.1:6379&gt; info replication</span><br><span class="line"><span class="comment"># Replication</span></span><br><span class="line">role:slave</span><br><span class="line">master_host:127.0.0.1</span><br><span class="line">master_port:6381</span><br><span class="line">master_link_status:up</span><br><span class="line">master_last_io_seconds_ago:1</span><br><span class="line">master_sync_in_progress:0</span><br><span class="line">slave_read_repl_offset:63627</span><br><span class="line">slave_repl_offset:63627</span><br><span class="line">slave_priority:100</span><br><span class="line">slave_read_only:1</span><br><span class="line">replica_announced:1</span><br><span class="line">connected_slaves:0</span><br><span class="line">master_failover_state:no-failover</span><br><span class="line">master_replid:8203b47d316f6e313b7512a9d78c9ea12ff10d42</span><br><span class="line">master_replid2:0000000000000000000000000000000000000000</span><br><span class="line">master_repl_offset:63627</span><br><span class="line">second_repl_offset:-1</span><br><span class="line">repl_backlog_active:1</span><br><span class="line">repl_backlog_size:1048576</span><br><span class="line">repl_backlog_first_byte_offset:51544</span><br><span class="line">repl_backlog_histlen:12084</span><br></pre></td></tr></tbody></table></figure>
+<p>原来的从服务器（端口6380）就更是如此了。</p>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">32507:X 28 Nov 2021 21:14:49.324 * +convert-to-slave slave 127.0.0.1:6380 127.0.0.1 6380 @ mymaster 127.0.0.1 6381</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">127.0.0.1:6380&gt; info replication</span><br><span class="line"><span class="comment"># Replication</span></span><br><span class="line">role:slave</span><br><span class="line">master_host:127.0.0.1</span><br><span class="line">master_port:6381</span><br><span class="line">master_link_status:up</span><br><span class="line">master_last_io_seconds_ago:0</span><br><span class="line">master_sync_in_progress:0</span><br><span class="line">slave_read_repl_offset:69747</span><br><span class="line">slave_repl_offset:69747</span><br><span class="line">slave_priority:100</span><br><span class="line">slave_read_only:1</span><br><span class="line">replica_announced:1</span><br><span class="line">connected_slaves:0</span><br><span class="line">master_failover_state:no-failover</span><br><span class="line">master_replid:8203b47d316f6e313b7512a9d78c9ea12ff10d42</span><br><span class="line">master_replid2:0000000000000000000000000000000000000000</span><br><span class="line">master_repl_offset:69747</span><br><span class="line">second_repl_offset:-1</span><br><span class="line">repl_backlog_active:1</span><br><span class="line">repl_backlog_size:1048576</span><br><span class="line">repl_backlog_first_byte_offset:66211</span><br><span class="line">repl_backlog_histlen:3537</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="十二、缓存问题"><a href="#十二、缓存问题" class="headerlink" title="十二、缓存问题"></a>十二、缓存问题</h2><h4 id="11-1、缓存雪崩"><a href="#11-1、缓存雪崩" class="headerlink" title="11.1、缓存雪崩"></a>11.1、缓存雪崩</h4><p>当某一个时刻出现大规模的缓存失效的情况，那么就会导致大量的请求直接打在数据库上面，导致数据库压力巨大，如果在高并发的情况下，可能瞬间就会导致数据库宕机。这时候如果运维马上又重启数据库，马上又会有新的流量把数据库打死。这就是缓存雪崩。</p>
+<p><img src="https://z3.ax1x.com/2021/11/28/ouvfZ8.png" alt=""></p>
+<p><strong><font size="4px">分析：</font></strong></p>
+<p>造成缓存雪崩的关键在于在同一时间大规模的key失效。为什么会出现这个问题呢，有几种可能，第一种可能是 Redis 宕机，第二种可能是采用了相同的过期时间（购物节零点秒杀，大量商品同时失效）。搞清楚原因之后，那么有什么解决方案呢？</p>
+<p><strong><font size="4px">解决方案：</font></strong></p>
+<ol>
+<li>在原有的失效时间上加上一个随机值，比如1-5分钟随机。这样就避免了因为采用相同的过期时间导致的缓存雪崩。</li>
+<li>使用熔断机制。当流量到达一定的阈值时，就直接返回“系统拥挤”之类的提示，防止过多的请求打在数据库上。至少能保证一部分用户是可以正常使用，其他用户多刷新几次也能得到结果。</li>
+<li>提高数据库的容灾能力，可以使用分库分表，读写分离的策略。</li>
+<li>为了防止Redis宕机导致缓存雪崩的问题，可以搭建Redis集群，提高Redis的容灾性。</li>
+</ol>
+<p><br></p>
+<h4 id="11-2、缓存击穿"><a href="#11-2、缓存击穿" class="headerlink" title="11.2、缓存击穿"></a>11.2、缓存击穿</h4><p>其实跟缓存雪崩有点类似，缓存雪崩是大规模的key失效，而缓存击穿是一个热点的Key，有大并发集中对其进行访问，突然间这个Key失效了，导致大并发全部打在数据库上，导致数据库压力剧增。这种现象就叫做缓存击穿。</p>
+<p><strong><font size="4px">分析：</font></strong></p>
+<p>关键在于某个热点的key失效了，导致大并发集中打在数据库上。所以要从两个方面解决，第一是否可以考虑热点key不设置过期时间，第二是否可以考虑降低打在数据库上的请求数量。</p>
+<p><strong><font size="4px">解决方案：</font></strong></p>
+<ol>
+<li>如果业务允许的话，对于热点的 key 可以设置永不过期。</li>
+<li>使用互斥锁。如果缓存失效的情况，只有拿到锁才可以查询数据库，降低了在同一时刻打在数据库上的请求，防止数据库打死。当然这样会导致系统的性能变差。</li>
+</ol>
+<p><br></p>
+<h4 id="11-3、缓存穿透"><a href="#11-3、缓存穿透" class="headerlink" title="11.3、缓存穿透"></a>11.3、缓存穿透</h4><p>我们使用Redis大部分情况都是通过Key查询对应的值，假如发送的请求传进来的key是不存在Redis中的，那么就查不到缓存，查不到缓存就会去数据库查询。假如有大量这样的请求，这些请求像“穿透”了缓存一样直接打在数据库上，这种现象就叫做缓存穿透。</p>
+<p><strong><font size="4px">分析：</font></strong></p>
+<p>关键在于在Redis查不到key值，这和缓存击穿有根本的区别，区别在于<strong>缓存穿透的情况是传进来的key在Redis中是不存在的</strong>。假如有黑客传进大量的不存在的key，那么大量的请求打在数据库上是很致命的问题，所以在日常开发中要对参数做好校验，一些非法的参数，不可能存在的key就直接返回错误提示，要对调用方保持这种“不信任”的心态。</p>
+<p><strong><font size="4px">解决方案：</font></strong></p>
+<ol>
+<li><strong>把无效的Key存进Redis中</strong>。如果Redis查不到数据，数据库也查不到，我们把这个Key值保存进Redis，设置value=”null”，当下次再通过这个Key查询时就不需要再查询数据库。这种处理方式肯定是有问题的，假如传进来的这个不存在的Key值每次都是随机的，那存进Redis也没有意义。</li>
+<li><strong>使用布隆过滤器</strong>。布隆过滤器的作用是某个 key 不存在，那么就一定不存在，它说某个 key 存在，那么很大可能是存在(存在一定的误判率)。于是我们可以在缓存之前再加一层布隆过滤器，在查询的时候先去布隆过滤器查询 key 是否存在，如果不存在就直接返回。</li>
+</ol>
+<p><img src="https://z3.ax1x.com/2021/11/28/ouxz0f.png" alt="image"></p>
+<p><br></p>
+<h4 id="11-4、小结"><a href="#11-4、小结" class="headerlink" title="11.4、小结"></a>11.4、小结</h4><p>这三个问题在使用Redis的时候是肯定会遇到的，而且是非常致命性的问题，所以在日常开发中一定要注意，每次使用Redis时，都要对其保持严谨的态度。还有一个需要注意的是要做好熔断，一旦出现缓存雪崩，击穿，穿透这种情况，至少还有熔断机制保护数据库不会被打死。</p>
+]]></content>
       <categories>
         <category>DataBase System</category>
       </categories>
