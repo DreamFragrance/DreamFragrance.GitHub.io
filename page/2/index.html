@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="如果说我看得比别人更远些，那是因为我站在巨人的肩膀上">
@@ -113,6 +113,7 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
@@ -147,11 +148,38 @@
     <a href="/game/" rel="section"><i class="fa fa-gamepad fa-fw"></i>游戏</a>
 
   </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
   </ul>
 </nav>
 
 
 
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
 
 </div>
     </header>
@@ -170,6 +198,497 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/08/%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%AE%AD%E7%BB%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/images/head-icon.jpg">
+      <meta itemprop="name" content="紫梦沁香">
+      <meta itemprop="description" content="如果说我看得比别人更远些，那是因为我站在巨人的肩膀上">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="紫梦沁香">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/10/08/%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%AE%AD%E7%BB%83/" class="post-title-link" itemprop="url">模型的训练</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-08 23:22:35" itemprop="dateCreated datePublished" datetime="2021-10-08T23:22:35+08:00">2021-10-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-10-20 22:38:37" itemprop="dateModified" datetime="2021-10-20T22:38:37+08:00">2021-10-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-Learning/" itemprop="url" rel="index"><span itemprop="name">Deep Learning</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/10/08/%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%AE%AD%E7%BB%83/" class="post-meta-item leancloud_visitors" data-flag-title="模型的训练" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/10/08/%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%AE%AD%E7%BB%83/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/10/08/%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%AE%AD%E7%BB%83/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="1、网格搜索"><a href="#1、网格搜索" class="headerlink" title="1、网格搜索"></a>1、网格搜索</h2><h4 id="1-1、什么是网格搜索？"><a href="#1-1、什么是网格搜索？" class="headerlink" title="1.1、什么是网格搜索？"></a>1.1、什么是网格搜索？</h4><p>在 <a href="/2021/09/28/过拟合和欠拟合/">过拟合和欠拟合</a> 中，我们是手动调整超参数 <code>degree</code> ，经由人工一一比对来获取最好的值，效率比较低下。因此我们引入网格搜索这个概念，不要被这个看起来很高大上的名词吓唬住了，其实逻辑十分简单，具体请看下述代码。</p>
+<p>使用 sklearn 中自带的波士顿房产数据作为我们的测试数据。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sklearn</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsRegressor</span><br><span class="line"></span><br><span class="line">boston = datasets.load_boston()</span><br><span class="line">X = boston.data</span><br><span class="line">y = boston.target</span><br><span class="line"></span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, y)</span><br></pre></td></tr></tbody></table></figure>
+<p>这里我们要网格搜索的参数即为 p，neighbor， weight。</p>
+<p>可以看到所谓 <code>网格搜索</code> 就是使用 for-loop 像网格一样将你预设的可能的值都遍历一遍，依次寻求 score 最高的超参数组合。</p>
+<figure class="highlight markdown"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">KNN中的超参数：</span><br><span class="line"><span class="bullet">  -</span> weights：含有 <span class="code">`uniform`</span> 和 <span class="code">`distance`</span> 两种模式</span><br><span class="line"><span class="code">             uniform 是正常的模式</span></span><br><span class="line"><span class="code">             distance 给 k 个相邻的点按照距离远近都赋予一个权重，离预测样本点距离远的权重就低一些，距离近的权重就高一些，</span></span><br><span class="line"><span class="code">             </span></span><br><span class="line"><span class="code">  - p：闵可夫斯基距离参数</span></span><br><span class="line"><span class="code">       p = 1 时，等价于曼哈顿距离</span></span><br><span class="line"><span class="code">       p = 2 时，等价于欧拉距离</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">weights = [<span class="string">"uniform"</span>, <span class="string">"distance"</span>]</span><br><span class="line">best_score = -<span class="number">1</span></span><br><span class="line">best_p = <span class="number">0</span></span><br><span class="line">best_neighbor = <span class="number">0</span></span><br><span class="line">best_weight = <span class="string">""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> weight <span class="keyword">in</span> weights:</span><br><span class="line">    <span class="keyword">for</span> neighbor <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">10</span>):</span><br><span class="line">        <span class="keyword">for</span> p <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">10</span>):</span><br><span class="line">            reg = KNeighborsRegressor(n_neighbors=neighbor,</span><br><span class="line">                                      weights = weight,</span><br><span class="line">                                      p = p,</span><br><span class="line">                                      n_jobs = -<span class="number">1</span>)</span><br><span class="line">            reg.fit(X_train, y_train)</span><br><span class="line">            score = reg.score(X_test, y_test)</span><br><span class="line">            <span class="keyword">if</span> score &gt; best_score:</span><br><span class="line">                best_score = score</span><br><span class="line">                best_neighbor = neighbor</span><br><span class="line">                best_p = p</span><br><span class="line">                best_weight = weight</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"best_weight ="</span>, best_weight)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"best_p ="</span>, best_p)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"best_neighbor ="</span>, best_neighbor)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"best_score ="</span>, best_score)</span><br></pre></td></tr></tbody></table></figure>
+<p>输出结果如下。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">best_weight = distance</span><br><span class="line">best_p = <span class="number">1</span></span><br><span class="line">best_neighbor = <span class="number">3</span></span><br><span class="line">best_score = <span class="number">0.7420720968121362</span></span><br></pre></td></tr></tbody></table></figure>
+<p>注：KNeighborsRegressor 和 KNeighborsClassifier 思想相同。</p>
+<p>KNeighborsClassifier 是找到附近 <code>k</code> 个数据，找到最多那个类别作为预测的<code>类别</code>，用于解决分类问题。</p>
+<p>而 KNeighborsRegressor 是找到附近 <code>k</code> 个数据，然后取平均值作为预测的<code>数值</code>，用于解决回归问题。</p>
+<p><br></p>
+<h4 id="1-2、scikit-中的实现"><a href="#1-2、scikit-中的实现" class="headerlink" title="1.2、scikit 中的实现"></a>1.2、scikit 中的实现</h4><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> GridSearchCV</span><br><span class="line"></span><br><span class="line">params = {</span><br><span class="line">    <span class="string">"weights"</span> : [<span class="string">"uniform"</span>, <span class="string">"distance"</span>],</span><br><span class="line">    <span class="string">"p"</span> : [i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">10</span>)],</span><br><span class="line">    <span class="string">"n_neighbors"</span> : [i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">10</span>)]</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">knn_reg = KNeighborsRegressor()</span><br><span class="line">grid_search=GridSearchCV(knn_reg, params)</span><br><span class="line">%time grid_search.fit(X_train,y_train)</span><br></pre></td></tr></tbody></table></figure>
+<p>GridSearchCV 使用交叉验证来训练数据，即 train-validation-test。因此best_score_可能会比较低。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">grid_search.best_params_ = {<span class="string">'n_neighbors'</span>: <span class="number">5</span>, <span class="string">'p'</span>: <span class="number">1</span>, <span class="string">'weights'</span>: <span class="string">'distance'</span>}</span><br><span class="line">grid_search.best_score_ = <span class="number">0.6091159004372775</span></span><br><span class="line">grid_search.best_estimator_.score(X_test, y_test) = <span class="number">0.7276418519232821</span></span><br></pre></td></tr></tbody></table></figure>
+<p><br></p>
+<h2 id="2、交叉验证"><a href="#2、交叉验证" class="headerlink" title="2、交叉验证"></a>2、交叉验证</h2><p>在之前模型的训练中，我们都是以测试数据集的 score 来衡量模型的好坏，换言之就是根据 <code>test_score</code> 来调整超参数，并从所有的模型中挑出 <code>test_score</code> 最高的作为我们的预测模型。但这样也会暴露出一个问题，在模型训练期间，我们的模型就已经<code>见过</code>了测试数据集，因此可能会<code>过拟合</code>测试数据集！</p>
+<p>这样肯定是不对的，要模拟真正的生产环境，那么测试数据集就不能参与到模型的训练当中。我们只需要再引入一个验证数据集来<code>代替</code>之前测试数据集的作用就行了。</p>
+<p><img src="https://z3.ax1x.com/2021/10/10/5kvEY4.png" alt=""></p>
+<p>但其实这样也会有<code>过拟合</code>验证数据集的问题，因此就有了<code>交叉验证</code>。具体则是将训练数据集分成 K 份，从这 K 份当中选择一份作为验证数据集，其余 K-1 份作为训练数据集。一共有 $C^1_K = K$ 种分法，因此我们可以得到 K 个模型，因此这也被称为 <code>K-folds Cross  Validation</code>（K折交叉验证），最后取他们在验证数据集上的均值作为判断模型好坏的依据。</p>
+<p>这里提一句，在 scikit-learn 的网格搜索中，默认使用的是 cv = 5 的交叉验证，也就是五折交叉验证。</p>
+<p><img src="https://z3.ax1x.com/2021/10/10/5kvFTU.png" alt=""></p>
+<p>当交叉验证的 K = n_samples 时，会产生 n_samples 个模型，这时训练出来的模型完全不受随机的影响，将最接近模型真正的性能指标，代价就是训练时间会扩大 n_samples 倍，这就是 <code>LOO-CV</code>（Leave One Out Cross Validtion），也就是留一法。</p>
+<h4 id="2-2、代码实现"><a href="#2-2、代码实现" class="headerlink" title="2.2、代码实现"></a>2.2、代码实现</h4><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将第i份作为验证集</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_k_fold_data</span>(<span class="params">k, i, X, y</span>):</span></span><br><span class="line">    <span class="keyword">assert</span> k &gt; <span class="number">1</span></span><br><span class="line">    fold_size = X.shape[<span class="number">0</span>] // k</span><br><span class="line">    X_train, y_train = <span class="literal">None</span>, <span class="literal">None</span></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(k):</span><br><span class="line">        idx = <span class="built_in">slice</span>(j * fold_size, (j+<span class="number">1</span>) * fold_size)</span><br><span class="line">        X_part, y_part = X[idx, :], y[idx]</span><br><span class="line">        <span class="comment"># 第i份即为验证集</span></span><br><span class="line">        <span class="keyword">if</span> j == i:</span><br><span class="line">            X_valid, y_valid = X_part, y_part</span><br><span class="line">        <span class="comment"># 除第i份以外的第一份作为train的开头</span></span><br><span class="line">        <span class="keyword">elif</span> X_train <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            X_train, y_train = X_part, y_part</span><br><span class="line">        <span class="comment"># 其余拼接到后面</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            X_train = tf.concat([X_train, X_part], <span class="number">0</span>)</span><br><span class="line">            y_train = tf.concat([y_train, y_part], <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> X_train, y_train, X_valid, y_valid</span><br><span class="line"></span><br><span class="line"><span class="comment"># 交叉验证</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">k_fold</span>(<span class="params">k, X_train, y_train, num_epochs, learning_rate, weight_decay, batch_size</span>):</span></span><br><span class="line">    train_loss_sum, valid_loss_sum = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(k):</span><br><span class="line">        data = get_k_fold_data(k, i, X_train, y_train)</span><br><span class="line">        net = get_net()</span><br><span class="line">        train_loss, valid_loss = train(net, *data, num_epochs, learning_rate, weight_decay, batch_size)</span><br><span class="line">        train_loss_sum += train_loss[-<span class="number">1</span>]</span><br><span class="line">        valid_loss_sum += valid_loss[-<span class="number">1</span>]</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f'fold <span class="subst">{i + <span class="number">1</span>}</span>, train log rmse <span class="subst">{<span class="built_in">float</span>(train_loss[-<span class="number">1</span>]):f}</span>, '</span></span><br><span class="line">              <span class="string">f'valid log rmse <span class="subst">{<span class="built_in">float</span>(valid_loss[-<span class="number">1</span>]):f}</span>'</span>)</span><br><span class="line">    <span class="keyword">return</span> train_loss_sum / k, valid_loss_sum / k</span><br></pre></td></tr></tbody></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/08/Spring/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/images/head-icon.jpg">
+      <meta itemprop="name" content="紫梦沁香">
+      <meta itemprop="description" content="如果说我看得比别人更远些，那是因为我站在巨人的肩膀上">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="紫梦沁香">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/10/08/Spring/" class="post-title-link" itemprop="url">Spring</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-08 16:08:33" itemprop="dateCreated datePublished" datetime="2021-10-08T16:08:33+08:00">2021-10-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-11-12 17:58:47" itemprop="dateModified" datetime="2021-11-12T17:58:47+08:00">2021-11-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SSM/" itemprop="url" rel="index"><span itemprop="name">SSM</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/10/08/Spring/" class="post-meta-item leancloud_visitors" data-flag-title="Spring" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/10/08/Spring/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/10/08/Spring/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="1、-Spring"><a href="#1、-Spring" class="headerlink" title="1、 Spring"></a>1、 Spring</h2><h4 id="1-1、-简介"><a href="#1-1、-简介" class="headerlink" title="1.1、 简介"></a>1.1、 简介</h4><ul>
+<li>Spring：春天 ——&gt; 给软件行业带来了春天！</li>
+<li>2002年，首次推出了 <code>Spring</code> 框架的雏形：interface21 框架！</li>
+<li><code>Spring</code> 框架即以 interface21 框架为基础，经过重新设计，并不断丰富其内涵，于2004年3月24日，发布了1.0正式版。</li>
+<li><strong>Rod Johnson</strong>，Spring Framework 创始人，著名作家，还是悉尼大学的音乐学博士。</li>
+<li>spring理念：使现有的技术更加容易使用，本身是个大杂烩，整合了现有的技术框架！</li>
+</ul>
+<ul>
+<li>SSH：Struts2 + Spring + Hibernate</li>
+<li>SSM：SpringMvc + Spring + Mybatis</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/10/08/Spring/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/28/%E8%BF%87%E6%8B%9F%E5%90%88%E5%92%8C%E6%AC%A0%E6%8B%9F%E5%90%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/images/head-icon.jpg">
+      <meta itemprop="name" content="紫梦沁香">
+      <meta itemprop="description" content="如果说我看得比别人更远些，那是因为我站在巨人的肩膀上">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="紫梦沁香">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/09/28/%E8%BF%87%E6%8B%9F%E5%90%88%E5%92%8C%E6%AC%A0%E6%8B%9F%E5%90%88/" class="post-title-link" itemprop="url">过拟合和欠拟合</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-09-28 15:51:43" itemprop="dateCreated datePublished" datetime="2021-09-28T15:51:43+08:00">2021-09-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-10-19 19:48:13" itemprop="dateModified" datetime="2021-10-19T19:48:13+08:00">2021-10-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-Learning/" itemprop="url" rel="index"><span itemprop="name">Deep Learning</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/09/28/%E8%BF%87%E6%8B%9F%E5%90%88%E5%92%8C%E6%AC%A0%E6%8B%9F%E5%90%88/" class="post-meta-item leancloud_visitors" data-flag-title="过拟合和欠拟合" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/09/28/%E8%BF%87%E6%8B%9F%E5%90%88%E5%92%8C%E6%AC%A0%E6%8B%9F%E5%90%88/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/09/28/%E8%BF%87%E6%8B%9F%E5%90%88%E5%92%8C%E6%AC%A0%E6%8B%9F%E5%90%88/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><p>继之前的<a href="/2021/09/27/多项式回归/">多项式回归</a>，如果 <code>degree</code> 设置过大或者过小会出现什么样的问题呢？</p>
+<p>在此之前，先来说明一下 <a href="/2021/09/14/数据归一化/">归一化</a> 的必要性。多项式回归采用了特征组合的方式，当 <code>degree</code> 为100时，最高次就是100次，而最低次只是常数级，各个维度数值之间的跨度非常大，这就导致 <code>eta</code> 必须设置得非常小，否则稍大一点，就会无法拟合，变成 <code>nan</code> 。</p>
+<p>当 degree 为10时， eta就必须设置成$10^{-19}$，很不利于我们训练模型，所以在数据与距离阶段除了要多项式化还得归一化！</p>
+<p><img src="https://z3.ax1x.com/2021/09/28/4feNrT.png" alt=""></p>
+<p>根据上述要求，改进了一下多项式回归的类。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PolynomialRegression</span>:</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, degree</span>):</span></span><br><span class="line">        self.degree = degree</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fit</span>(<span class="params">self, X, y, eta = <span class="number">0.01</span>, n_iters = <span class="number">1e4</span>, epsilon = <span class="number">1e-6</span></span>):</span></span><br><span class="line">        self.X = self._getPolynomialFeatures(X, <span class="number">0</span>, np.ones([<span class="built_in">len</span>(X), <span class="number">1</span>]), self.degree)</span><br><span class="line">        self.X = self.standardization(self.X)</span><br><span class="line">        </span><br><span class="line">        initial_theta = np.zeros([self.X.shape[<span class="number">1</span>]])</span><br><span class="line">        theta = self._gradient_descent(self.X, y, initial_theta, eta, n_iters, epsilon)</span><br><span class="line">        self.theta = theta</span><br><span class="line">        self.coefficient = theta[<span class="number">1</span>:]</span><br><span class="line">        self.intercept = theta[<span class="number">0</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 归一化</span></span><br><span class="line">    <span class="comment"># 第一列全为1方差为0要单独处理，改成第一列全为0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">standardization</span>(<span class="params">self, X</span>):</span></span><br><span class="line">        <span class="keyword">return</span> np.hstack([np.zeros([<span class="built_in">len</span>(X), <span class="number">1</span>]), (X[:, <span class="number">1</span>:] - np.mean(X[:, <span class="number">1</span>:], axis = <span class="number">0</span>)) / np.std(X[:, <span class="number">1</span>:], axis = <span class="number">0</span>)])</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 多项式化</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_getPolynomialFeatures</span>(<span class="params">self, X, start, col_val, degree</span>):</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">dfs</span>(<span class="params">X, result, start, col_val, degree</span>):</span></span><br><span class="line">            result.append(col_val)</span><br><span class="line">            <span class="keyword">if</span>(degree == <span class="number">0</span>):</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(start, X.shape[<span class="number">1</span>]):</span><br><span class="line">                dfs(X, result, start, col_val * X[:, i].reshape([-<span class="number">1</span>, <span class="number">1</span>]), degree - <span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        result = []</span><br><span class="line">        dfs(X, result, <span class="number">0</span>, np.ones([<span class="built_in">len</span>(X), <span class="number">1</span>]), degree)</span><br><span class="line">        <span class="keyword">return</span> np.squeeze(np.array(result), -<span class="number">1</span>).T</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 预测也要多项式化和归一化</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span>(<span class="params">self, X</span>):</span></span><br><span class="line">        X_b = self._getPolynomialFeatures(X, <span class="number">0</span>, np.ones([<span class="built_in">len</span>(X), <span class="number">1</span>]), self.degree)</span><br><span class="line">        X_b = self.standardization(X_b)</span><br><span class="line">        y_pred = X_b.dot(self.theta)</span><br><span class="line">        <span class="keyword">return</span> y_pred</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># MSE</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">score</span>(<span class="params">self, X, y</span>):</span></span><br><span class="line">        y_pred = self.predict(X)</span><br><span class="line">        <span class="keyword">return</span> np.mean((y - y_pred) ** <span class="number">2</span>)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_gradient_descent</span>(<span class="params">self, X_b, y, theta, eta, n_iters, epsilon</span>):</span></span><br><span class="line">        </span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">J</span>(<span class="params">X_b, y, theta</span>):</span></span><br><span class="line">            <span class="keyword">return</span> np.mean((X_b.dot(theta) - y) ** <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">DJ</span>(<span class="params">X_b, y, theta</span>):</span></span><br><span class="line">            <span class="keyword">return</span> X_b.T.dot((X_b.dot(theta) - y)) * <span class="number">2</span> / <span class="built_in">len</span>(y);</span><br><span class="line">        </span><br><span class="line">        i_iter = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">        <span class="keyword">while</span> i_iter &lt; n_iters:</span><br><span class="line">            gradient = DJ(X_b, y, theta)</span><br><span class="line">            last_theta = theta</span><br><span class="line">            theta = theta - eta * gradient</span><br><span class="line">            <span class="keyword">if</span> np.<span class="built_in">abs</span>(J(X_b, y, theta) - J(X_b, y, last_theta)) &lt; epsilon:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            i_iter += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> theta</span><br></pre></td></tr></tbody></table></figure>
+<p>当然直接使用 sklearn 中的 <code>Pipeline</code> 可以更加简便的实现这一切。</p>
+<p><code>Pipeline</code> 具体运作机制就是逐行运行，上一行的输出就是下一行的输入，因此我们先进行多项式化，再归一化，最后放入线性回归中训练模型。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.pipeline <span class="keyword">import</span> Pipeline</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> PolynomialFeatures</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">PolynomialRegression</span>(<span class="params">X,y,degree</span>):</span></span><br><span class="line">    pipeline = Pipeline([</span><br><span class="line">        (<span class="string">"poly"</span>,PolynomialFeatures(degree = degree)),</span><br><span class="line">        (<span class="string">"std_scaler"</span>,StandardScaler()),</span><br><span class="line">        (<span class="string">"lin_reg"</span>,LinearRegression())</span><br><span class="line">    ])</span><br><span class="line">    pipeline.fit(X,y)</span><br><span class="line">    <span class="keyword">return</span> pipeline.predict(X)</span><br></pre></td></tr></tbody></table></figure>
+<p><br></p>
+<h2 id="数据拟合"><a href="#数据拟合" class="headerlink" title="数据拟合"></a>数据拟合</h2><p>先写一个绘制拟合曲线的函数便于我们观测结果。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">plot_matching_curve</span>(<span class="params">X, y, degree, eta = <span class="number">1e-6</span>, n_iters = <span class="number">1e5</span></span>):</span></span><br><span class="line">    poly_reg = PolynomialRegression(degree)</span><br><span class="line">    poly_reg.fit(X, y, eta, n_iters)</span><br><span class="line">    theta = poly_reg.theta</span><br><span class="line">    pred_y = poly_reg.X.dot(theta)</span><br><span class="line">    plt.scatter(X[:, <span class="number">0</span>], y)</span><br><span class="line">    plt.plot(X[:, <span class="number">0</span>], pred_y, color = <span class="string">"r"</span>)</span><br><span class="line">    plt.show()</span><br><span class="line">    <span class="keyword">return</span> poly_reg</span><br></pre></td></tr></tbody></table></figure>
+<p>当 degree 为0时，也就是最高次为0次，拟合曲线成一条直线，这就是欠拟合。</p>
+<p>毕竟函数只有一个常数嘛，合理。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plot_matching_curve(x.reshape([-<span class="number">1</span>, <span class="number">1</span>]), y, <span class="number">0</span>)</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="https://z3.ax1x.com/2021/09/28/4fEsRP.png" alt=""></p>
+<p>再来看看 degree 分别为1，2的情况，是不是越来越接近我们的拟合曲线了。</p>
+<p><img src="https://z3.ax1x.com/2021/09/28/4fVdyT.png" alt=""></p>
+<p><img src="https://z3.ax1x.com/2021/09/28/4fV50e.png" alt=""></p>
+<p>当 degree 为3时，曲线终于拟合了我们的数据。</p>
+<p><img src="https://z3.ax1x.com/2021/09/28/4fZQ91.png" alt=""></p>
+<p>那我们再看看 degree 为10，50，100，200的情况。</p>
+<p>很容易可以观察出，曲线变得越来越复杂，也越来越能拟合我们的训练数据，这是因为随着 degree 的增大，参数数量的增长使得我们的模型可以将训练的数据给<code>记住</code>，但这真的是我们想要的吗？</p>
+<p>不，我们想要的是<code>泛化</code>能力，是在测试数据乃至之后模型上线后的真实数据上也能有非常好的预测能力。</p>
+<p><img src="https://z3.ax1x.com/2021/09/28/4f1qaV.png" alt=""></p>
+<p><img src="https://z3.ax1x.com/2021/09/28/4f39q1.png" alt=""></p>
+<p><img src="https://z3.ax1x.com/2021/09/28/4f3ia6.png" alt=""></p>
+<p>之前也说过了，多项式化是阶乘式地增长，一旦 <code>degree</code> 过大，直接就会导致栈溢出。</p>
+<p><img src="https://z3.ax1x.com/2021/09/28/4f3nsA.png" alt=""></p>
+<p><br></p>
+<h2 id="学习曲线"><a href="#学习曲线" class="headerlink" title="学习曲线"></a>学习曲线</h2><p>通过观察学习曲线，也可以帮助我们判断出模型是否有过拟合或欠拟合的情况。它是绘制模型在训练集和测试集上的性能函数。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn.pipeline <span class="keyword">import</span> Pipeline</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler, PolynomialFeatures</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_poly_reg</span>(<span class="params">degree</span>):</span></span><br><span class="line">    <span class="keyword">return</span> Pipeline([</span><br><span class="line">        (<span class="string">"poly"</span>, PolynomialFeatures(degree = degree)),</span><br><span class="line">        (<span class="string">"std"</span>, StandardScaler()),</span><br><span class="line">        (<span class="string">"reg"</span>, LinearRegression())</span><br><span class="line">    ])</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">plot_learning_curve</span>(<span class="params">X, y, degree</span>):</span></span><br><span class="line">    train_mse = []</span><br><span class="line">    test_mse = []</span><br><span class="line">    X_train, X_test, y_train, y_test = train_test_split(X, y)</span><br><span class="line">    poly_reg = get_poly_reg(degree)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, <span class="built_in">len</span>(X) + <span class="number">1</span>):</span><br><span class="line">        poly_reg.fit(X_train[:i], y_train[:i])</span><br><span class="line">        train_pred = poly_reg.predict(X_train[:i])</span><br><span class="line">        test_pred = poly_reg.predict(X_test)</span><br><span class="line">        train_mse.append(np.mean(np.square(train_pred - y_train[:i])))</span><br><span class="line">        test_mse.append(np.mean(np.square(test_pred - y_test)))</span><br><span class="line">        </span><br><span class="line">    plt.plot(np.arange(<span class="number">2</span>, <span class="built_in">len</span>(X)+<span class="number">1</span>), train_mse, label=<span class="string">"train"</span>)</span><br><span class="line">    plt.plot(np.arange(<span class="number">2</span>, <span class="built_in">len</span>(X)+<span class="number">1</span>), test_mse, label=<span class="string">"test"</span>)</span><br><span class="line">    plt.legend()</span><br><span class="line">    plt.axis([<span class="number">0</span>,<span class="number">100</span>,<span class="number">0</span>,<span class="number">5</span>])</span><br><span class="line">    plt.show()</span><br></pre></td></tr></tbody></table></figure>
+<p>这次我们把目标函数换成二次函数。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">X = np.random.uniform(-<span class="number">3</span>,<span class="number">3</span>,size=<span class="number">100</span>).reshape(-<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line">y = <span class="number">0.5</span> * X**<span class="number">2</span> + X + <span class="number">4</span> + np.random.normal(<span class="number">0</span>,<span class="number">1</span>,size = <span class="number">100</span>).reshape(-<span class="number">1</span>,<span class="number">1</span>)</span><br></pre></td></tr></tbody></table></figure>
+<p>degree = 1</p>
+<p>随着样本数量的增加 test 的误差在减小，train 的误差在增加，而当样本到了一定程度后，两者也没有保持在一个较小的程度上。这时说明模型欠拟合。</p>
+<p><img src="https://z3.ax1x.com/2021/10/13/5u1WSP.png" alt=""></p>
+<p>degree = 2</p>
+<p><img src="https://z3.ax1x.com/2021/10/13/5uQx3V.png" alt=""></p>
+<p>随着样本数量的增加 test 的误差在减小，train 的误差在增加，而当样本到了一定程度后，两者基本<code>持平</code>，保持在一个较小的程度上。这时模型已经拟合。</p>
+<p>degree = 10</p>
+<p><img src="https://z3.ax1x.com/2021/10/13/5ul2KU.png" alt=""></p>
+<p>随着样本的增加 test 的误差在减小，train 的误差在增加，但当样本到了一定程度后，在 train 上的误差要比在 test 上的误差小得多，这时就要注意是不是过拟合了。</p>
+<p>degree = 100</p>
+<p><img src="https://z3.ax1x.com/2021/10/13/5ulxIA.png" alt=""></p>
+<p>此时 test 上的误差已经飙到天上去了，妥妥的过拟合。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在训练数据集上表现良好，却在测试数据集上表现差劲的就是<code>过拟合</code>，这时候要降低参数数量。</p>
+<p>而在训练数据集上表现就不尽人意的有可能是<code>欠拟合</code>（也有可能是模型压根不对等问题），这时候可以试试增大模型，增加参数数量。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/27/%E5%A4%9A%E9%A1%B9%E5%BC%8F%E5%9B%9E%E5%BD%92/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/images/head-icon.jpg">
+      <meta itemprop="name" content="紫梦沁香">
+      <meta itemprop="description" content="如果说我看得比别人更远些，那是因为我站在巨人的肩膀上">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="紫梦沁香">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/09/27/%E5%A4%9A%E9%A1%B9%E5%BC%8F%E5%9B%9E%E5%BD%92/" class="post-title-link" itemprop="url">多项式回归</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-09-27 14:09:13" itemprop="dateCreated datePublished" datetime="2021-09-27T14:09:13+08:00">2021-09-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-10-19 19:48:21" itemprop="dateModified" datetime="2021-10-19T19:48:21+08:00">2021-10-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Deep-Learning/" itemprop="url" rel="index"><span itemprop="name">Deep Learning</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/09/27/%E5%A4%9A%E9%A1%B9%E5%BC%8F%E5%9B%9E%E5%BD%92/" class="post-meta-item leancloud_visitors" data-flag-title="多项式回归" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/09/27/%E5%A4%9A%E9%A1%B9%E5%BC%8F%E5%9B%9E%E5%BD%92/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/09/27/%E5%A4%9A%E9%A1%B9%E5%BC%8F%E5%9B%9E%E5%BD%92/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h2><p>如果你的数据比直线更复杂怎么办？例如抛物线。显然 <a href="/2021/09/13/线性回归">线性回归</a> 无法胜任这个工作，但我们只需要稍加修改，将每个特征的幂次方作为一个新特征即可，大致与<code>线性回归</code>类似，不过是多元一次和多元多次的区别。</p>
+<p>线性回归假设目标拟合曲线函数为$y = w_1x_1 + w_2x_2 + w_3x_3 + … + b$，其中 $w_n$ 为系数 $x_n$ 为特征。</p>
+<p>而多项式回归假设目标拟合曲线为$y = w_1x_1^n + w_2x_1^{n-1}x_2 + w_3x_1^{n-2}x_2^2 + … + w_nx_2^n$，这里出于简便只写了两个未知数的情况。</p>
+<p><br></p>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>这里我用的是三次函数的图像外加了点噪声，用<code>线性回归</code>肯定是拟合不了的。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">%matplotlib inline</span><br><span class="line"></span><br><span class="line">x = np.arange(-<span class="number">10</span>, <span class="number">10</span>, <span class="number">0.1</span>)</span><br><span class="line">y = <span class="number">2.6</span> * x ** <span class="number">3</span> - <span class="number">3.14</span> * x ** <span class="number">2</span> - <span class="number">8.8</span> * x + np.random.normal(<span class="number">0</span>, <span class="number">700</span>, (<span class="number">200</span>, ))</span><br><span class="line"></span><br><span class="line">plt.scatter(x, y)</span><br><span class="line">plt.show()</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="https://z3.ax1x.com/2021/09/27/4RC9un.png" alt=""></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">X = x.reshape([-<span class="number">1</span>, <span class="number">1</span>])</span><br><span class="line">X = np.hstack([X ** <span class="number">3</span>, X ** <span class="number">2</span>, X])</span><br><span class="line">X_b = np.hstack([np.ones([<span class="built_in">len</span>(y), <span class="number">1</span>]), X])</span><br><span class="line"><span class="comment"># X [200, 3]</span></span><br><span class="line"><span class="built_in">print</span>(X.shape)</span><br></pre></td></tr></tbody></table></figure>
+<p>如算法思想所述，梯度下降的代码是没有改变的，只是添加了特征的幂指数作为额外的特征值。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">J</span>(<span class="params">X_b, y, theta</span>):</span></span><br><span class="line">    <span class="keyword">return</span> np.mean((X_b.dot(theta) - y) ** <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">DJ</span>(<span class="params">X_b, y, theta</span>):</span></span><br><span class="line">    <span class="keyword">return</span> X_b.T.dot((X_b.dot(theta) - y)) * <span class="number">2</span> / <span class="built_in">len</span>(y);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gradient_descent</span>(<span class="params">X_b, y, theta, eta = <span class="number">0.01</span>, n_iters = <span class="number">1e4</span>, epsilon = <span class="number">1e-6</span></span>):</span></span><br><span class="line">    i_iter = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> i_iter &lt; n_iters:</span><br><span class="line">        gradient = DJ(X_b, y, theta)</span><br><span class="line">        last_theta = theta</span><br><span class="line">        theta = theta - eta * gradient</span><br><span class="line">        <span class="keyword">if</span> np.<span class="built_in">abs</span>(J(X_b, y, theta) - J(X_b, y, last_theta)) &lt; epsilon:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        i_iter += <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> theta</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">initial_theta = np.zeros(X_b.shape[<span class="number">1</span>])</span><br><span class="line">theta = gradient_descent(X_b, y, initial_theta, eta = <span class="number">1e-6</span>, n_iters = <span class="number">1e5</span>)</span><br></pre></td></tr></tbody></table></figure>
+<p>得出 theta = array([-12.65120346,   2.89719563,  -3.12234806, -15.72650818])</p>
+<p>也基本对应了我预设的函数系数[2.6, -3.14, -8.8]</p>
+<p>注：theta 每一项分别对应了截距，$x^3$ 的系数，$x^2$ 的系数，$x$ 的系数。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pred_y = theta[<span class="number">1</span>] * x ** <span class="number">3</span> + theta[<span class="number">2</span>] * x ** <span class="number">2</span> + theta[<span class="number">3</span>] * x + theta[<span class="number">0</span>]</span><br><span class="line">plt.scatter(x, y)</span><br><span class="line">plt.plot(x, pred_y, color = <span class="string">"r"</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="https://z3.ax1x.com/2021/09/27/4RPGd0.png" alt=""></p>
+<p><br></p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>需要注意的是多项式化是成<code>阶乘式</code>的增长，比指数爆炸更可怕！</p>
+<p>$\frac{(n + d)!}{d!n!}$，其中 n 为原本特征数，d 为最高次数。</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PolynomialRegression</span>:</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, degree</span>):</span></span><br><span class="line">        self.degree = degree</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fit</span>(<span class="params">self, X, y, eta = <span class="number">0.01</span>, n_iters = <span class="number">1e4</span>, epsilon = <span class="number">1e-6</span></span>):</span></span><br><span class="line">        self.X = self._getPolynomialFeatures(X, <span class="number">0</span>, np.ones([<span class="built_in">len</span>(X), <span class="number">1</span>]), self.degree)</span><br><span class="line">        </span><br><span class="line">        initial_theta = np.zeros([self.X.shape[<span class="number">1</span>]])</span><br><span class="line">        theta = self._gradient_descent(self.X, y, initial_theta, eta, n_iters, epsilon)</span><br><span class="line">        self.theta = theta</span><br><span class="line">        self.coefficient = theta[<span class="number">1</span>:]</span><br><span class="line">        self.intercept = theta[<span class="number">0</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 多项式化</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_getPolynomialFeatures</span>(<span class="params">self, X, start, col_val, degree</span>):</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">dfs</span>(<span class="params">X, result, start, col_val, degree</span>):</span></span><br><span class="line">            result.append(col_val)</span><br><span class="line">            <span class="keyword">if</span>(degree == <span class="number">0</span>):</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(start, X.shape[<span class="number">1</span>]):</span><br><span class="line">                dfs(X, result, start, col_val * X[:, i].reshape([-<span class="number">1</span>, <span class="number">1</span>]), degree - <span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        result = []</span><br><span class="line">        dfs(X, result, <span class="number">0</span>, np.ones([<span class="built_in">len</span>(X), <span class="number">1</span>]), degree)</span><br><span class="line">        <span class="keyword">return</span> np.squeeze(np.array(result), -<span class="number">1</span>).T</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span>(<span class="params">self, X</span>):</span></span><br><span class="line">        X_b = self._getPolynomialFeatures(X, <span class="number">0</span>, np.ones([<span class="built_in">len</span>(X), <span class="number">1</span>]), self.degree)</span><br><span class="line">        y_pred = X_b.dot(self.theta)</span><br><span class="line">        <span class="keyword">return</span> y_pred</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">score</span>(<span class="params">self, X, y</span>):</span></span><br><span class="line">        y_pred = self.predict(X)</span><br><span class="line">        <span class="keyword">return</span> np.mean((y - y_pred) ** <span class="number">2</span>)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_gradient_descent</span>(<span class="params">self, X_b, y, theta, eta, n_iters, epsilon</span>):</span></span><br><span class="line">        </span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">J</span>(<span class="params">X_b, y, theta</span>):</span></span><br><span class="line">            <span class="keyword">return</span> np.mean((X_b.dot(theta) - y) ** <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">DJ</span>(<span class="params">X_b, y, theta</span>):</span></span><br><span class="line">            <span class="keyword">return</span> X_b.T.dot((X_b.dot(theta) - y)) * <span class="number">2</span> / <span class="built_in">len</span>(y);</span><br><span class="line">        </span><br><span class="line">        i_iter = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">        <span class="keyword">while</span> i_iter &lt; n_iters:</span><br><span class="line">            gradient = DJ(X_b, y, theta)</span><br><span class="line">            last_theta = theta</span><br><span class="line">            theta = theta - eta * gradient</span><br><span class="line">            <span class="keyword">if</span> np.<span class="built_in">abs</span>(J(X_b, y, theta) - J(X_b, y, last_theta)) &lt; epsilon:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            i_iter += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> theta</span><br></pre></td></tr></tbody></table></figure>
+<p><br></p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">poly_reg = PolynomialRegression(<span class="number">3</span>)</span><br><span class="line">poly_reg.fit(x.reshape([-<span class="number">1</span>, <span class="number">1</span>]), y, eta = <span class="number">1e-6</span>, n_iters = <span class="number">1e5</span>)</span><br><span class="line"></span><br><span class="line">theta = poly_reg.theta</span><br><span class="line">pred_y = theta[<span class="number">3</span>] * x ** <span class="number">3</span> + theta[<span class="number">2</span>] * x ** <span class="number">2</span> + theta[<span class="number">1</span>] * x + theta[<span class="number">0</span>]</span><br><span class="line">plt.scatter(x, y)</span><br><span class="line">plt.plot(x, pred_y, color = <span class="string">"r"</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></tbody></table></figure>
+<p>结果如出一辙。</p>
+<p><img src="https://z3.ax1x.com/2021/09/28/4fChIP.png" alt=""></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -484,104 +1003,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/24/LeetCodeP0042%E2%80%94%E2%80%94%E6%8E%A5%E9%9B%A8%E6%B0%B4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/images/head-icon.jpg">
-      <meta itemprop="name" content="紫梦沁香">
-      <meta itemprop="description" content="如果说我看得比别人更远些，那是因为我站在巨人的肩膀上">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="紫梦沁香">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/24/LeetCodeP0042%E2%80%94%E2%80%94%E6%8E%A5%E9%9B%A8%E6%B0%B4/" class="post-title-link" itemprop="url">LeetCodeP0042——接雨水</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-09-24 17:27:06 / 修改时间：21:22:56" itemprop="dateCreated datePublished" datetime="2021-09-24T17:27:06+08:00">2021-09-24</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2021/09/24/LeetCodeP0042%E2%80%94%E2%80%94%E6%8E%A5%E9%9B%A8%E6%B0%B4/" class="post-meta-item leancloud_visitors" data-flag-title="LeetCodeP0042——接雨水" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2021/09/24/LeetCodeP0042%E2%80%94%E2%80%94%E6%8E%A5%E9%9B%A8%E6%B0%B4/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/09/24/LeetCodeP0042%E2%80%94%E2%80%94%E6%8E%A5%E9%9B%A8%E6%B0%B4/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>给定 <em>n</em> 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。</p>
-<h3 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h3><p><img src="https://z3.ax1x.com/2021/09/24/4DZ8TU.png" alt=""></p>
-<figure class="highlight markdown"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：height = [0,1,0,2,1,0,1,3,2,1,2,1]</span><br><span class="line">输出：6</span><br><span class="line">解释：上面是由数组 [0,1,0,2,1,0,1,3,2,1,2,1] 表示的高度图，在这种情况下，可以接 6 个单位的雨水（蓝色部分表示雨水）。</span><br></pre></td></tr></tbody></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/09/24/LeetCodeP0042%E2%80%94%E2%80%94%E6%8E%A5%E9%9B%A8%E6%B0%B4/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/23/Android%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -775,202 +1196,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/22/LeetCodeP0033%E2%80%94%E2%80%94%E6%90%9C%E7%B4%A2%E6%97%8B%E8%BD%AC%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/images/head-icon.jpg">
-      <meta itemprop="name" content="紫梦沁香">
-      <meta itemprop="description" content="如果说我看得比别人更远些，那是因为我站在巨人的肩膀上">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="紫梦沁香">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/22/LeetCodeP0033%E2%80%94%E2%80%94%E6%90%9C%E7%B4%A2%E6%97%8B%E8%BD%AC%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84/" class="post-title-link" itemprop="url">LeetCodeP0033——搜索旋转排序数组</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-09-22 22:15:58 / 修改时间：22:21:47" itemprop="dateCreated datePublished" datetime="2021-09-22T22:15:58+08:00">2021-09-22</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2021/09/22/LeetCodeP0033%E2%80%94%E2%80%94%E6%90%9C%E7%B4%A2%E6%97%8B%E8%BD%AC%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84/" class="post-meta-item leancloud_visitors" data-flag-title="LeetCodeP0033——搜索旋转排序数组" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2021/09/22/LeetCodeP0033%E2%80%94%E2%80%94%E6%90%9C%E7%B4%A2%E6%97%8B%E8%BD%AC%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/09/22/LeetCodeP0033%E2%80%94%E2%80%94%E6%90%9C%E7%B4%A2%E6%97%8B%E8%BD%AC%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>整数数组 <code>nums</code> 按升序排列，数组中的值 <strong>互不相同</strong> 。</p>
-<p>在传递给函数之前，<code>nums</code> 在预先未知的某个下标 <code>k</code>（<code>0 &lt;= k &lt; nums.length</code>）上进行了 <strong>旋转</strong>，使数组变为 <code>[nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]]</code>（下标 <strong>从 0 开始</strong> 计数）。例如， <code>[0,1,2,4,5,6,7]</code> 在下标 <code>3</code> 处经旋转后可能变为 <code>[4,5,6,7,0,1,2]</code> 。</p>
-<p>给你 <strong>旋转后</strong> 的数组 <code>nums</code> 和一个整数 <code>target</code> ，如果 <code>nums</code> 中存在这个目标值 <code>target</code> ，则返回它的下标，否则返回 <code>-1</code> 。</p>
-<h3 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h3><figure class="highlight markdown"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [4,5,6,7,0,1,2], target = 0</span><br><span class="line">输出：4</span><br></pre></td></tr></tbody></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/09/22/LeetCodeP0033%E2%80%94%E2%80%94%E6%90%9C%E7%B4%A2%E6%97%8B%E8%BD%AC%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/22/LeetCodeP0032%E2%80%94%E2%80%94%E6%9C%80%E9%95%BF%E6%9C%89%E6%95%88%E6%8B%AC%E5%8F%B7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/images/head-icon.jpg">
-      <meta itemprop="name" content="紫梦沁香">
-      <meta itemprop="description" content="如果说我看得比别人更远些，那是因为我站在巨人的肩膀上">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="紫梦沁香">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/22/LeetCodeP0032%E2%80%94%E2%80%94%E6%9C%80%E9%95%BF%E6%9C%89%E6%95%88%E6%8B%AC%E5%8F%B7/" class="post-title-link" itemprop="url">LeetCodeP0032——最长有效括号</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-09-22 11:15:53 / 修改时间：17:21:16" itemprop="dateCreated datePublished" datetime="2021-09-22T11:15:53+08:00">2021-09-22</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2021/09/22/LeetCodeP0032%E2%80%94%E2%80%94%E6%9C%80%E9%95%BF%E6%9C%89%E6%95%88%E6%8B%AC%E5%8F%B7/" class="post-meta-item leancloud_visitors" data-flag-title="LeetCodeP0032——最长有效括号" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2021/09/22/LeetCodeP0032%E2%80%94%E2%80%94%E6%9C%80%E9%95%BF%E6%9C%89%E6%95%88%E6%8B%AC%E5%8F%B7/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/09/22/LeetCodeP0032%E2%80%94%E2%80%94%E6%9C%80%E9%95%BF%E6%9C%89%E6%95%88%E6%8B%AC%E5%8F%B7/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>给你一个只包含 <code>'('</code> 和 <code>')'</code> 的字符串，找出最长有效（格式正确且连续）括号子串的长度。</p>
-<h3 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h3><figure class="highlight markdown"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：s = "(()"</span><br><span class="line">输出：2</span><br><span class="line">解释：最长有效括号子串是 "()"</span><br></pre></td></tr></tbody></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/09/22/LeetCodeP0032%E2%80%94%E2%80%94%E6%9C%80%E9%95%BF%E6%9C%89%E6%95%88%E6%8B%AC%E5%8F%B7/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/16/%E6%A6%82%E7%8E%87%E8%AE%BA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1053,105 +1278,6 @@
 <p>（4） 全概率公式</p>
 <p>（5） 贝叶斯公式</p>
 
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/15/LeetCodeP0031%E2%80%94%E2%80%94%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%8E%92%E5%88%97/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/images/head-icon.jpg">
-      <meta itemprop="name" content="紫梦沁香">
-      <meta itemprop="description" content="如果说我看得比别人更远些，那是因为我站在巨人的肩膀上">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="紫梦沁香">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/15/LeetCodeP0031%E2%80%94%E2%80%94%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%8E%92%E5%88%97/" class="post-title-link" itemprop="url">LeetCodeP0031——下一个排列</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-09-15 14:28:27 / 修改时间：14:36:04" itemprop="dateCreated datePublished" datetime="2021-09-15T14:28:27+08:00">2021-09-15</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2021/09/15/LeetCodeP0031%E2%80%94%E2%80%94%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%8E%92%E5%88%97/" class="post-meta-item leancloud_visitors" data-flag-title="LeetCodeP0031——下一个排列" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2021/09/15/LeetCodeP0031%E2%80%94%E2%80%94%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%8E%92%E5%88%97/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/09/15/LeetCodeP0031%E2%80%94%E2%80%94%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%8E%92%E5%88%97/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>实现获取 下一个排列 的函数，算法需要将给定数字序列重新排列成字典序中下一个更大的排列（即，组合出下一个更大的整数）。</p>
-<p>如果不存在下一个更大的排列，则将数字重新排列成最小的排列（即升序排列）。</p>
-<p>必须 原地 修改，只允许使用额外常数空间。</p>
-<h3 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h3><figure class="highlight markdown"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [1,2,3]</span><br><span class="line">输出：[1,3,2]</span><br></pre></td></tr></tbody></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/09/15/LeetCodeP0031%E2%80%94%E2%80%94%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%8E%92%E5%88%97/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
       
     </div>
 
@@ -1318,7 +1444,7 @@ X_{scale} = \frac{X - X_{min}}{X_{max} - X_{min}}</script><p>经过该标准化�
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1386,20 +1512,20 @@ X_{scale} = \frac{X - X_{min}}{X_{max} - X_{min}}</script><p>经过该标准化�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1474,6 +1600,10 @@ X_{scale} = \frac{X - X_{min}}{X_{max} - X_{min}}</script><p>经过该标准化�
   
 
 
+
+
+  
+<script src="/js/local-search.js"></script>
 
 
 

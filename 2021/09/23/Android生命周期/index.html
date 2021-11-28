@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="Activity状态Activity 生命周期是指 Activity 从创建到销毁的过程，在这一过程中，Activity 一般处于4种状态，即Active&#x2F;Running、Paused、Stop、Killed。  Active&#x2F;Running。此时 Activity 一定处于屏幕的最顶端，可以被看到，并且可以与用户进行交互。对于 Activity 栈来说，它处于栈顶。 Paused。此时 Acti">
@@ -126,6 +126,7 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
@@ -160,11 +161,38 @@
     <a href="/game/" rel="section"><i class="fa fa-gamepad fa-fw"></i>游戏</a>
 
   </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
   </ul>
 </nav>
 
 
 
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
 
 </div>
     </header>
@@ -404,12 +432,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/09/22/LeetCodeP0033%E2%80%94%E2%80%94%E6%90%9C%E7%B4%A2%E6%97%8B%E8%BD%AC%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84/" rel="prev" title="LeetCodeP0033——搜索旋转排序数组">
-      <i class="fa fa-chevron-left"></i> LeetCodeP0033——搜索旋转排序数组
+    <a href="/2021/09/16/%E6%A6%82%E7%8E%87%E8%AE%BA/" rel="prev" title="概率论">
+      <i class="fa fa-chevron-left"></i> 概率论
     </a></div>
       <div class="post-nav-item">
-    <a href="/2021/09/24/LeetCodeP0042%E2%80%94%E2%80%94%E6%8E%A5%E9%9B%A8%E6%B0%B4/" rel="next" title="LeetCodeP0042——接雨水">
-      LeetCodeP0042——接雨水 <i class="fa fa-chevron-right"></i>
+    <a href="/2021/09/24/ViewModelSavedState%EF%BC%88%E5%8D%B3%E4%BD%BF%E8%BF%9B%E7%A8%8B%E5%9C%A8%E5%90%8E%E5%8F%B0%E8%A2%AB%E7%B3%BB%E7%BB%9F%E6%9D%80%E6%AD%BB%E6%95%B0%E6%8D%AE%E4%B9%9F%E8%83%BD%E4%BF%9D%E5%AD%98%E4%B8%8B%E6%9D%A5%EF%BC%89/" rel="next" title="ViewModelSavedState（即使进程在后台被系统杀死数据也能保存下来）">
+      ViewModelSavedState（即使进程在后台被系统杀死数据也能保存下来） <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -486,20 +514,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -574,6 +602,10 @@
   
 
 
+
+
+  
+<script src="/js/local-search.js"></script>
 
 
 
