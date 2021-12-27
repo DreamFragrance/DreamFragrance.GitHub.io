@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="数据结构实现完整的栈实现记得刚学 java 的时候就有实现过一个 stack，当然那时写代码不会考虑那么多，这一次添加了泛型和数组扩容，提高了可扩展性，还实现了 Iterable 可迭代接口，这样 MyStack 类就可以使用 foreach 循环了。 另外，由于 Java 的垃圾收集策略是回收所有无法被访问的对象的内存，而但我们进行 pop 操作时，虽然使用者已经不可能再访问这个被弹出的元素了，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法（第4版）读书笔记">
+<meta property="og:url" content="http://example.com/2021/11/29/%E7%AE%97%E6%B3%95%EF%BC%88%E7%AC%AC4%E7%89%88%EF%BC%89%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="紫梦沁香">
+<meta property="og:description" content="数据结构实现完整的栈实现记得刚学 java 的时候就有实现过一个 stack，当然那时写代码不会考虑那么多，这一次添加了泛型和数组扩容，提高了可扩展性，还实现了 Iterable 可迭代接口，这样 MyStack 类就可以使用 foreach 循环了。 另外，由于 Java 的垃圾收集策略是回收所有无法被访问的对象的内存，而但我们进行 pop 操作时，虽然使用者已经不可能再访问这个被弹出的元素了，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s4.ax1x.com/2021/12/08/oRh1OA.png">
+<meta property="og:image" content="https://s4.ax1x.com/2021/12/08/oRonHA.png">
+<meta property="article:published_time" content="2021-11-29T08:56:15.000Z">
+<meta property="article:modified_time" content="2021-12-08T15:30:04.081Z">
+<meta property="article:author" content="紫梦沁香">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s4.ax1x.com/2021/12/08/oRh1OA.png">
+
+<link rel="canonical" href="http://example.com/2021/11/29/%E7%AE%97%E6%B3%95%EF%BC%88%E7%AC%AC4%E7%89%88%EF%BC%89%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>算法（第4版）读书笔记 | 紫梦沁香</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6bc20780b9c032635241d71c52b76953";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<script type="text/javascript" src="/js/game/modernizr.custom.js"></script>
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">紫梦沁香</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-game">
+
+    <a href="/game/" rel="section"><i class="fa fa-gamepad fa-fw"></i>游戏</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/29/%E7%AE%97%E6%B3%95%EF%BC%88%E7%AC%AC4%E7%89%88%EF%BC%89%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/images/head-icon.jpg">
+      <meta itemprop="name" content="紫梦沁香">
+      <meta itemprop="description" content="如果说我看得比别人更远些，那是因为我站在巨人的肩膀上">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="紫梦沁香">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          算法（第4版）读书笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-29 16:56:15" itemprop="dateCreated datePublished" datetime="2021-11-29T16:56:15+08:00">2021-11-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-12-08 23:30:04" itemprop="dateModified" datetime="2021-12-08T23:30:04+08:00">2021-12-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/notes/" itemprop="url" rel="index"><span itemprop="name">notes</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/11/29/%E7%AE%97%E6%B3%95%EF%BC%88%E7%AC%AC4%E7%89%88%EF%BC%89%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-meta-item leancloud_visitors" data-flag-title="算法（第4版）读书笔记" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/11/29/%E7%AE%97%E6%B3%95%EF%BC%88%E7%AC%AC4%E7%89%88%EF%BC%89%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/11/29/%E7%AE%97%E6%B3%95%EF%BC%88%E7%AC%AC4%E7%89%88%EF%BC%89%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="数据结构实现"><a href="#数据结构实现" class="headerlink" title="数据结构实现"></a>数据结构实现</h2><h4 id="完整的栈实现"><a href="#完整的栈实现" class="headerlink" title="完整的栈实现"></a>完整的栈实现</h4><p>记得刚学 java 的时候就有实现过一个 <strong>stack</strong>，当然那时写代码不会考虑那么多，这一次添加了泛型和数组扩容，提高了可扩展性，还实现了 <strong>Iterable</strong> 可迭代接口，这样 MyStack 类就可以使用 <strong>foreach</strong> 循环了。</p>
+<p>另外，由于 Java 的垃圾收集策略是回收所有无法被访问的对象的内存，而但我们进行 pop 操作时，虽然使用者已经不可能再访问这个被弹出的元素了，但是它的引用还存在与数组之中，因此 Java 的垃圾收集器并不会去回收这个元素！！！除非后续将该引用<strong>覆盖</strong>。即使用例已经不再需要这个元素了，数组中的引用仍然可以让它继续存在，这种情况（保存一个不需要的对象的引用）就被称作<code>游离</code>。一般可以通过显式使用 <strong>null</strong> 来覆盖不需要的对象即可（见37行）！</p>
+<p><strong>栈的数组实现</strong></p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyStack</span>&lt;<span class="title">T</span>&gt; <span class="keyword">implements</span> <span class="title">Iterable</span>&lt;<span class="title">T</span>&gt;</span>{</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> T[] arr;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyStack</span><span class="params">()</span> </span>{</span><br><span class="line">        <span class="keyword">this</span>(<span class="number">10</span>);   <span class="comment">// 给予有参构造函数默认参数</span></span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyStack</span><span class="params">(<span class="keyword">int</span> size)</span> </span>{</span><br><span class="line">        arr = (T[]) <span class="keyword">new</span> Object[size];   <span class="comment">// java不支持泛型数组，只能强转或是使用集合类型</span></span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isFull</span><span class="params">()</span></span>{</span><br><span class="line">        <span class="keyword">return</span> arr.length == count;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span></span>{</span><br><span class="line">        <span class="keyword">return</span> count == <span class="number">0</span>;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">size</span><span class="params">()</span></span>{</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span><span class="params">(T item)</span></span>{</span><br><span class="line">        <span class="keyword">if</span> (isFull()){</span><br><span class="line">            resizingArray(count * <span class="number">2</span>);</span><br><span class="line">        }</span><br><span class="line">        arr[count++] = item;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">pop</span><span class="params">()</span></span>{</span><br><span class="line">        <span class="keyword">if</span> (isEmpty()){</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ArrayIndexOutOfBoundsException();</span><br><span class="line">        }</span><br><span class="line">        T item = arr[--count];</span><br><span class="line">        arr[count] = <span class="keyword">null</span>;  <span class="comment">// 解决游离问题</span></span><br><span class="line">        <span class="keyword">if</span>(count == arr.length / <span class="number">4</span>){  <span class="comment">// 保证数组的使用率始终大于1/4</span></span><br><span class="line">            resizingArray(arr.length / <span class="number">2</span>);</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">return</span> item;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 更改数组大小</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">resizingArray</span><span class="params">(<span class="keyword">int</span> size)</span></span>{</span><br><span class="line">        T[] newArr = (T[]) <span class="keyword">new</span> Object[size];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;count;i++){</span><br><span class="line">            newArr[i] = arr[i];</span><br><span class="line">        }</span><br><span class="line">        arr = newArr;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Iterator&lt;T&gt; <span class="title">iterator</span><span class="params">()</span> </span>{</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Iterator&lt;T&gt;() {</span><br><span class="line">            <span class="keyword">int</span> i = count;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span> </span>{</span><br><span class="line">                <span class="keyword">return</span> i &gt; <span class="number">0</span>;</span><br><span class="line">            }</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> T <span class="title">next</span><span class="params">()</span> </span>{</span><br><span class="line">                <span class="keyword">return</span> arr[--i];</span><br><span class="line">            }</span><br><span class="line">        };</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p><strong>栈的链表实现</strong></p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyLinkedStack</span>&lt;<span class="title">T</span>&gt; <span class="keyword">implements</span> <span class="title">Iterable</span>&lt;<span class="title">T</span>&gt;</span>{</span><br><span class="line">    <span class="keyword">private</span> Node head;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> count;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyLinkedStack</span><span class="params">()</span> </span>{</span><br><span class="line">        head = <span class="keyword">new</span> Node();</span><br><span class="line">        count = <span class="number">0</span>;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span></span>{</span><br><span class="line">        <span class="keyword">return</span> head.next == <span class="keyword">null</span>;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span><span class="params">(T item)</span></span>{</span><br><span class="line">        Node node = <span class="keyword">new</span> Node();</span><br><span class="line">        node.item = item;</span><br><span class="line">        node.next = head.next;</span><br><span class="line">        head.next = node;</span><br><span class="line">        count++;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">peek</span><span class="params">()</span></span>{</span><br><span class="line">        <span class="keyword">if</span> (isEmpty()){</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">return</span> head.next.item;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">pop</span><span class="params">()</span></span>{</span><br><span class="line">        <span class="keyword">if</span> (isEmpty()){</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ArrayIndexOutOfBoundsException(<span class="string">"栈空！！！"</span>);</span><br><span class="line">        }</span><br><span class="line">        T item = head.next.item;</span><br><span class="line">        head.next = head.next.next;</span><br><span class="line">        count--;</span><br><span class="line">        <span class="keyword">return</span> item;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">size</span><span class="params">()</span></span>{</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="comment">// 区别于数组实现的迭代器</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Iterator&lt;T&gt; <span class="title">iterator</span><span class="params">()</span> </span>{</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Iterator&lt;T&gt;() {</span><br><span class="line">            Node tmp = head;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span> </span>{</span><br><span class="line">                <span class="keyword">return</span> tmp.next != <span class="keyword">null</span>;</span><br><span class="line">            }</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> T <span class="title">next</span><span class="params">()</span> </span>{</span><br><span class="line">                tmp = tmp.next;</span><br><span class="line">                <span class="keyword">return</span> tmp.item;</span><br><span class="line">            }</span><br><span class="line">        };</span><br><span class="line">    }</span><br><span class="line">	</span><br><span class="line">    <span class="comment">// 私有内部类 Node，可以直接使用外部的泛型类型！！！</span></span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span></span>{</span><br><span class="line">        Node next;</span><br><span class="line">        T item;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h2><h4 id="并查集"><a href="#并查集" class="headerlink" title="并查集"></a>并查集</h4><p>先定义算法的 api</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IUnionFind</span> </span>{</span><br><span class="line">    <span class="comment">// 连接两点</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">union</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> q)</span></span>;</span><br><span class="line">    <span class="comment">// 查找某点的根节点</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> p)</span></span>;</span><br><span class="line">    <span class="comment">// 返回两点是否连接</span></span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">connected</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> q)</span></span>;</span><br><span class="line">    <span class="comment">// 返回连通分量的个数</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">count</span><span class="params">()</span></span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p><strong>QuickFind</strong>，快速查询。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QuickFind</span> <span class="keyword">implements</span> <span class="title">IUnionFind</span></span>{</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] links;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> count;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">QuickFind</span><span class="params">(<span class="keyword">int</span> num)</span> </span>{</span><br><span class="line">        links = <span class="keyword">new</span> <span class="keyword">int</span>[num];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;num;i++){</span><br><span class="line">            links[i] = i;</span><br><span class="line">        }</span><br><span class="line">        count = num;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> p)</span></span>{</span><br><span class="line">        <span class="keyword">return</span> links[p];</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">connected</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> q)</span> </span>{</span><br><span class="line">        <span class="keyword">return</span> find(p) == find(q);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">count</span><span class="params">()</span> </span>{</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">union</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> q)</span></span>{</span><br><span class="line">        <span class="keyword">int</span> pID = find(p);</span><br><span class="line">        <span class="keyword">int</span> qID = find(q);</span><br><span class="line">        <span class="keyword">if</span> (pID == qID){</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;links.length;i++){</span><br><span class="line">            <span class="keyword">if</span>(pID == links[i]){</span><br><span class="line">                links[i] = qID;</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        count--;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>上述代码，虽说查询根节点速度很快，但由于连接的时候需要将所有的连通节点都改为同一个根节点，因此效率很差。</p>
+<p><strong>QuickUnion</strong>，快速合并。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QuickUnion</span> <span class="keyword">implements</span> <span class="title">IUnionFind</span></span>{</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> count;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] links;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">QuickUnion</span><span class="params">(<span class="keyword">int</span> num)</span> </span>{</span><br><span class="line">        count = num;</span><br><span class="line">        links = <span class="keyword">new</span> <span class="keyword">int</span>[num];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;num;i++){</span><br><span class="line">            links[i] = i;</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">union</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> q)</span> </span>{</span><br><span class="line">        <span class="keyword">if</span> (connected(p, q)){</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">int</span> pID = find(p);</span><br><span class="line">        <span class="keyword">int</span> qID = find(q);</span><br><span class="line">        links[qID] = pID;</span><br><span class="line">        count--;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> p)</span> </span>{</span><br><span class="line">        <span class="keyword">while</span>(links[p] != p){</span><br><span class="line">            p = links[p];</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">return</span> p;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">connected</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> q)</span> </span>{</span><br><span class="line">        <span class="keyword">return</span> find(p) == find(q);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">count</span><span class="params">()</span> </span>{</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>而 <strong>QuickUnion</strong> 在连接的时候只修改根节点的值，解决了连接速度慢的问题。取而代之的是，在查找的时候不能直接返回某点的根节点了。</p>
+<p><strong>WeightedQuickUnion</strong>，加权快速合并。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WeightedQuickUnion</span> <span class="keyword">implements</span> <span class="title">IUnionFind</span></span>{</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> count;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] links;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] weights;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">WeightedQuickUnion</span><span class="params">(<span class="keyword">int</span> num)</span> </span>{</span><br><span class="line">        count = num;</span><br><span class="line">        links = <span class="keyword">new</span> <span class="keyword">int</span>[num];</span><br><span class="line">        weights = <span class="keyword">new</span> <span class="keyword">int</span>[num];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;num;i++){</span><br><span class="line">            links[i] = i;</span><br><span class="line">            weights[i] =<span class="number">1</span>;</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">union</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> q)</span> </span>{</span><br><span class="line">        <span class="keyword">if</span> (connected(p, q)){</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">int</span> pID = find(p);</span><br><span class="line">        <span class="keyword">int</span> qID = find(q);</span><br><span class="line">        <span class="keyword">if</span>(weights[pID] &lt; weights[qID]){</span><br><span class="line">            weights[qID] += weights[pID];</span><br><span class="line">            links[pID] = qID;</span><br><span class="line">        }<span class="keyword">else</span>{</span><br><span class="line">            weights[pID] += weights[qID];</span><br><span class="line">            links[qID] = pID;</span><br><span class="line">        }</span><br><span class="line">        count--;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> p)</span> </span>{</span><br><span class="line">        <span class="keyword">while</span>(links[p] != p){</span><br><span class="line">            p = links[p];</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">return</span> p;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">connected</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> q)</span> </span>{</span><br><span class="line">        <span class="keyword">return</span> find(p) == find(q);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">count</span><span class="params">()</span> </span>{</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p><strong>QuickUnion</strong> 最坏情况下会像有序数组生成二叉排序树那样，变成类似链表的数据结构，这会大大降低查询和连接的速度，而 <strong>WeightedQuickUnion</strong> 通过将小树连接到大树解决了这个问题！</p>
+<p><strong>PathCompressedWeightedQuickUnion</strong>，路径压缩的加权快速合并。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PathCompressedWeightedQuickUnion</span> <span class="keyword">implements</span> <span class="title">IUnionFind</span></span>{</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> count;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] links;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] weights;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">PathCompressedWeightedQuickUnion</span><span class="params">(<span class="keyword">int</span> num)</span> </span>{</span><br><span class="line">        count = num;</span><br><span class="line">        links = <span class="keyword">new</span> <span class="keyword">int</span>[num];</span><br><span class="line">        weights = <span class="keyword">new</span> <span class="keyword">int</span>[num];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;num;i++){</span><br><span class="line">            links[i] = i;</span><br><span class="line">            weights[i] =<span class="number">1</span>;</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">union</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> q)</span> </span>{</span><br><span class="line">        <span class="keyword">if</span> (connected(p, q)){</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">int</span> pID = find(p);</span><br><span class="line">        <span class="keyword">int</span> qID = find(q);</span><br><span class="line">        <span class="keyword">if</span>(weights[pID] &lt; weights[qID]){</span><br><span class="line">            weights[qID] += weights[pID];</span><br><span class="line">            links[pID] = qID;</span><br><span class="line">        }<span class="keyword">else</span>{</span><br><span class="line">            weights[pID] += weights[qID];</span><br><span class="line">            links[qID] = pID;</span><br><span class="line">        }</span><br><span class="line">        count--;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> p)</span> </span>{</span><br><span class="line">        <span class="keyword">while</span>(links[p] != p){</span><br><span class="line">            <span class="keyword">return</span> links[p] = find(links[p]);</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">return</span> p;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">connected</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> q)</span> </span>{</span><br><span class="line">        <span class="keyword">return</span> find(p) == find(q);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">count</span><span class="params">()</span> </span>{</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>上诉代码，在查询根节点的过程中，通过递归将所有子节点的父节点直接修改为了根节点，将整棵树的高度锁定在了2！</p>
+<p><strong>效率对比</strong></p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EfficiencyTest</span> </span>{</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>{</span><br><span class="line">        Scanner sc1 = FileUtils.getFileScanner(<span class="string">"tinyUF.txt"</span>);</span><br><span class="line">        Scanner sc2 = FileUtils.getFileScanner(<span class="string">"tinyUF.txt"</span>);</span><br><span class="line">        Scanner sc3 = FileUtils.getFileScanner(<span class="string">"tinyUF.txt"</span>);</span><br><span class="line">        Scanner sc4 = FileUtils.getFileScanner(<span class="string">"tinyUF.txt"</span>);</span><br><span class="line">        QuickFind uf1 = <span class="keyword">new</span> QuickFind(sc1.nextInt());</span><br><span class="line">        QuickFind uf2 = <span class="keyword">new</span> QuickFind(sc2.nextInt());</span><br><span class="line">        QuickFind uf3 = <span class="keyword">new</span> QuickFind(sc3.nextInt());</span><br><span class="line">        QuickFind uf4 = <span class="keyword">new</span> QuickFind(sc4.nextInt());</span><br><span class="line">        System.out.println(<span class="string">"==============================tiny=============================="</span>);</span><br><span class="line">        System.out.println(<span class="string">"QuickFind:"</span> + test(uf1, sc1) + <span class="string">"ms"</span> + <span class="string">"\n"</span> + <span class="string">"components: "</span> + uf1.count());</span><br><span class="line">        System.out.println(<span class="string">"QuickUnion:"</span> + test(uf2, sc2) + <span class="string">"ms"</span> + <span class="string">"\n"</span> + <span class="string">"components: "</span> + uf2.count());</span><br><span class="line">        System.out.println(<span class="string">"WeightedQuickUnion:"</span> + test(uf3, sc3) + <span class="string">"ms"</span> + <span class="string">"\n"</span> + <span class="string">"components: "</span> + uf3.count());</span><br><span class="line">        System.out.println(<span class="string">"PathCompressedWeightedQuickUnion:"</span> + test(uf4, sc4) + <span class="string">"ms"</span> + <span class="string">"\n"</span> + <span class="string">"components: "</span> + uf4.count());</span><br><span class="line">        System.out.println(<span class="string">"==============================medium=============================="</span>);</span><br><span class="line">        sc1 = FileUtils.getFileScanner(<span class="string">"mediumUF.txt"</span>);</span><br><span class="line">        sc2 = FileUtils.getFileScanner(<span class="string">"mediumUF.txt"</span>);</span><br><span class="line">        sc3 = FileUtils.getFileScanner(<span class="string">"mediumUF.txt"</span>);</span><br><span class="line">        sc4 = FileUtils.getFileScanner(<span class="string">"mediumUF.txt"</span>);</span><br><span class="line">        uf1 = <span class="keyword">new</span> QuickFind(sc1.nextInt());</span><br><span class="line">        uf2 = <span class="keyword">new</span> QuickFind(sc2.nextInt());</span><br><span class="line">        uf3 = <span class="keyword">new</span> QuickFind(sc3.nextInt());</span><br><span class="line">        uf4 = <span class="keyword">new</span> QuickFind(sc4.nextInt());</span><br><span class="line">        System.out.println(<span class="string">"QuickFind:"</span> + test(uf1, sc1) + <span class="string">"ms"</span> + <span class="string">"\n"</span> + <span class="string">"components: "</span> + uf1.count());</span><br><span class="line">        System.out.println(<span class="string">"QuickUnion:"</span> + test(uf2, sc2) + <span class="string">"ms"</span> + <span class="string">"\n"</span> + <span class="string">"components: "</span> + uf2.count());</span><br><span class="line">        System.out.println(<span class="string">"WeightedQuickUnion:"</span> + test(uf3, sc3) + <span class="string">"ms"</span> + <span class="string">"\n"</span> + <span class="string">"components: "</span> + uf3.count());</span><br><span class="line">        System.out.println(<span class="string">"PathCompressedWeightedQuickUnion:"</span> + test(uf4, sc4) + <span class="string">"ms"</span> + <span class="string">"\n"</span> + <span class="string">"components: "</span> + uf4.count());</span><br><span class="line">        System.out.println(<span class="string">"==============================large=============================="</span>);</span><br><span class="line">        <span class="comment">// 其余三个速度太慢，这里就不测试了</span></span><br><span class="line">        sc4 = FileUtils.getFileScanner(<span class="string">"largeUF.txt"</span>);</span><br><span class="line">        uf4 = <span class="keyword">new</span> QuickFind(sc4.nextInt());</span><br><span class="line">        System.out.println(<span class="string">"PathCompressedWeightedQuickUnion:"</span> + test(uf4, sc4) + <span class="string">"ms"</span> + <span class="string">"\n"</span> + <span class="string">"components: "</span> + uf4.count());</span><br><span class="line"></span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">==============================tiny==============================</span><br><span class="line">QuickFind:0ms</span><br><span class="line">components: <span class="number">2</span></span><br><span class="line">QuickUnion:0ms</span><br><span class="line">components: <span class="number">2</span></span><br><span class="line">WeightedQuickUnion:1ms</span><br><span class="line">components: <span class="number">2</span></span><br><span class="line">PathCompressedWeightedQuickUnion:2ms</span><br><span class="line">components: <span class="number">2</span></span><br><span class="line">==============================medium==============================</span><br><span class="line">QuickFind:17ms</span><br><span class="line">components: <span class="number">3</span></span><br><span class="line">QuickUnion:11ms</span><br><span class="line">components: <span class="number">3</span></span><br><span class="line">WeightedQuickUnion:6ms</span><br><span class="line">components: <span class="number">3</span></span><br><span class="line">PathCompressedWeightedQuickUnion:4ms</span><br><span class="line">components: <span class="number">3</span></span><br><span class="line">==============================large==============================</span><br><span class="line">PathCompressedWeightedQuickUnion:798220ms</span><br><span class="line">components: <span class="number">6</span></span><br><span class="line"></span><br><span class="line">Process finished with exit code <span class="number">0</span></span><br></pre></td></tr></tbody></table></figure>
+<p>可以发现，在 tiny 小数据集上，最优的那个算法反而最慢，但当数据量慢慢增大时，它的优势就显现出来了。</p>
+<h2 id="排序算法"><a href="#排序算法" class="headerlink" title="排序算法"></a>排序算法</h2><h4 id="排序工具类"><a href="#排序工具类" class="headerlink" title="排序工具类"></a>排序工具类</h4><p>在实现各种排序算法的过程中，不免会使用一些基础的操作（交换，比较等），这里就单独封装在一个排序的工具类中了。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SortUtil</span> </span>{</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">less</span><span class="params">(Comparable a, Comparable b)</span> </span>{</span><br><span class="line">        <span class="keyword">return</span> a.compareTo(b) &lt; <span class="number">0</span>;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(Comparable[] arr, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>{</span><br><span class="line">        <span class="keyword">if</span> (i == j) {</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        }</span><br><span class="line">        Comparable tmp = arr[i];</span><br><span class="line">        arr[i] = arr[j];</span><br><span class="line">        arr[j] = tmp;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">(Comparable[] arr)</span> </span>{</span><br><span class="line">        <span class="keyword">for</span> (Comparable comparable : arr) {</span><br><span class="line">            System.out.print(comparable + <span class="string">" "</span>);</span><br><span class="line">        }</span><br><span class="line">        System.out.println();</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isSorted</span><span class="params">(Comparable[] arr)</span> </span>{</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = arr.length - <span class="number">1</span>; i &gt;= <span class="number">1</span>; i--) {</span><br><span class="line">            <span class="keyword">if</span> (less(arr[i], arr[i - <span class="number">1</span>])) {</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h4><p>一种最简单的排序算法是这样的:首先，找到数组中最小的那个元素，其次，将它和数组的第一个元素交换位置（如果第一个元素就是最小元素那么它就和自己交换）。再次，在剩下的元素中找到最小的元素，将它与数组的第二个元素交换位置。如此往复，直到将整个数组排序。这种方法叫做选择排序，因为它在不断地选择剩余元素之中的最小者。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Selection</span> </span>{</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(Comparable[] arr)</span> </span>{</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; arr.length-<span class="number">1</span>; i++) {</span><br><span class="line">            <span class="keyword">int</span> min = i;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; arr.length; j++) {</span><br><span class="line">                <span class="keyword">if</span> (SortUtil.less(arr[j], arr[min])) {</span><br><span class="line">                    min = j;</span><br><span class="line">                }</span><br><span class="line">            }</span><br><span class="line">            SortUtil.swap(arr, i, min);</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>对于长度为 <strong>N</strong> 的数组，选择排序需要 ~$\frac{N^2}{2}$ 次比较以及 ~$N$ 次交换。</p>
+<h4 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h4><p>通常人们整理桥牌的方法是一张一张的来,将每一张牌插入到其他已经有序的牌中的适当位置。在计算机的实现中，为了给要插入的元素腾出空间，我们需要将其余所有元素在插入之前都向右移动一位。这种算法被称作插入排序。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Insertion</span> </span>{</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(Comparable[] arr)</span> </span>{</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt; arr.length;i++){</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j=i;j&gt;<span class="number">0</span>;j--){</span><br><span class="line">                <span class="keyword">if</span> (SortUtil.less(arr[j], arr[j-<span class="number">1</span>])){</span><br><span class="line">                    SortUtil.swap(arr, j, j-<span class="number">1</span>);</span><br><span class="line">                }</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>对于长度为 <strong>N</strong> 的数组，插入排序平均需要进行 ~$\frac{N^2}{4}$ 次比较以及 ~$\frac{N^2}{4}$ 次交换，最好情况下需要进行 N-1 次比较以及0次交换，而在最坏情况下，需要进行  ~$\frac{N^2}{2}$ 次比较以及 ~$\frac{N^2}{2}$ 次交换（即对角线下方元素都需要进行交换与比较）。</p>
+<p><img src="https://s4.ax1x.com/2021/12/08/oRh1OA.png" alt="image"></p>
+<p>与选择排序一样，当前索引左边的所有元素都是有序的，但它们的最终位置还不确定，为了给更小的元素腾出空间，它们可能会被移动。但是当索引到达数组的右端时，数组排序就完成了。<br>和选择排序不同的是，插入排序所需的时间取决于输入中元素的初始顺序。例如，对一个很大且其中的元素已经有序（或接近有序）的数组进行排序将会比对随机顺序的数组或是逆序数组进行排序要快得多。</p>
+<p><br></p>
+<p><strong>插入排序（修改）</strong></p>
+<p>要大幅提高插人排序的速度并不难，只需要在内循环中将较大的元素都向右移动而不总是交换</p>
+<p>两个元素（这样访问数组的次数就能减半）。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sortByMoving</span><span class="params">(Comparable[] arr)</span> </span>{</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; arr.length; i++) {</span><br><span class="line">            Comparable tmp = arr[i];</span><br><span class="line">            <span class="keyword">int</span> j = i - <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">for</span> (; j &gt;= <span class="number">0</span>; j--) {</span><br><span class="line">                <span class="keyword">if</span> (SortUtil.less(tmp, arr[j])) {</span><br><span class="line">                    arr[j + <span class="number">1</span>] = arr[j];</span><br><span class="line">                } <span class="keyword">else</span> {</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                }</span><br><span class="line">            }</span><br><span class="line">            arr[j + <span class="number">1</span>] = tmp;</span><br><span class="line">        }</span><br><span class="line">    }</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h4><p>希尔排序一种基于插人排序的快速的排序算法。对于大规模乱序数组插入排序很慢，因为它只会交换相邻的元素，因此元素只能一点一点地从数组 的一端移动到另一端。例如，如果主键最小的元素正好在数组的尽头，要将它挪到正确的位置就需要 N-1 次移动。希尔排序为了加快速度简单地改进了插入排序，交换不相邻的元素以对数组的局部进行排序，并最终用插入排序将局部有序的数组排序。</p>
+<p>希尔排序的思想是使数组中任意间隔为 h 的元素都是有序的。这样的数组被称为 h 有序数组。换句话说，一个 h 有序数组就是 h 个互相独立的有序数组编织在一起组成的一个数组。在进行排序时，如果 h 很大，我们就能将元素移动到很远的地方，为实现更小的 h 有序创造方便。用这种方式，对于任意以1结尾的 h 序列，我们都能够将数组排序。这就是希尔排序。</p>
+<p><img src="https://s4.ax1x.com/2021/12/08/oRonHA.png" alt="image"></p>
+<p>下面算法实现使用了序列 $3n+1$，从N/3开始递减至1。我们把这个序列称为递增序列。一种方式是实时计算它的递增序列，另—种方式则是将递增序列存储在一个数组中。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(Comparable[] arr)</span> </span>{</span><br><span class="line">    <span class="keyword">int</span> n = arr.length;</span><br><span class="line">    <span class="comment">// 计算序列第一项</span></span><br><span class="line">    <span class="keyword">int</span> h = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (h &lt; n / <span class="number">3</span>) {</span><br><span class="line">        h = h * <span class="number">3</span> + <span class="number">1</span>;  <span class="comment">// 1, 4, 13, 40, 121...</span></span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (h &gt; <span class="number">0</span>) {</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = h; i &lt; n; i++) {</span><br><span class="line">            Comparable tmp = arr[i];</span><br><span class="line">            <span class="keyword">int</span> j = i;</span><br><span class="line">            <span class="keyword">for</span> (; j &gt;= h; j -= h) {</span><br><span class="line">                <span class="keyword">if</span> (SortUtil.less(tmp, arr[j - h])) {</span><br><span class="line">                    arr[j] = arr[j - h];</span><br><span class="line">                }<span class="keyword">else</span> {</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                }</span><br><span class="line">            }</span><br><span class="line">            arr[j] = tmp;</span><br><span class="line">        }</span><br><span class="line">        h = (h - <span class="number">1</span>) / <span class="number">3</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>至于上述希尔排序的性能（根据 h 序列的取值，排序的时间复杂度会有所不同）， 目前最重要的结论是它的运行时间达不到平方级别。</p>
+<p>不过，已知在最坏的情况下比较次数和 $N^{3/2}$ 成正比。</p>
+<h2 id="神奇的用法"><a href="#神奇的用法" class="headerlink" title="神奇的用法"></a>神奇的用法</h2><h4 id="不会报错的除零运算"><a href="#不会报错的除零运算" class="headerlink" title="不会报错的除零运算"></a>不会报错的除零运算</h4><p>下述代码并不会像<code>1 / 0</code> 一样报除零异常，而是会返回 <code>Infinity</code></p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test2</span><span class="params">()</span></span>{</span><br><span class="line">    System.out.println(<span class="number">1.0</span> / <span class="number">0.0</span>);	<span class="comment">// Infinity</span></span><br><span class="line">    System.out.println(<span class="number">1.0</span> / <span class="number">0.0</span> &gt; <span class="number">1e9</span>); <span class="comment">// true</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="可以“修改”的-final-变量"><a href="#可以“修改”的-final-变量" class="headerlink" title="可以“修改”的 final 变量"></a>可以“修改”的 final 变量</h4><p>被 <code>final</code> 所修饰的变量无法被修改，下述代码中 <strong>arr</strong> 是 <code>final</code> 变量，因此在第5行想给它赋予一个新的值时报错了： <strong>Cannot assign a value to final variable ‘arr’</strong>。</p>
+<p>虽然实例变量的值无法被修改，但是对象的值本身是可以被修改的（请看第4行）！</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyTest</span> </span>{</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>{</span><br><span class="line">        A a = <span class="keyword">new</span> A();</span><br><span class="line">        a.arr[<span class="number">0</span>] = <span class="number">20</span>;</span><br><span class="line">        <span class="comment">// a.arr = new int[10]; Cannot assign a value to final variable 'arr'</span></span><br><span class="line">        System.out.println(a.arr[<span class="number">0</span>]);</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>{</span><br><span class="line">    <span class="comment">// 常量arr</span></span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span>[] arr;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">A</span><span class="params">()</span></span>{</span><br><span class="line">        <span class="keyword">this</span>.arr = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>];</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="巧妙压缩日期格式"><a href="#巧妙压缩日期格式" class="headerlink" title="巧妙压缩日期格式"></a>巧妙压缩日期格式</h4><p>常规方法，使用三个变量来分别存储年月日。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyDate</span></span>{</span><br><span class="line">    <span class="keyword">int</span> day;	<span class="comment">// 日</span></span><br><span class="line">    <span class="keyword">int</span> month;	<span class="comment">// 月</span></span><br><span class="line">    <span class="keyword">int</span> year;	<span class="comment">// 年</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyDate</span><span class="params">(<span class="keyword">int</span> year, <span class="keyword">int</span> month, <span class="keyword">int</span> day)</span> </span>{</span><br><span class="line">        <span class="keyword">this</span>.day = day;</span><br><span class="line">        <span class="keyword">this</span>.month = month;</span><br><span class="line">        <span class="keyword">this</span>.year = year;</span><br><span class="line">    }</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"现在是"</span> + year + <span class="string">"年"</span> + month + <span class="string">"月"</span> + day + <span class="string">"日"</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>压缩方法，只使用一个变量来存储年月日。</p>
+<p>年月日我们可以把它转换为<code>特殊进制</code>的数 <strong>YMD</strong>，这个<code>特殊进制</code>每一位的权重并不相同，由于一个月最多有31天，一年有12月，因此 <strong>D</strong> 是32进制的，而 <strong>M</strong> 是13进制的，<strong>Y</strong> 则没有进制，可以一直往上加。</p>
+<p>举个例子，假设是 x 年 y 月 z 日，那么 <strong>YMD</strong> 就应该等于 z + 32 <em> y + 32 </em> 13 * x。</p>
+<p>当然，这个 <strong>YMD</strong> 只能算是压缩，是不可能用于最后输出的（毕竟别人不知道这是<code>特殊进制</code>），因此还需要解压。</p>
+<p>根据 date = z + 32 <em> y + 32 </em> 13 * x，易得 x = date / 416，z = date % 32，而 y 可以先求出一共有多少月 months = date / 32，然后再通过 months % 13 就能算出来 y 了！</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyDateCompressed</span></span>{</span><br><span class="line">    <span class="keyword">int</span> date;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyDateCompressed</span><span class="params">(<span class="keyword">int</span> year, <span class="keyword">int</span> month, <span class="keyword">int</span> day)</span> </span>{</span><br><span class="line">        date = day + <span class="number">32</span> * month + <span class="number">416</span> * year;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>{</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"现在是"</span> + date / <span class="number">416</span> + <span class="string">"年"</span> + date / <span class="number">32</span> % <span class="number">13</span> + <span class="string">"月"</span> + date % <span class="number">32</span> + <span class="string">"日"</span>;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/24/Redis/" rel="prev" title="Redis">
+      <i class="fa fa-chevron-left"></i> Redis
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/11/29/23%E7%A7%8D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="next" title="23种设计模式">
+      23种设计模式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%AE%9E%E7%8E%B0"><span class="nav-text">数据结构实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%8C%E6%95%B4%E7%9A%84%E6%A0%88%E5%AE%9E%E7%8E%B0"><span class="nav-text">完整的栈实现</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0"><span class="nav-text">算法实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B9%B6%E6%9F%A5%E9%9B%86"><span class="nav-text">并查集</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95"><span class="nav-text">排序算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E5%B7%A5%E5%85%B7%E7%B1%BB"><span class="nav-text">排序工具类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F"><span class="nav-text">选择排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F"><span class="nav-text">插入排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F"><span class="nav-text">希尔排序</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A5%9E%E5%A5%87%E7%9A%84%E7%94%A8%E6%B3%95"><span class="nav-text">神奇的用法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8D%E4%BC%9A%E6%8A%A5%E9%94%99%E7%9A%84%E9%99%A4%E9%9B%B6%E8%BF%90%E7%AE%97"><span class="nav-text">不会报错的除零运算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%AF%E4%BB%A5%E2%80%9C%E4%BF%AE%E6%94%B9%E2%80%9D%E7%9A%84-final-%E5%8F%98%E9%87%8F"><span class="nav-text">可以“修改”的 final 变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B7%A7%E5%A6%99%E5%8E%8B%E7%BC%A9%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F"><span class="nav-text">巧妙压缩日期格式</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="紫梦沁香"
+      src="/uploads/images/head-icon.jpg">
+  <p class="site-author-name" itemprop="name">紫梦沁香</p>
+  <div class="site-description" itemprop="description">如果说我看得比别人更远些，那是因为我站在巨人的肩膀上</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="sidebar-button motion-element"><i class="fa fa-comment"></i>
+    Chat
+  </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:1149911598@qq.com" title="E-Mail → mailto:1149911598@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">紫梦沁香</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'xxQvJd4TcJMGK327OtwyS41T-gzGzoHsz',
+      appKey     : 'GJqvYfNtvELk0Vvow1MAQo5i',
+      placeholder: "",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

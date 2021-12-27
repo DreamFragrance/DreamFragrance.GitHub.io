@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="位运算位运算是程序设计中对位模式按位或二进制数的一元和二元操作。 一般情况下，位运算和加减运算的运算速度相当，且极大程度上快于乘除运算（10倍）。 很多编程语言都有位运算符，Java语言也不例外。在Java语言中，提供了7种位运算符，分别是 &amp;（与）、|（或）、^（异或）、\~（非）、&lt;&lt;（左移）、&gt;&gt;（带符号右移）和&gt;&gt;&gt;（无符号右移）。这些运算">
+<meta property="og:type" content="article">
+<meta property="og:title" content="位运算">
+<meta property="og:url" content="http://example.com/2021/12/15/%E4%BD%8D%E8%BF%90%E7%AE%97/index.html">
+<meta property="og:site_name" content="紫梦沁香">
+<meta property="og:description" content="位运算位运算是程序设计中对位模式按位或二进制数的一元和二元操作。 一般情况下，位运算和加减运算的运算速度相当，且极大程度上快于乘除运算（10倍）。 很多编程语言都有位运算符，Java语言也不例外。在Java语言中，提供了7种位运算符，分别是 &amp;（与）、|（或）、^（异或）、\~（非）、&lt;&lt;（左移）、&gt;&gt;（带符号右移）和&gt;&gt;&gt;（无符号右移）。这些运算">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s4.ax1x.com/2021/12/15/TSCBYn.png">
+<meta property="og:image" content="https://s4.ax1x.com/2021/12/15/TSCL0e.png">
+<meta property="og:image" content="https://s4.ax1x.com/2021/12/15/TSPF0g.png">
+<meta property="og:image" content="https://s4.ax1x.com/2021/12/15/TSC5f1.png">
+<meta property="og:image" content="https://s4.ax1x.com/2021/12/15/TSPBHe.png">
+<meta property="og:image" content="https://s4.ax1x.com/2021/12/15/TSPc9I.png">
+<meta property="og:image" content="https://s4.ax1x.com/2021/12/15/TSAdGd.png">
+<meta property="og:image" content="https://s4.ax1x.com/2021/12/15/TSER0K.png">
+<meta property="og:image" content="https://s4.ax1x.com/2021/12/15/TSZ3Mn.png">
+<meta property="og:image" content="https://s4.ax1x.com/2021/12/15/TSmzV0.png">
+<meta property="article:published_time" content="2021-12-15T06:07:21.000Z">
+<meta property="article:modified_time" content="2021-12-15T07:39:50.244Z">
+<meta property="article:author" content="紫梦沁香">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s4.ax1x.com/2021/12/15/TSCBYn.png">
+
+<link rel="canonical" href="http://example.com/2021/12/15/%E4%BD%8D%E8%BF%90%E7%AE%97/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>位运算 | 紫梦沁香</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6bc20780b9c032635241d71c52b76953";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<script type="text/javascript" src="/js/game/modernizr.custom.js"></script>
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">紫梦沁香</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-game">
+
+    <a href="/game/" rel="section"><i class="fa fa-gamepad fa-fw"></i>游戏</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/15/%E4%BD%8D%E8%BF%90%E7%AE%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/images/head-icon.jpg">
+      <meta itemprop="name" content="紫梦沁香">
+      <meta itemprop="description" content="如果说我看得比别人更远些，那是因为我站在巨人的肩膀上">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="紫梦沁香">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          位运算
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-12-15 14:07:21 / 修改时间：15:39:50" itemprop="dateCreated datePublished" datetime="2021-12-15T14:07:21+08:00">2021-12-15</time>
+            </span>
+
+          
+            <span id="/2021/12/15/%E4%BD%8D%E8%BF%90%E7%AE%97/" class="post-meta-item leancloud_visitors" data-flag-title="位运算" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/12/15/%E4%BD%8D%E8%BF%90%E7%AE%97/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/12/15/%E4%BD%8D%E8%BF%90%E7%AE%97/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="位运算"><a href="#位运算" class="headerlink" title="位运算"></a>位运算</h2><p>位运算是程序设计中对位模式按位或二进制数的一元和二元操作。</p>
+<p>一般情况下，位运算和加减运算的运算速度相当，且极大程度上快于乘除运算（10倍）。</p>
+<p>很多编程语言都有位运算符，Java语言也不例外。在Java语言中，提供了7种位运算符，分别是 <code>&amp;</code>（与）、<code>|</code>（或）、<code>^</code>（异或）、<code>\~</code>（非）、<code>&lt;&lt;</code>（左移）、<code>&gt;&gt;</code>（带符号右移）和<code>&gt;&gt;&gt;</code>（无符号右移）。这些运算符当中，仅有 <strong>~</strong> 是单目运算符，其他运算符均为双目运算符。</p>
+<div class="note danger">
+            <p>位运算只能对 <strong>long</strong>、<strong>int</strong>、<strong>short</strong>、<strong>byte</strong> 和 <strong>char</strong> 这五个整型类型数据进行运算，不能用于 double、float、boolean 以及其他 引用类型。</p>
+          </div>
+<h3 id="一、按位与运算"><a href="#一、按位与运算" class="headerlink" title="一、按位与运算"></a>一、按位与运算</h3><p>按位与运算符的写法是一个 <strong>&amp;</strong> 符号，规则如下。</p>
+<p><img src="https://s4.ax1x.com/2021/12/15/TSCBYn.png" alt="image"></p>
+<p>运算规则总结成一句话就是：如果两个二进制位上的数都是1，那么运算结果为1，其他情况运算结果均为0。下面举例说明按位与运算符的运算过程，我们用数字5和6进行按位与运算。这个过程可以用下图表示：</p>
+<p><img src="https://s4.ax1x.com/2021/12/15/TSCL0e.png" alt="image"></p>
+<p>可以使用与运算来判断一个数是否是奇数。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>{</span><br><span class="line">    System.out.println((<span class="number">788</span> &amp; <span class="number">1</span>) == <span class="number">1</span>);	<span class="comment">// false</span></span><br><span class="line">    System.out.println((<span class="number">789</span> &amp; <span class="number">1</span>) == <span class="number">1</span>);	<span class="comment">// true</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p><br></p>
+<h3 id="二、按位或运算"><a href="#二、按位或运算" class="headerlink" title="二、按位或运算"></a>二、按位或运算</h3><p>按位或运算符的写法是一个 <strong>|</strong> 符号，规则如下。</p>
+<p><img src="https://s4.ax1x.com/2021/12/15/TSPF0g.png" alt="image"></p>
+<p>运算规则概括成比较好记的一句话就是：两个二进制位上的数字如果都为0，那么运算结果为0，否则运算结果是1。同按位与运算一样，符号位也要参与运算。下面我们还是用5和6为例来讲解一下按位或的运算过程，如下图所示：</p>
+<p><img src="https://s4.ax1x.com/2021/12/15/TSC5f1.png" alt="image"></p>
+<p><br></p>
+<h3 id="三、按位异或运算【重点】"><a href="#三、按位异或运算【重点】" class="headerlink" title="三、按位异或运算【重点】"></a>三、按位异或运算【重点】</h3><p>按位或运算符的写法是一个 <strong>^</strong> 符号，规则如下。</p>
+<p><img src="https://s4.ax1x.com/2021/12/15/TSPBHe.png" alt="image"></p>
+<p>如上图，运算规则为：两个二进制位上的数字如果相同，则运算结果为0，如果两个二进制位上的数字不相同，则运算结果为1。下面我们还是用5和6为例来讲解一下异或的运算过程，如下图：</p>
+<p><img src="https://s4.ax1x.com/2021/12/15/TSPc9I.png" alt="image"></p>
+<h4 id="异或运算的性质"><a href="#异或运算的性质" class="headerlink" title="异或运算的性质"></a>异或运算的性质</h4><p><strong>$I$、异或运算满足交换律。</strong></p>
+<p>也就是说，a \^ b 与 b \^ a是等价的，虽然 a 和 b 交换了位置，但还是会运算出相同的结果。这个规律还可以推广到 N 个操作数，也就是说，如果有N个变量都参与了异或运算，那么它们的位置无论如何交换，运算的结果都是相同的。</p>
+<p><strong>$II$、任何两个相同的数字进行异或运算，所得到的结果为 0。</strong></p>
+<p>因为两个相同的数字，换算成补码后，每个二进制位上的数也都相同，这样在进行异或运算时，按照运算规则，每个二进制位上得到的运算结果也都是 0，这 N 个 0 所组成的二进制串就是数字 0 的补码。</p>
+<ul>
+<li>可以判断两数是否相等：a \^ b = 0  -&gt;  a = b。</li>
+<li>快速清零：a ^= a。</li>
+</ul>
+<p><strong>$III$、对于任意一个二进制位来说，这个位上的数与 0 进行异或运算，运算结果不变。</strong></p>
+<p>0 ^ 1 = 1，0 ^ 0 = 0，结果不变。</p>
+<p><strong>$IV$、对于任意一个二进制位来说，这个位上的数与 1 进行异或运算，运算结果取反。</strong></p>
+<p>1 ^ 0 = 1，1 ^ 1 = 0，结果取反。</p>
+<p><strong>$V$、对于任意两个整数 a 和 b，a \^ b \^ a = b 。</strong></p>
+<p>a ^ b ^ a = a ^ a ^ b = 0 ^ b = b。</p>
+<p>这个特性在加密运算方面有着很普遍的应用。我们可以把 a 当作要加密的数据，而把 b 当作密钥。a 异或 b 就是把 a 用密钥 b 进行了加密操作，当需要解密时，仍然以 b 作为密钥，再进行一次异或就实现了解密。</p>
+<p><br></p>
+<h3 id="四、按位取反运算"><a href="#四、按位取反运算" class="headerlink" title="四、按位取反运算"></a>四、按位取反运算</h3><p>按位或运算符的写法是一个 <strong>~</strong> 符号，规则如下。</p>
+<p><img src="https://s4.ax1x.com/2021/12/15/TSAdGd.png" alt="image"></p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyTest</span> </span>{</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>{</span><br><span class="line">        <span class="keyword">int</span> a = <span class="number">5</span>;</span><br><span class="line">        <span class="keyword">int</span> b = ~a;</span><br><span class="line">        System.out.println(a);  <span class="comment">// 5</span></span><br><span class="line">        System.out.println(b);  <span class="comment">// -6</span></span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>首先把数字5转换成补码形式，之后把每个二进制位上的数字进行取反，如果是0就变成1，如果1就变成0，经过取反后得到的二进制串就是运算结果，这个运算结果被还原为十进制数是-6。</p>
+<p><br></p>
+<h3 id="五、左移运算符"><a href="#五、左移运算符" class="headerlink" title="五、左移运算符"></a>五、左移运算符</h3><p>按位或运算符的写法是一个 <strong>&lt;&lt;</strong> 符号，规则如下。</p>
+<p><img src="https://s4.ax1x.com/2021/12/15/TSER0K.png" alt="image"></p>
+<p>左移运算有乘以2的N次方的效果。一个数向左移动1位，就相当于乘以2的1次方，移动两位就相当于乘以2的2次方，也就是乘以4。<strong>位移操作在实际运算时远远快于乘法操作</strong>，所以在某些对运算速度要求非常高的场合，可以考虑用左移代替乘以2的N次方的乘法操作。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 可实际测试下来两者的速度几乎一致</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>{</span><br><span class="line">    <span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">1e9</span>;i++){</span><br><span class="line">        <span class="keyword">int</span> a = i * <span class="number">1024</span>;</span><br><span class="line">    }</span><br><span class="line">    System.out.println(System.currentTimeMillis() - start);	<span class="comment">// 1031</span></span><br><span class="line"></span><br><span class="line">    start = System.currentTimeMillis();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">1e9</span>;i++){</span><br><span class="line">        <span class="keyword">int</span> a = i &lt;&lt; <span class="number">10</span>;</span><br><span class="line">    }</span><br><span class="line">    System.out.println(System.currentTimeMillis() - start);	<span class="comment">// 1022</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>但当位移的位数很多时，导致最左边的符号位发生变化，就不再具有乘以2的N次方的效果了。比如十进制的5转换为补码形式是：前面29个0最后3位是101，如果移动29位，那么最前面的符号位就变成了1，<strong>此时运算的结果就成为了一个负数</strong>，不再是5乘以2的29次方的乘法结果。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>{</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">5</span>;</span><br><span class="line">    System.out.println(a &lt;&lt; <span class="number">29</span>);	<span class="comment">// -1610612736</span></span><br><span class="line">    a = -<span class="number">5</span>;</span><br><span class="line">    System.out.println(a &lt;&lt; <span class="number">29</span>);	<span class="comment">// 1610612736</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>对于 <strong>byte/short/int</strong> 三种类型的数据，Java 语言最多支持31位的位移运算（包括下面的右移运算）。如果位移数超过31，则虚拟机会对位移数按连续减去32，<strong>直到得到一个小于32并且大于等于0的数</strong>，然后以这个数作为最终的位移数。</p>
+<p>例如对 int 型变量进行位移97位的操作，虚拟机会首先对97连续减去3个32，最终得到数字1，实际进行位移运算时只对变量位移1位。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>{</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">2</span>;</span><br><span class="line">    System.out.println(a &lt;&lt; <span class="number">97</span>);	<span class="comment">// 4</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>而对于 long 类型的数据而言，最多支持63位的位移运算，如果位移数超过63，则连续减去64，以最终得到的小于64并且大于等于0的数作为位移数。小伙伴们可以试一下数字5左移32位是什么结果。</p>
+<p><br></p>
+<h3 id="六、带符号右移运算符"><a href="#六、带符号右移运算符" class="headerlink" title="六、带符号右移运算符"></a>六、带符号右移运算符</h3><p>右移运算分为两种，分别是带符号右移和无符号右移。首先我们来说说带符号右移运算符。带符号右移运算符的写法是 <strong>&gt;&gt;</strong>，与左移运算符的方向恰好相反。</p>
+<p><img src="https://s4.ax1x.com/2021/12/15/TSZ3Mn.png" alt="image"></p>
+<p>带符号右移运算和左移运算类似，具有 <strong>/2</strong> 的功能，小数会被舍弃。</p>
+<p><strong>但是对于负数而言，带符号右移的效果分为两种情况，我们分别来讨论。</strong></p>
+<p>如果这个负数是“2的N次方”的整数倍，那么带符号右移N位的效果也等于除以2的N次方。举个例子：我们还是把N的值设为3，如果对于“-16”来说，它是“2的3次方”的整数倍，那么带符号右移3位的结果是-2，这个结果相当于“-16除以2的3次方”。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>{</span><br><span class="line">    <span class="keyword">int</span> a = -<span class="number">16</span>;</span><br><span class="line">    System.out.println(a &gt;&gt; <span class="number">3</span>);	<span class="comment">// -2</span></span><br><span class="line">    System.out.println(a / <span class="number">8</span>);	<span class="comment">// -2</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>而如果这个负数不是“2的N次方”的整数倍，那么右移N位之后，是在除以2的N次方的结果之上还要减去1。比如，对于-15来说，它不是“2的3次方”的整数倍，那么带符号右移3位的结果是-2，这个运算结果其实就是“-15被2的3次方整除再减去1”（减1是因为右移的时候丢弃了位数是 1 的位）。</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>{</span><br><span class="line">    <span class="keyword">int</span> a = -<span class="number">15</span>;</span><br><span class="line">    System.out.println(a &gt;&gt; <span class="number">3</span>);	<span class="comment">// -2</span></span><br><span class="line">    System.out.println(a / <span class="number">8</span>);	<span class="comment">// -1</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>带符号右移的操作可以保证移动之前和移动之后数字的正负属性不变，原来是正数，不管移动多少位，移动之后还是正数，原来是负数，移动之后还是负数。</p>
+<p><strong>对于任何 一个byte、short 或者 int 类型的数据而言，带符号右移31位之后，得到的必然是 0 或者是 -1。对于 long 类型的数据而言，带符号右移 63 位之后，得到的也必然是 0 或者是 -1。</strong></p>
+<p><br></p>
+<h3 id="七、无符号右移运算符"><a href="#七、无符号右移运算符" class="headerlink" title="七、无符号右移运算符"></a>七、无符号右移运算符</h3><p>无符号右移运算符的写法是 <strong>&gt;&gt;&gt;</strong>，带符号右移的运算规则与无符号右移的运算规则差别就在于：无符号右移在二进制串移动之后，空位由0来补充，与符号位是0还是1毫无关系，如下图：</p>
+<p><img src="https://s4.ax1x.com/2021/12/15/TSmzV0.png" alt="image"></p>
+<div class="note danger">
+            <p>进行位运算的时候，最左边的符号位也是要参与运算的。</p>
+          </div>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/12/05/%E6%A0%91%E8%8E%93%E6%B4%BE%E7%9A%84%E5%AE%89%E8%A3%85/" rel="prev" title="树莓派的安装">
+      <i class="fa fa-chevron-left"></i> 树莓派的安装
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/12/25/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95%E8%80%83%E8%AF%95%E5%A4%8D%E4%B9%A0/" rel="next" title="软件测试考试复习">
+      软件测试考试复习 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%8D%E8%BF%90%E7%AE%97"><span class="nav-text">位运算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%8C%89%E4%BD%8D%E4%B8%8E%E8%BF%90%E7%AE%97"><span class="nav-text">一、按位与运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%8C%89%E4%BD%8D%E6%88%96%E8%BF%90%E7%AE%97"><span class="nav-text">二、按位或运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%8C%89%E4%BD%8D%E5%BC%82%E6%88%96%E8%BF%90%E7%AE%97%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91"><span class="nav-text">三、按位异或运算【重点】</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%82%E6%88%96%E8%BF%90%E7%AE%97%E7%9A%84%E6%80%A7%E8%B4%A8"><span class="nav-text">异或运算的性质</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%8C%89%E4%BD%8D%E5%8F%96%E5%8F%8D%E8%BF%90%E7%AE%97"><span class="nav-text">四、按位取反运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E5%B7%A6%E7%A7%BB%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text">五、左移运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E5%B8%A6%E7%AC%A6%E5%8F%B7%E5%8F%B3%E7%A7%BB%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text">六、带符号右移运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%83%E3%80%81%E6%97%A0%E7%AC%A6%E5%8F%B7%E5%8F%B3%E7%A7%BB%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text">七、无符号右移运算符</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="紫梦沁香"
+      src="/uploads/images/head-icon.jpg">
+  <p class="site-author-name" itemprop="name">紫梦沁香</p>
+  <div class="site-description" itemprop="description">如果说我看得比别人更远些，那是因为我站在巨人的肩膀上</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="sidebar-button motion-element"><i class="fa fa-comment"></i>
+    Chat
+  </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:1149911598@qq.com" title="E-Mail → mailto:1149911598@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">紫梦沁香</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'xxQvJd4TcJMGK327OtwyS41T-gzGzoHsz',
+      appKey     : 'GJqvYfNtvELk0Vvow1MAQo5i',
+      placeholder: "",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
